@@ -21,6 +21,8 @@
 #ifndef LWMON_H
 #define LWMON_H
 
+#include <stdint.h>
+
 #include <QDir>
 #include <QPushButton>
 #include <QTcpSocket>
@@ -70,6 +72,8 @@ class MainWidget : public QMainWindow
   LineEdit *lw_edit;
   QPushButton *lw_button;
 
+  QString lw_hostname;
+  uint16_t lw_port;
   QTcpSocket *lw_tcp_socket;
   QString lw_accum;
   QDir *lw_settings_dir;

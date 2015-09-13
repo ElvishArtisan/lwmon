@@ -18,7 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdint.h>
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -33,8 +32,7 @@
 MainWidget::MainWidget(QWidget *parent)
   : QMainWindow(parent)
 {
-  QString hostname;
-  uint16_t port=LWMON_LWRP_DEFAULT_PORT;
+  lw_port=LWMON_LWRP_DEFAULT_PORT;
   bool ok=false;
 
   //
@@ -92,7 +90,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   switch(lw_mode) {
   case MainWidget::Lwcp:
-    port=LWMON_LWCP_DEFAULT_PORT;
+    lw_port=LWMON_LWCP_DEFAULT_PORT;
     setWindowTitle(tr("LWCP Monitor"));
     if(CheckSettingsDirectory()) {
       lw_history_path=lw_settings_dir->path()+"/"+LWMON_LWCP_HISTORY_FILE;
@@ -100,7 +98,7 @@ MainWidget::MainWidget(QWidget *parent)
     break;
 
   case MainWidget::Lwrp:
-    port=LWMON_LWRP_DEFAULT_PORT;
+    lw_port=LWMON_LWRP_DEFAULT_PORT;
     setWindowTitle(tr("LWRP Monitor"));
     if(CheckSettingsDirectory()) {
       lw_history_path=lw_settings_dir->path()+"/"+LWMON_LWRP_HISTORY_FILE;
@@ -116,10 +114,10 @@ MainWidget::MainWidget(QWidget *parent)
     fprintf(stderr,"lwcp: invalid argument\n");
     exit(256);
   }
-  hostname=f0[0];
+  lw_hostname=f0[0];
   if(f0.size()==2) {
-    port=f0[1].toUInt(&ok);
-    if((!ok)||(port==0)) {
+    lw_port=f0[1].toUInt(&ok);
+    if((!ok)||(lw_port==0)) {
       fprintf(stderr,"lwcp: invalid port value\n");
       exit(256);
     }
@@ -150,7 +148,7 @@ MainWidget::MainWidget(QWidget *parent)
   connect(lw_tcp_socket,SIGNAL(readyRead()),this,SLOT(tcpReadyReadData()));
   connect(lw_tcp_socket,SIGNAL(error(QAbstractSocket::SocketError)),
 	  this,SLOT(tcpErrorData(QAbstractSocket::SocketError)));
-  lw_tcp_socket->connectToHost(hostname,port);
+  lw_tcp_socket->connectToHost(lw_hostname,lw_port);
 
   setMinimumSize(sizeHint());
 }
@@ -214,6 +212,27 @@ void MainWidget::tcpReadyReadData()
 
 void MainWidget::tcpConnectedData()
 {
+  switch(lw_mode) {
+  case MainWidget::Lwcp:
+    if(lw_port==LWMON_LWCP_DEFAULT_PORT) {
+      setWindowTitle(tr("LWCP Monitor")+" - "+lw_hostname);
+    }
+    else {
+      setWindowTitle(tr("LWCP Monitor")+" - "+lw_hostname+
+		     QString().sprintf(":%u",lw_port));
+    }
+    break;
+
+  case MainWidget::Lwrp:
+    if(lw_port==LWMON_LWRP_DEFAULT_PORT) {
+      setWindowTitle(tr("LWRP Monitor")+" - "+lw_hostname);
+    }
+    else {
+      setWindowTitle(tr("LWRP Monitor")+" - "+lw_hostname+
+		     QString().sprintf(":%u",lw_port));
+    }
+    break;
+  }
 }
 
 
