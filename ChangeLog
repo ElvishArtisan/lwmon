@@ -2,3 +2,5 @@
 	* Initial package creation.
 2015-09-13 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented colorization for LWRP protocol.
+2015-09-13 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Clear' button.

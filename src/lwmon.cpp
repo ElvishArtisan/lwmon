@@ -136,6 +136,10 @@ MainWidget::MainWidget(QWidget *parent)
   connect(lw_edit,SIGNAL(returnPressed()),this,SLOT(editReturnPressedData()));
   lw_edit->loadHistory(lw_history_path);
 
+  lw_button=new QPushButton(tr("&Clear"),this);
+  lw_button->setFocusPolicy(Qt::NoFocus);
+  connect(lw_button,SIGNAL(clicked()),lw_text,SLOT(clear()));
+
   //
   // Socket
   //
@@ -169,13 +173,14 @@ void MainWidget::closeEvent(QCloseEvent *e)
 void MainWidget::resizeEvent(QResizeEvent *e)
 {
   lw_text->setGeometry(0,0,size().width(),size().height()-24);
-  lw_edit->setGeometry(0,size().height()-24,size().width(),24);
+  lw_edit->setGeometry(0,size().height()-24,size().width()-50,24);
+  lw_button->setGeometry(size().width()-50,size().height()-24,50,24);
 }
 
 
 void MainWidget::editReturnPressedData()
 {
-  lw_text->append(FormatLwcp(lw_edit->text(),true));
+  lw_text->append(FormatLwcp(Colorize(lw_edit->text()),true));
   lw_tcp_socket->write(lw_edit->text().toUtf8()+"\r\n",
 			 lw_edit->text().length()+2);
   lw_edit->setText("");

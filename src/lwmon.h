@@ -22,6 +22,7 @@
 #define LWMON_H
 
 #include <QDir>
+#include <QPushButton>
 #include <QTcpSocket>
 #include <QTextEdit>
 #include <QMainWindow>
@@ -67,6 +68,7 @@ class MainWidget : public QMainWindow
   MainWidget::Mode SetMode() const;
   QTextEdit *lw_text;
   LineEdit *lw_edit;
+  QPushButton *lw_button;
 
   QTcpSocket *lw_tcp_socket;
   QString lw_accum;
