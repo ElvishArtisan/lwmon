@@ -40,6 +40,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Process Arguments
   //
+  lw_colorize=true;
   lw_mode=SetMode();
   CmdSwitch *cmd=new CmdSwitch(qApp->argc(),qApp->argv(),"lwcp",LWMON_USAGE);
   if(cmd->keys()==0) {
@@ -47,6 +48,24 @@ MainWidget::MainWidget(QWidget *parent)
     exit(256);
   }
   for(unsigned i=0;i<cmd->keys()-1;i++) {
+    if(cmd->key(i)=="--color") {
+      if((cmd->value(i).toLower()=="off")||
+	 (cmd->value(i).toLower()=="no")||
+	 (cmd->value(i).toLower()=="false")) {
+	lw_colorize=false;
+	cmd->setProcessed(i,true);
+      }
+      if((cmd->value(i).toLower()=="on")||
+	 (cmd->value(i).toLower()=="yes")||
+	 (cmd->value(i).toLower()=="true")) {
+	lw_colorize=true;
+	cmd->setProcessed(i,true);
+      }
+      if(!cmd->processed(i)) {
+	fprintf(stderr,"lwmon: invalid argument to --color switch\n");
+	exit(256);
+      }
+    }
     if(cmd->key(i)=="--mode") {
       if(cmd->value(i).toLower()=="lwcp") {
 	lw_mode=MainWidget::Lwcp;
@@ -233,7 +252,7 @@ void MainWidget::tcpErrorData(QAbstractSocket::SocketError err)
 
 void MainWidget::ProcessCommand(const QString &cmd)
 {
-  lw_text->append(FormatLwcp(cmd,false));
+  lw_text->append(FormatLwcp(Colorize(cmd),false));
 }
 
 

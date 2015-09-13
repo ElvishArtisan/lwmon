@@ -26,6 +26,7 @@
 #include <QTextEdit>
 #include <QMainWindow>
 
+#include "astring.h"
 #include "lineedit.h"
 
 #define LWMON_DEFAULT_MODE MainWidget::Lwrp
@@ -34,7 +35,7 @@
 #define LWMON_SETTINGS_DIR ".lwcpmon"
 #define LWMON_LWCP_HISTORY_FILE "lwcp_history"
 #define LWMON_LWRP_HISTORY_FILE "lwrp_history"
-#define LWMON_USAGE "[--mode=lwcp|lwrp] <hostname>[:<port-num>]\n"
+#define LWMON_USAGE "[--mode=lwcp|lwrp] [--color=on|off] <hostname>[:<port-num>]\n"
 
 class MainWidget : public QMainWindow
 {
@@ -56,6 +57,10 @@ class MainWidget : public QMainWindow
   void tcpErrorData(QAbstractSocket::SocketError err);
 
  private:
+  QString Colorize(const QString &cmd) const;
+  QString ColorizeLwcp(const AString &cmd) const;
+  QString ColorizeLwrp(const AString &cmd) const;
+  QString ColorString(const QString &str,const QColor &color) const;
   void ProcessCommand(const QString &cmd);
   QString FormatLwcp(const QString &str,bool local);
   bool CheckSettingsDirectory();
@@ -68,6 +73,7 @@ class MainWidget : public QMainWindow
   QDir *lw_settings_dir;
   QString lw_history_path;
   MainWidget::Mode lw_mode;
+  bool lw_colorize;
 };
 
 

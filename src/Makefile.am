@@ -41,7 +41,9 @@ uninstall-local:
 
 bin_PROGRAMS = lwmon
 
-dist_lwmon_SOURCES = cmdswitch.cpp cmdswitch.h\
+dist_lwmon_SOURCES = astring.cpp astring.h\
+                     cmdswitch.cpp cmdswitch.h\
+                     colors.cpp\
                      lineedit.cpp lineedit.h\
                      lwmon.cpp lwmon.h
 
