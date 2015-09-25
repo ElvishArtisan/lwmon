@@ -22,3 +22,5 @@
 	* Added an lwaddr(1) man page.
 	* Added an lwcp(1) man page.
 	* Added an lwrp(1) man page.
+2015-09-25 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 0.6.0.
