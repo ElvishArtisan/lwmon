@@ -37,6 +37,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
+%{_bindir}/lwaddr
 %{_bindir}/lwcp
 %{_bindir}/lwmon
 %{_bindir}/lwrp

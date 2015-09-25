@@ -40,7 +40,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   lw_colorize=true;
   lw_mode=SetMode();
-  CmdSwitch *cmd=new CmdSwitch(qApp->argc(),qApp->argv(),"lwcp",LWMON_USAGE);
+  CmdSwitch *cmd=new CmdSwitch(qApp->argc(),qApp->argv(),"lwmon",LWMON_USAGE);
   if(cmd->keys()==0) {
     fprintf(stderr,"%s\n",LWMON_USAGE);
     exit(256);
@@ -73,6 +73,10 @@ MainWidget::MainWidget(QWidget *parent)
 	lw_mode=MainWidget::Lwrp;
 	cmd->setProcessed(i,true);
       }
+      if(cmd->value(i).toLower()=="lwaddr") {
+	lw_mode=MainWidget::Lwaddr;
+	cmd->setProcessed(i,true);
+      }
       if(!cmd->processed(i)) {
 	fprintf(stderr,"lwmon: invalid \"--mode\" argument");
 	exit(256);
@@ -103,6 +107,10 @@ MainWidget::MainWidget(QWidget *parent)
     if(CheckSettingsDirectory()) {
       lw_history_path=lw_settings_dir->path()+"/"+LWMON_LWRP_HISTORY_FILE;
     }
+    break;
+
+  case MainWidget::Lwaddr:
+    PrintAddr(cmd->key(cmd->keys()-1));
     break;
   }
 
@@ -232,7 +240,11 @@ void MainWidget::tcpConnectedData()
 		     QString().sprintf(":%u",lw_port));
     }
     break;
+
+  case MainWidget::Lwaddr:
+    break;
   }
+
 }
 
 
@@ -326,8 +338,81 @@ MainWidget::Mode MainWidget::SetMode() const
   if(f0.back()=="lwrp") {
     mode=MainWidget::Lwrp;
   }
+  if(f0.back()=="lwaddr") {
+    mode=MainWidget::Lwaddr;
+  }
 
   return mode;
+}
+
+
+void MainWidget::PrintAddr(const QString &arg) const
+{
+  //
+  // Address ranges taken from "Intro to LiveWire v2.1.1", pp 113-114
+  //
+  unsigned src;
+  bool ok;
+  QStringList f0;
+  unsigned octets[4];
+
+  src=arg.toUInt(&ok);
+  if((ok)&&(src>0)&&(src<32768)) {
+    PrintAddr(src);
+  }
+  f0=arg.split(".");
+  if(f0.size()==4) {
+    for(int i=0;i<4;i++) {
+      octets[i]=f0[i].toUInt(&ok);
+      if((!ok)||(octets[i]>255)) {
+	fprintf(stderr,"lwaddr: invalid argument\n");
+	exit(256);
+      }
+    }
+    if(octets[0]==239) {
+      if(((octets[1]==192)||(octets[1]==193))&&(octets[2]<128)) {
+	PrintAddr(256*octets[2]+octets[3]);
+      }
+      if((octets[1]==196)&&(octets[2]>=128)) {
+	PrintAddr(256*(octets[2]-128)+octets[3]);
+      }
+      if((octets[1]==192)&&(octets[2]=255)) {
+	switch(octets[3]) {
+	case 1:
+	  printf("Livestream clock\n");
+	  exit(0);
+
+	case 2:
+	  printf("Standard stream clock\n");
+	  exit(0);
+
+	case 3:
+	  printf("Advertisment channel\n");
+	  exit(0);
+
+	case 4:
+	  printf("GPIO channel\n");
+	  exit(0);
+	}
+      }
+    }
+  }
+
+  fprintf(stderr,"lwaddr: invalid argument\n");
+  exit(256);
+}
+
+
+void MainWidget::PrintAddr(unsigned src_num) const
+{
+  int o3=src_num/256;
+  int o4=src_num%256;
+
+  printf("LiveWire Source # %u\n",src_num);
+  printf("    Stereo Address: 239.192.%u.%u\n",o3,o4);
+  printf("  Surround Address: 239.196.%u.%u\n",128+o3,o4);
+  printf("  Backfeed Address: 239.193.%u.%d\n",o3,o4);
+  exit(0);
 }
 
 

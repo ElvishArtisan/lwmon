@@ -38,13 +38,13 @@
 #define LWMON_SETTINGS_DIR ".lwcpmon"
 #define LWMON_LWCP_HISTORY_FILE "lwcp_history"
 #define LWMON_LWRP_HISTORY_FILE "lwrp_history"
-#define LWMON_USAGE "[--mode=lwcp|lwrp] [--color=on|off] <hostname>[:<port-num>]\n"
+#define LWMON_USAGE "[--mode=lwcp|lwrp|lwaddr] [--color=on|off] <hostname>[:<port-num>]\n"
 
 class MainWidget : public QMainWindow
 {
  Q_OBJECT;
  public:
-  enum Mode {Lwrp=1,Lwcp=2};
+ enum Mode {Lwrp=1,Lwcp=2,Lwaddr=3};
   MainWidget(QWidget *parent=0);
   QSize sizeHint() const;
 
@@ -66,6 +66,8 @@ class MainWidget : public QMainWindow
   QString ColorString(const QString &str,const QColor &color) const;
   void ProcessCommand(const QString &cmd);
   QString FormatLwcp(const QString &str,bool local);
+  void PrintAddr(const QString &arg) const;
+  void PrintAddr(unsigned src_num) const;
   bool CheckSettingsDirectory();
   MainWidget::Mode SetMode() const;
   QTextEdit *lw_text;

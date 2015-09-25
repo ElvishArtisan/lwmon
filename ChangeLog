@@ -16,3 +16,5 @@
 	* Added notes on build environments in 'INSTALL'.
 2015-09-25 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 0.5.0.
+2015-09-25 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'lwaddr' mode.

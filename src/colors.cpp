@@ -33,6 +33,10 @@ QString MainWidget::Colorize(const QString &cmd) const
     case MainWidget::Lwrp:
       ret=ColorizeLwrp(cmd);
       break;
+
+    case MainWidget::Lwaddr:
+      ret=cmd;
+      break;
     }
   }
   else {

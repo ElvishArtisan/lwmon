@@ -34,11 +34,14 @@ install-exec-am:
 	ln -s lwmon $(DESTDIR)@prefix@/bin/lwcp
 	rm -f $(DESTDIR)@prefix@/bin/lwrp
 	ln -s lwmon $(DESTDIR)@prefix@/bin/lwrp
+	rm -f $(DESTDIR)@prefix@/bin/lwaddr
+	ln -s lwmon $(DESTDIR)@prefix@/bin/lwaddr
 
 uninstall-local:	
 	rm -f $(DESTDIR)@prefix@/bin/lwmon
 	rm -f $(DESTDIR)@prefix@/bin/lwcp
 	rm -f $(DESTDIR)@prefix@/bin/lwrp
+	rm -f $(DESTDIR)@prefix@/bin/lwaddr
 
 bin_PROGRAMS = lwmon
 
