@@ -104,6 +104,7 @@ else
 fi 
 
 AC_CONFIG_FILES([ \
+    docs/Makefile \
     src/Makefile \
     lwmon.spec \
     Makefile ])

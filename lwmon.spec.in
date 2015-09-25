@@ -41,6 +41,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/lwcp
 %{_bindir}/lwmon
 %{_bindir}/lwrp
+%{_mandir}/man1/lwaddr.1.gz
+%{_mandir}/man1/lwcp.1.gz
+%{_mandir}/man1/lwrp.1.gz
 %doc COPYING
 %doc NEWS
 %doc README
