@@ -363,3 +363,20 @@ operates.
 `configure' also accepts some other, not widely useful, options.  Run
 `configure --help' for more details.
 
+
+BUILD ENVIRONMENT
+---------------------------------------------------------------------------
+Some distros may require that the CPPFLAGS and LDFLAGS
+environmental variables be set prior to running 'configure' in order for
+Qt4 to be detected properly.  Some known cases are:
+
+  CentOS/RedHat 5 (i386): export CPPFLAGS=-I/usr/lib/qt4/include
+                	  export LDFLAGS=-L/usr/lib/qt4/lib
+                	  export PATH=/usr/lib/qt4/bin:$PATH
+
+CentOS/RedHat 5 (x86_64): export CPPFLAGS=-I/usr/lib64/qt4/include
+                 	  export LDFLAGS=-L/usr/lib64/qt4/lib64
+                	  export PATH=/usr/lib64/qt4/bin:$PATH
+
+Ubuntu:                   export CPPFLAGS=-I/usr/include/qt4
+
