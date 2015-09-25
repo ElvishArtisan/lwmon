@@ -6,3 +6,7 @@
 	* Added a 'Clear' button.
 2015-09-13 Fred Gleason <fredg@paravelsystems.com>
 	* Added peer hostname/port to title bar.
+2015-09-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'src/Makefile.am' that broke the 'make install'
+	target.
+	* Added a 'make rpm' target.

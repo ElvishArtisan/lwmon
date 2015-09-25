@@ -23,16 +23,17 @@
 SUBDIRS = src
 
 rpm:	dist
-	cp lwcp-monitor-$(VERSION).tar.gz $(HOME)/rpmbuild/SOURCES/
-	$(RPMBUILD) -ba --target $(ARCH)-$(VENDOR)-linux lwcp-monitor.spec
-	mv $(HOME)/rpmbuild/RPMS/$(ARCH)/lwcp-monitor-*.rpm $(top_srcdir)/
-	mv $(HOME)/rpmbuild/SRPMS/lwcp-monitor-*.src.rpm $(top_srcdir)/
-	rm $(HOME)/rpmbuild/SOURCES/lwcp-monitor-$(VERSION).tar.gz
-	rm -rf $(HOME)/rpmbuild/BUILD/lwcp-monitor-$(VERSION)
+	cp lwmon-$(VERSION).tar.gz $(HOME)/rpmbuild/SOURCES/
+	$(RPMBUILD) -ba --target $(ARCH)-$(VENDOR)-linux lwmon.spec
+	mv $(HOME)/rpmbuild/RPMS/$(ARCH)/lwmon-*.rpm $(top_srcdir)/
+	mv $(HOME)/rpmbuild/SRPMS/lwmon-*.src.rpm $(top_srcdir)/
+	rm $(HOME)/rpmbuild/SOURCES/lwmon-$(VERSION).tar.gz
+	rm -rf $(HOME)/rpmbuild/BUILD/lwmon-$(VERSION)
 
 EXTRA_DIST = autogen.sh\
              get_distro.sh\
              get_target.sh\
+             lwmon.spec.in\
              PACKAGE_VERSION
 
 CLEANFILES = *~\
@@ -43,7 +44,7 @@ CLEANFILES = *~\
              *.tgz\
              *.zip
 
-DISTCLEANFILES = lwcp-monitor.spec\
+DISTCLEANFILES = lwmon.spec\
                  config.guess\
                  config.sub\
                  ltmain.sh

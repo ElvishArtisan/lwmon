@@ -105,6 +105,7 @@ fi
 
 AC_CONFIG_FILES([ \
     src/Makefile \
+    lwmon.spec \
     Makefile ])
 AC_OUTPUT()
 

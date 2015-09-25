@@ -28,6 +28,7 @@ moc_%.cpp:	%.h
 	@MOC@ $< -o $@
 
 install-exec-am:	
+	mkdir -p $(DESTDIR)@prefix@/bin
 	cp lwmon $(DESTDIR)@prefix@/bin/lwmon
 	rm -f $(DESTDIR)@prefix@/bin/lwcp
 	ln -s lwmon $(DESTDIR)@prefix@/bin/lwcp
