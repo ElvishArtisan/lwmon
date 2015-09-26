@@ -24,3 +24,5 @@
 	* Added an lwrp(1) man page.
 2015-09-25 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 0.6.0.
+2015-09-26 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented colorization of LWCP messages.

@@ -49,7 +49,38 @@ QString MainWidget::Colorize(const QString &cmd) const
 
 QString MainWidget::ColorizeLwcp(const AString &cmd) const
 {
-  return cmd;
+  QStringList f0=AString(cmd.trimmed()).split(" ","\"");
+  QString ret;
+  
+  if(f0[0]=="ERROR") {
+    return ColorString(cmd,Qt::red);
+  }
+
+  ret+=ColorString(f0[0],Qt::blue);
+  if(f0.size()>1) {
+    ret+=" "+ColorString(f0[1],Qt::darkGreen)+" ";
+    f0.erase(f0.begin());
+    f0.erase(f0.begin());
+    
+    QStringList f1=AString(f0.join(" ")).split(",","\"");
+    for(int i=0;i<f1.size();i++) {
+      QStringList f2=AString(f1[i]).split("=","\"");
+      ret+=ColorString(f2[0],Qt::magenta);
+      if(f2.size()==2) {
+	ret+="=";
+	if(f2[1].left(1)=="\"") {
+	  ret+=ColorString(f2[1],Qt::gray);
+	}
+	else {
+	  ret+=f2[1];
+	}
+	ret+=",";
+      }
+    }
+    ret=ret.left(ret.length()-1);
+  }
+
+  return ret;
 }
 
 
