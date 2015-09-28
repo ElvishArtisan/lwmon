@@ -26,3 +26,5 @@
 	* Incremented the package version to 0.6.0.
 2015-09-26 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented colorization of LWCP messages.
+2015-09-28 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 0.7.0.
