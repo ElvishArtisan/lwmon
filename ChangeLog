@@ -28,3 +28,6 @@
 	* Implemented colorization of LWCP messages.
 2015-09-28 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 0.7.0.
+2015-10-12 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'src/lwmon.cpp' where command history would not
+	be saved when exiting after a hangup on the remote end.

@@ -282,6 +282,9 @@ void MainWidget::tcpErrorData(QAbstractSocket::SocketError err)
     break;
   }
   QMessageBox::critical(this,"LWCP - "+tr("Network Error"),err_text);
+  if(CheckSettingsDirectory()) {
+    lw_edit->saveHistory(lw_history_path);
+  }
   exit(256);
 }
 
