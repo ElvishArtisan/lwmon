@@ -349,6 +349,31 @@ MainWidget::Mode MainWidget::SetMode() const
 }
 
 
+void MainWidget::PrintMacAddr(const QString &arg) const
+{
+  bool ok=false;
+  uint64_t mac;
+
+  mac=arg.toULongLong(&ok,16);
+  if(ok) {
+    if((mac&0xFFFFFFFF0000)==0x01005e000000) {    // Stereo
+      if((mac&0x00000000FF00)==0xFF00) {
+	PrintSpecialChannel(mac&0xFF);
+      }
+      else {
+	PrintAddr(mac&0xFFFF,MainWidget::Stereo);
+      }
+    }
+    if((mac&0xFFFFFFFF0000)==0x01005e010000) {    // Backfeed
+      PrintAddr(mac&0xFFFF,MainWidget::Backfeed);
+    }
+    if((mac&0xFFFFFFFF0000)==0x01005e040000) {   // Surround
+      PrintAddr(mac&0x7FFF,MainWidget::Surround);
+    }
+  }
+}
+
+
 void MainWidget::PrintAddr(const QString &arg) const
 {
   //
@@ -358,11 +383,57 @@ void MainWidget::PrintAddr(const QString &arg) const
   bool ok;
   QStringList f0;
   unsigned octets[4];
+  uint32_t addr;
 
+  //
+  // Are we a stream ID?
+  //
+  if(arg.length()==8) {
+    addr=arg.toUInt(&ok,16);
+    if(ok) {
+      if((addr&0xffff0000)==0xefc00000) {
+	if((addr&0x0000ff00)==0xff00) {
+	  PrintSpecialChannel(addr&0xff);
+	}
+	else {
+	  PrintAddr(addr&0xffff,MainWidget::Stereo);
+	}
+      }
+      if((addr&0xffff0000)==0xefc40000) {
+	PrintAddr(addr&0xffff,MainWidget::Backfeed);
+      }
+      if((addr&0xffff0000)==0xefc10000) {
+	PrintAddr(addr&0x7fff,MainWidget::Surround);
+      }
+    }
+  }
+
+  //
+  // Are we a MAC address?
+  //
+  if(arg.length()==12) {
+    PrintMacAddr(arg);
+  }
+  f0=arg.split(":");
+  if(f0.size()==6) {
+    PrintMacAddr(f0.join(""));
+  }
+  f0=arg.split("-");
+  if(f0.size()==6) {
+    PrintMacAddr(f0.join(""));
+  }
+
+  //
+  // Are we a source number?
+  //
   src=arg.toUInt(&ok);
   if((ok)&&(src>0)&&(src<32768)) {
     PrintAddr(src);
   }
+
+  //
+  // Are we an IP address?
+  //
   f0=arg.split(".");
   if(f0.size()==4) {
     for(int i=0;i<4;i++) {
@@ -373,30 +444,17 @@ void MainWidget::PrintAddr(const QString &arg) const
       }
     }
     if(octets[0]==239) {
-      if(((octets[1]==192)||(octets[1]==193))&&(octets[2]<128)) {
-	PrintAddr(256*octets[2]+octets[3]);
+      if((octets[1]==192)&&(octets[2]<128)) {
+	PrintAddr(256*octets[2]+octets[3],MainWidget::Stereo);
+      }
+      if((octets[1]==193)&&(octets[2]<128)) {
+	PrintAddr(256*octets[2]+octets[3],MainWidget::Backfeed);
       }
       if((octets[1]==196)&&(octets[2]>=128)) {
-	PrintAddr(256*(octets[2]-128)+octets[3]);
+	PrintAddr(256*(octets[2]-128)+octets[3],MainWidget::Surround);
       }
       if((octets[1]==192)&&(octets[2]=255)) {
-	switch(octets[3]) {
-	case 1:
-	  printf("Livestream clock\n");
-	  exit(0);
-
-	case 2:
-	  printf("Standard stream clock\n");
-	  exit(0);
-
-	case 3:
-	  printf("Advertisment channel\n");
-	  exit(0);
-
-	case 4:
-	  printf("GPIO channel\n");
-	  exit(0);
-	}
+	PrintSpecialChannel(octets[3]);
       }
     }
   }
@@ -406,16 +464,63 @@ void MainWidget::PrintAddr(const QString &arg) const
 }
 
 
-void MainWidget::PrintAddr(unsigned src_num) const
+void MainWidget::PrintAddr(unsigned src_num,MainWidget::SignalType type) const
 {
   int o3=src_num/256;
   int o4=src_num%256;
+  char ipstr[8];
+  char backipstr[8];
 
+  snprintf(ipstr,7,"%d.%d",o3,o4);
+  snprintf(backipstr,7,"%d.%d",128+o3,o4);
   printf("LiveWire Source # %u\n",src_num);
-  printf("    Stereo Address: 239.192.%u.%u\n",o3,o4);
-  printf("  Surround Address: 239.196.%u.%u\n",128+o3,o4);
-  printf("  Backfeed Address: 239.193.%u.%d\n",o3,o4);
+  if(type==MainWidget::Stereo) {
+    printf("   *");
+  }
+  else {
+    printf("    ");
+  }
+  printf("Stereo Address: 239.192.%-7s  01:00:5e:00:%02x:%02x\n",
+	 ipstr,o3,o4);
+  if(type==MainWidget::Surround) {
+    printf(" *");
+  }
+  else {
+    printf("  ");
+  }
+  printf("Surround Address: 239.196.%-7s  01:00:5e:04:%02x:%02x\n",
+	 backipstr,128+o3,o4);
+  if(type==MainWidget::Backfeed) {
+    printf(" *");
+  }
+  else {
+    printf("  ");
+  }
+  printf("Backfeed Address: 239.193.%-7s  01:00:5e:01:%02x:%02x\n",
+	 ipstr,o3,o4);
   exit(0);
+}
+
+
+void MainWidget::PrintSpecialChannel(uint8_t last_octet) const
+{
+  switch(last_octet) {
+  case 1:
+    printf(" *Livestream clock: 239.192.255.1    01:00:5e:00:ff:01\n");
+    exit(0);
+    
+  case 2:
+    printf(" *Standard stream clock: 239.192.255.2    01:00:5e:00:ff:02\n");
+    exit(0);
+    
+  case 3:
+    printf(" *Advertisment channel: 239.192.255.3    01:00:5e:00:ff:03\n");
+    exit(0);
+    
+  case 4:
+    printf(" *GPIO channel: 239.192.255.4    01:00:5e:00:ff:04\n");
+    exit(0);
+  }
 }
 
 

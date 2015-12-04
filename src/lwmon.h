@@ -44,7 +44,8 @@ class MainWidget : public QMainWindow
 {
  Q_OBJECT;
  public:
- enum Mode {Lwrp=1,Lwcp=2,Lwaddr=3};
+  enum Mode {Lwrp=1,Lwcp=2,Lwaddr=3};
+  enum SignalType {None=0,Stereo=1,Surround=2,Backfeed=3};
   MainWidget(QWidget *parent=0);
   QSize sizeHint() const;
 
@@ -66,8 +67,10 @@ class MainWidget : public QMainWindow
   QString ColorString(const QString &str,const QColor &color) const;
   void ProcessCommand(const QString &cmd);
   QString FormatLwcp(const QString &str,bool local);
+  void PrintMacAddr(const QString &arg) const;
   void PrintAddr(const QString &arg) const;
-  void PrintAddr(unsigned src_num) const;
+  void PrintAddr(unsigned src_num,SignalType type=None) const;
+  void PrintSpecialChannel(uint8_t last_octet) const;
   bool CheckSettingsDirectory();
   MainWidget::Mode SetMode() const;
   QTextEdit *lw_text;
