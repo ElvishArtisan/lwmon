@@ -20,8 +20,11 @@
 ##   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 
-SUBDIRS = docs\
-          src
+if DOCBOOK_AM
+  DOCBOOK_AM_OPT = docs
+endif
+
+SUBDIRS = $(DOCBOOK_AM_OPT) src
 
 rpm:	dist
 	cp lwmon-$(VERSION).tar.gz $(HOME)/rpmbuild/SOURCES/

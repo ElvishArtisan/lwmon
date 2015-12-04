@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+      Header
+  -->
+  <refmeta>
+    <refentrytitle>lwrp</refentrytitle>
+    <manvolnum>1</manvolnum>
+    <refmiscinfo class='source'>December 2015</refmiscinfo>
+    <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>lwrp</refname>
+    <refpurpose>Command monitor for LiveWire Control Protocol (LWRP)</refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+	<firstname>Fred</firstname>
+	<surname>Gleason</surname>
+	<email>fredg@paravelsystems.com</email>
+      </personname>
+      <contrib>Application Author</contrib>
+    </author>
+  </info>
+
+  <!--
+      Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <cmdsynopsis>
+      <command>lwrp</command> <arg choice='opt'><option>--color=on|off</option>
+      </arg><arg choice="req"><replaceable>hostname</replaceable></arg>
+      <sbr/>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    <command>lwrp</command><manvolnum>1</manvolnum>
+    is a command-line monitor that can be used to monitor and originat LiveWire
+    Routing Protocol (LWRP) messages with LiveWire devices.  The default
+    LWRP port number is 93.
+  </para>
+  </refsect1>
+
+  <refsect1 id='options'><title>Options</title>
+  <variablelist remap='TP'>
+    <varlistentry>
+      <term>
+	<option>--color=</option><userinput>on</userinput>|<userinput>off</userinput>
+      </term>
+      <listitem>
+	<para>
+	  Turn protocol colorization <userinput>on</userinput> or
+	  <userinput>off</userinput>.  The default is to turn colorization
+	  <userinput>on</userinput>.
+	</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  </refsect1>
+
+  <refsect1 id='author'><title>Author</title>
+  <para>
+    Fred Gleason &lt;fredg@paravelsystems.com&gt;
+  </para>
+  </refsect1>
+
+  <refsect1 id='see_also'><title>See Also</title>
+  <para>
+  <citerefentry>
+    <refentrytitle>lwaddr</refentrytitle><manvolnum>1</manvolnum>
+  </citerefentry>,
+  <citerefentry>
+    <refentrytitle>lwcp</refentrytitle><manvolnum>1</manvolnum>
+  </citerefentry>
+  </para>
+  </refsect1>
+</refentry>
+

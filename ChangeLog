@@ -36,3 +36,5 @@
 2015-12-04 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for processing MAC address and hexidecimal stream
 	ID argument formats to lwaddr(1) in 'src/lwmon.cpp' and 'src/lwmon.h'.
+2015-12-04 Fred Gleason <fredg@paravelsystems.com>
+	* Converted the man pages in 'docs/' to DocBook-XML 5.
