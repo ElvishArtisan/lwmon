@@ -38,3 +38,6 @@
 	ID argument formats to lwaddr(1) in 'src/lwmon.cpp' and 'src/lwmon.h'.
 2015-12-04 Fred Gleason <fredg@paravelsystems.com>
 	* Converted the man pages in 'docs/' to DocBook-XML 5.
+2015-12-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added a description of supported argument types to the lwaddr(1)
+	man page.

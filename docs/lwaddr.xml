@@ -37,8 +37,66 @@
   <refsect1 id='description'><title>Description</title>
   <para>
     <command>lwaddr</command><manvolnum>1</manvolnum>
-    is a command-line tool or looking up LiveWire stream addresses or numbers.
+    is a command-line reference tool for looking up LiveWire stream addresses
+    or numbers.  It understands stream references in a variety of formats,
+    including:
   </para>
+  <variablelist>
+    <varlistentry>
+      <term>
+	LiveWire Stream Number
+      </term>
+      <listitem>
+	<para>
+	  Integer value between <userinput>1</userinput> and
+	  <userinput>32768</userinput> --e.g. 4165.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	IP-Address
+      </term>
+      <listitem>
+	<para>
+	  Multicast IP address in dotted-quad notation --e.g.
+	  <userinput>239.192.16.69</userinput>
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	Stream ID
+      </term>
+      <listitem>
+	<para>
+	  Multicast IP address in packed hexidecimal format --e.g.
+	  <userinput>efc01045</userinput>
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	MAC Address
+      </term>
+      <listitem>
+	<para>
+	  Multicast MAC address in hexidecimal format --e.g.
+	  <userinput>01:00:5e:00:10:45</userinput>
+	</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  <para>
+    Upon receipt of a valid stream address, <command>lwaddr</command> will
+    print a short summary of the referenced LiveWire stream, such as:
+  </para>
+  <literallayout>
+LiveWire Source # 4165
+   *Stereo Address: 239.192.16.69    01:00:5e:00:10:45
+  Surround Address: 239.196.144.69   01:00:5e:04:90:45
+  Backfeed Address: 239.193.16.69    01:00:5e:01:10:45
+  </literallayout>
   </refsect1>
 
   <refsect1 id='author'><title>Author</title>
@@ -54,7 +112,8 @@
   </citerefentry>,
   <citerefentry>
     <refentrytitle>lwrp</refentrytitle><manvolnum>1</manvolnum>
-  </citerefentry>
+  </citerefentry>,
+  Intro to LiveWire v2.1.1, pp 113-114
   </para>
   </refsect1>
 </refentry>
