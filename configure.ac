@@ -66,18 +66,10 @@ AC_CHECK_PROG(MOC_NAME,moc-qt4,[moc-qt4],[moc])
 AC_SUBST(MOC,$MOC_NAME)
 
 #
-# Check for DocBook Toolchain
+# Configure documentation build
 #
-AC_CHECK_PROG(XSLTPROC_FOUND,xsltproc,[yes])
-AC_CHECK_PROG(FOP_FOUND,fop,[yes])
-if test $XSLTPROC_FOUND ; then
-   if test $FOP_FOUND ; then
-      if test $DOCBOOK_STYLESHEETS ; then
-        if test -z $DOCBOOK_DISABLED ; then
-          USING_DOCBOOK=yes
-	fi
-      fi
-   fi
+if test -z $DOCBOOK_DISABLED ; then
+  USING_DOCBOOK=yes
 fi
 AM_CONDITIONAL([DOCBOOK_AM], [test "$USING_DOCBOOK" = yes])
 

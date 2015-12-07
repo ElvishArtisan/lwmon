@@ -23,7 +23,6 @@
 if DOCBOOK_AM
   DOCBOOK_AM_OPT = docs
 endif
-
 SUBDIRS = $(DOCBOOK_AM_OPT) src
 
 rpm:	dist

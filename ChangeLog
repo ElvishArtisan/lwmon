@@ -50,3 +50,5 @@
 2015-12-07 Fred Gleason <fredg@paravelsystems.com>
 	* Modified lwcp(1) and lwrp(1) so as not to exit immediately after
 	reception of a network error.
+2015-12-07 Fred Gleason <fredg@paravelsystems.com>
+	* Removed check for DocBook-XML5 toolchain from 'configure.ac'.
