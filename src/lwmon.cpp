@@ -260,7 +260,7 @@ void MainWidget::tcpDisconnectedData()
 {
   QMessageBox::information(this,"LWCP - "+tr("Network Event"),
 			   tr("Remote host disconnected."));
-  exit(0);
+  lw_status_widget->setStatus(StatusWidget::Failed);
 }
 
 
@@ -285,15 +285,43 @@ void MainWidget::tcpErrorData(QAbstractSocket::SocketError err)
     err_text=tr("Connection timed out");
     break;
 
+  case QAbstractSocket::DatagramTooLargeError:
+    err_text=tr("Datagram too large");
+    break;
+
+  case QAbstractSocket::NetworkError:
+    err_text=tr("Network error");
+    break;
+
+  case QAbstractSocket::AddressInUseError:
+    err_text=tr("Address in use");
+    break;
+
+  case QAbstractSocket::SocketAddressNotAvailableError:
+    err_text=tr("Socket address not available");
+    break;
+
+  case QAbstractSocket::UnsupportedSocketOperationError:
+    err_text=tr("Unsupported socket operation");
+    break;
+
   default:
     err_text=tr("Network error")+QString().sprintf(" %u ",err)+tr("received");
     break;
   }
-  QMessageBox::critical(this,"LWCP - "+tr("Network Error"),err_text);
-  if(CheckSettingsDirectory()) {
-    lw_edit->saveHistory(lw_history_path);
+  switch(lw_mode) {
+  case MainWidget::Lwcp:
+    QMessageBox::critical(this,"LWCP - "+tr("Network Error"),err_text);
+    break;
+
+  case MainWidget::Lwrp:
+    QMessageBox::critical(this,"LWRP - "+tr("Network Error"),err_text);
+    break;
+
+  case MainWidget::Lwaddr:
+    break;
   }
-  exit(256);
+  lw_status_widget->setStatus(StatusWidget::Failed);
 }
 
 
