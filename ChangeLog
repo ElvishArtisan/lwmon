@@ -45,3 +45,5 @@
 	* Corrected a typo in the lwrp(1) man page.
 2015-12-07 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented a '--port=' parameter for lwcp(1) and lwrp(1).
+2015-12-07 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented a connection status indicator in lwcp(1) and lwrp(1).

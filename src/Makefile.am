@@ -49,10 +49,12 @@ dist_lwmon_SOURCES = astring.cpp astring.h\
                      cmdswitch.cpp cmdswitch.h\
                      colors.cpp\
                      lineedit.cpp lineedit.h\
-                     lwmon.cpp lwmon.h
+                     lwmon.cpp lwmon.h\
+                     statuswidget.cpp statuswidget.h
 
 nodist_lwmon_SOURCES = moc_lineedit.cpp\
-                       moc_lwmon.cpp
+                       moc_lwmon.cpp\
+                       moc_statuswidget.cpp
 
 lwmon_LDADD = @GUILIBS@
 lwmon_LDFLAGS = @GUIFLAGS@

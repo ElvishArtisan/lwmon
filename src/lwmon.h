@@ -31,6 +31,7 @@
 
 #include "astring.h"
 #include "lineedit.h"
+#include "statuswidget.h"
 
 #define LWMON_DEFAULT_MODE MainWidget::Lwrp
 #define LWMON_LWCP_DEFAULT_PORT 4010
@@ -75,6 +76,8 @@ class MainWidget : public QMainWindow
   MainWidget::Mode SetMode() const;
   QTextEdit *lw_text;
   LineEdit *lw_edit;
+  StatusWidget *lw_status_widget;
+  QLabel *lw_status_frame_widget;
   QPushButton *lw_button;
 
   QString lw_hostname;

@@ -142,6 +142,11 @@ MainWidget::MainWidget(QWidget *parent)
   connect(lw_edit,SIGNAL(returnPressed()),this,SLOT(editReturnPressedData()));
   lw_edit->loadHistory(lw_history_path);
 
+  lw_status_frame_widget=new QLabel(this);
+  lw_status_frame_widget->setFrameStyle(QFrame::Box|QFrame::Raised);
+  lw_status_widget=new StatusWidget(this);
+  lw_status_widget->setStatus(StatusWidget::Connecting);
+
   lw_button=new QPushButton(tr("&Clear"),this);
   lw_button->setFocusPolicy(Qt::NoFocus);
   connect(lw_button,SIGNAL(clicked()),lw_text,SLOT(clear()));
@@ -179,7 +184,10 @@ void MainWidget::closeEvent(QCloseEvent *e)
 void MainWidget::resizeEvent(QResizeEvent *e)
 {
   lw_text->setGeometry(0,0,size().width(),size().height()-24);
-  lw_edit->setGeometry(0,size().height()-24,size().width()-50,24);
+  lw_edit->setGeometry(0,size().height()-24,size().width()-185,24);
+  lw_status_frame_widget->
+    setGeometry(size().width()-185,size().height()-24,135,24);
+  lw_status_widget->setGeometry(size().width()-182,size().height()-21,129,18);
   lw_button->setGeometry(size().width()-50,size().height()-24,50,24);
 }
 
@@ -244,7 +252,7 @@ void MainWidget::tcpConnectedData()
   case MainWidget::Lwaddr:
     break;
   }
-
+  lw_status_widget->setStatus(StatusWidget::Connected);
 }
 
 
