@@ -52,3 +52,5 @@
 	reception of a network error.
 2015-12-07 Fred Gleason <fredg@paravelsystems.com>
 	* Removed check for DocBook-XML5 toolchain from 'configure.ac'.
+2015-12-07 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 0.9.0.
