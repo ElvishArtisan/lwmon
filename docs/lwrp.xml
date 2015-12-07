@@ -29,8 +29,12 @@
   -->
   <refsynopsisdiv id='synopsis'>
     <cmdsynopsis>
-      <command>lwrp</command> <arg choice='opt'><option>--color=on|off</option>
-      </arg><arg choice="req"><replaceable>hostname</replaceable></arg>
+      <command>lwrp</command>
+      <arg choice='opt'><option>--color=on|off</option></arg>
+      <arg choice='opt'>
+      <option>--port=</option><replaceable>port-num</replaceable></arg>
+      <arg choice="req"><replaceable>hostname</replaceable></arg>
+	  
       <sbr/>
     </cmdsynopsis>
   </refsynopsisdiv>
@@ -39,7 +43,7 @@
   <para>
     <command>lwrp</command><manvolnum>1</manvolnum>
     is a command-line monitor that can be used to monitor and originate LiveWire
-    Routing Protocol (LWRP) messages.  The default LWRP port number is 93.
+    Routing Protocol (LWRP) messages.
   </para>
   </refsect1>
 
@@ -54,6 +58,17 @@
 	  Turn protocol colorization <userinput>on</userinput> or
 	  <userinput>off</userinput>.  The default is to turn colorization
 	  <userinput>on</userinput>.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<option>--port=</option><replaceable>port-num</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Attempt to connect to port <replaceable>port-num</replaceable>
+	  on the LiveWire device.  Default value is 93.
 	</para>
       </listitem>
     </varlistentry>

@@ -29,8 +29,12 @@
   -->
   <refsynopsisdiv id='synopsis'>
     <cmdsynopsis>
-      <command>lwcp</command> <arg choice='opt'><option>--color=on|off</option>
-      </arg><arg choice="req"><replaceable>hostname</replaceable></arg>
+      <command>lwcp</command>
+      <arg choice='opt'><option>--color=on|off</option></arg>
+      <arg choice='opt'>
+      <option>--port=</option><replaceable>port-num</replaceable></arg>
+      <arg choice="req"><replaceable>hostname</replaceable></arg>
+	  
       <sbr/>
     </cmdsynopsis>
   </refsynopsisdiv>
@@ -38,9 +42,8 @@
   <refsect1 id='description'><title>Description</title>
   <para>
     <command>lwcp</command><manvolnum>1</manvolnum>
-    is a command-line monitor that can be used to monitor and originat LiveWire
-    Control Protocol (LWCP) messages with LiveWire devices.  The default
-    LWCP port number is 4010.
+    is a command-line monitor that can be used to monitor and originate LiveWire
+    Control Protocol (LWCP) messages.
   </para>
   </refsect1>
 
@@ -55,6 +58,17 @@
 	  Turn protocol colorization <userinput>on</userinput> or
 	  <userinput>off</userinput>. The default is to turn colorization
 	  <userinput>on</userinput>.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<option>--port=</option><replaceable>port-num</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Attempt to connect to port <replaceable>port-num</replaceable>
+	  on the LiveWire device.  Default value is 4010.
 	</para>
       </listitem>
     </varlistentry>

@@ -32,7 +32,7 @@
 MainWidget::MainWidget(QWidget *parent)
   : QMainWindow(parent)
 {
-  lw_port=LWMON_LWRP_DEFAULT_PORT;
+  lw_port=0;
   bool ok=false;
 
   //
@@ -82,6 +82,14 @@ MainWidget::MainWidget(QWidget *parent)
 	exit(256);
       }
     }
+    if(cmd->key(i)=="--port") {
+      lw_port=cmd->value(i).toUInt(&ok);
+      if(!ok) {
+	fprintf(stderr,"lwmon: invalid port argument\n");
+	exit(256);
+      }
+      cmd->setProcessed(i,true);
+    }
     if(!cmd->processed(i)) {
       fprintf(stderr,"lwmon: invalid argument \"%s\"\n",
 	      (const char *)cmd->key(i).toUtf8());
@@ -94,7 +102,9 @@ MainWidget::MainWidget(QWidget *parent)
   //
   switch(lw_mode) {
   case MainWidget::Lwcp:
-    lw_port=LWMON_LWCP_DEFAULT_PORT;
+    if(lw_port==0) {
+      lw_port=LWMON_LWCP_DEFAULT_PORT;
+    }
     setWindowTitle(tr("LWCP Monitor"));
     if(CheckSettingsDirectory()) {
       lw_history_path=lw_settings_dir->path()+"/"+LWMON_LWCP_HISTORY_FILE;
@@ -102,7 +112,9 @@ MainWidget::MainWidget(QWidget *parent)
     break;
 
   case MainWidget::Lwrp:
-    lw_port=LWMON_LWRP_DEFAULT_PORT;
+    if(lw_port==0) {
+      lw_port=LWMON_LWRP_DEFAULT_PORT;
+    }
     setWindowTitle(tr("LWRP Monitor"));
     if(CheckSettingsDirectory()) {
       lw_history_path=lw_settings_dir->path()+"/"+LWMON_LWRP_HISTORY_FILE;
@@ -117,19 +129,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Process Connection Arguments
   //
-  QStringList f0=cmd->key(cmd->keys()-1).split(":");
-  if(f0.size()>2) {
-    fprintf(stderr,"lwcp: invalid argument\n");
-    exit(256);
-  }
-  lw_hostname=f0[0];
-  if(f0.size()==2) {
-    lw_port=f0[1].toUInt(&ok);
-    if((!ok)||(lw_port==0)) {
-      fprintf(stderr,"lwcp: invalid port value\n");
-      exit(256);
-    }
-  }
+  lw_hostname=cmd->key(cmd->keys()-1);
 
   //
   // UI Elements
