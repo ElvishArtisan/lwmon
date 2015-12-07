@@ -1,13 +1,38 @@
 Installation Instructions
 *************************
 
-Copyright (C) 1994, 1995, 1996, 1999, 2000, 2001, 2002, 2004, 2005,
-2006, 2007, 2008, 2009 Free Software Foundation, Inc.
+Parts of this document Copyright (C) 1994, 1995, 1996, 1999, 2000, 2001,
+2002, 2004, 2005, 2006, 2007, 2008, 2009 Free Software Foundation, Inc.
 
    Copying and distribution of this file, with or without modification,
 are permitted in any medium without royalty provided the copyright
 notice and this notice are preserved.  This file is offered as-is,
 without warranty of any kind.
+
+
+Mandatory Prequisites
+=====================
+You will need the following installed and configured properly on your 
+system before building lwmon:
+
+Qt4 Toolkit, v4.6 or better (http://www.qt.io/).
+
+
+Optional Prequisites
+====================
+XML-DocBook 5 Toolchain.  Needed in order to (re)build the man pages in
+'docs/' from the XML masters.  Required are:
+
+  xsltproc - Command line XSLT processor.  Available at http://xmlsoft.org/
+
+  XML-DocBook 5 Stylesheets.  Available at http://docbook.org/schemas/5x.html
+  When installing the stylesheets, you will need to define a
+  $DOCBOOK_STYLESHEET variable that points to the top of the stylesheet tree
+  in your build environment so the build system knows where to find them.
+  For example (taken from a RHEL 7 system):
+
+    export DOCBOOK_STYLESHEETS=/usr/share/sgml/docbook/xsl-ns-stylesheets
+
 
 Basic Installation
 ==================
