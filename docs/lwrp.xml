@@ -38,9 +38,8 @@
   <refsect1 id='description'><title>Description</title>
   <para>
     <command>lwrp</command><manvolnum>1</manvolnum>
-    is a command-line monitor that can be used to monitor and originat LiveWire
-    Routing Protocol (LWRP) messages with LiveWire devices.  The default
-    LWRP port number is 93.
+    is a command-line monitor that can be used to monitor and originate LiveWire
+    Routing Protocol (LWRP) messages.  The default LWRP port number is 93.
   </para>
   </refsect1>
 
