@@ -392,18 +392,18 @@ void MainWidget::PrintMacAddr(const QString &arg) const
 
   mac=arg.toULongLong(&ok,16);
   if(ok) {
-    if((mac&0xFFFFFFFF0000)==0x01005e000000) {    // Stereo
-      if((mac&0x00000000FF00)==0xFF00) {
+    if((mac&0xFFFFFFFF0000ull)==0x01005e000000ull) {    // Stereo
+      if((mac&0x00000000FF00ull)==0xFF00) {
 	PrintSpecialChannel(mac&0xFF);
       }
       else {
 	PrintAddr(mac&0xFFFF,MainWidget::Stereo);
       }
     }
-    if((mac&0xFFFFFFFF0000)==0x01005e010000) {    // Backfeed
+    if((mac&0xFFFFFFFF0000ull)==0x01005e010000ull) {    // Backfeed
       PrintAddr(mac&0xFFFF,MainWidget::Backfeed);
     }
-    if((mac&0xFFFFFFFF0000)==0x01005e040000) {   // Surround
+    if((mac&0xFFFFFFFF0000ull)==0x01005e040000ull) {   // Surround
       PrintAddr(mac&0x7FFF,MainWidget::Surround);
     }
   }

@@ -54,3 +54,5 @@
 	* Removed check for DocBook-XML5 toolchain from 'configure.ac'.
 2015-12-07 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 0.9.0.
+2015-12-07 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'src/lwmon.cpp' that broke the build on RHEL 5-i386.
