@@ -184,11 +184,15 @@ void MainWidget::closeEvent(QCloseEvent *e)
 void MainWidget::resizeEvent(QResizeEvent *e)
 {
   lw_text->setGeometry(0,0,size().width(),size().height()-24);
-  lw_edit->setGeometry(0,size().height()-24,size().width()-185,24);
+  lw_edit->setGeometry(0,size().height()-24,size().width()-195,24);
   lw_status_frame_widget->
-    setGeometry(size().width()-185,size().height()-24,135,24);
-  lw_status_widget->setGeometry(size().width()-182,size().height()-21,129,18);
-  lw_button->setGeometry(size().width()-50,size().height()-24,50,24);
+    setGeometry(size().width()-185,size().height()-24,125,24);
+  lw_status_widget->setGeometry(size().width()-182,size().height()-21,119,18);
+#ifdef OSX
+  lw_button->setGeometry(size().width()-60,size().height()-28,60,35);
+#else
+  lw_button->setGeometry(size().width()-60,size().height()-24,60,24);
+#endif  // OSX
 }
 
 
