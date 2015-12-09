@@ -1,5 +1,6 @@
 *~
 *.o
+*.pkg
 *.rpm
 *.spec
 *.tar.gz
@@ -20,4 +21,5 @@ Makefile.in
 missing
 moc_*
 src/lwmon
+tmp
 

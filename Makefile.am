@@ -33,11 +33,16 @@ rpm:	dist
 	rm $(HOME)/rpmbuild/SOURCES/lwmon-$(VERSION).tar.gz
 	rm -rf $(HOME)/rpmbuild/BUILD/lwmon-$(VERSION)
 
+pkg:	all
+	./make_pkg.sh
+
 EXTRA_DIST = autogen.sh\
              get_distro.sh\
              get_target.sh\
              lwmon.spec.in\
-             PACKAGE_VERSION
+             make_pkg.sh\
+             PACKAGE_VERSION\
+             uninstall_osx.sh
 
 CLEANFILES = *~\
              *.deb\
