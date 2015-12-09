@@ -1,0 +1,7 @@
+To uninstall the lwmon package, open a command prompt and enter the
+following commands:
+
+cd /Library/lwmon
+sudo ./uninstall.sh
+
+and then follow the instructions.

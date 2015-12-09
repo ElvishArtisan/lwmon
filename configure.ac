@@ -120,8 +120,10 @@ AC_CONFIG_FILES([ \
     docs/Makefile \
     src/Makefile \
     lwmon.spec \
+    make_dmg.sh \
     Makefile ])
 AC_OUTPUT()
+chmod 755 make_dmg.sh
 
 AC_MSG_NOTICE()
 AC_MSG_NOTICE(Now enter 'make' to build the software.)

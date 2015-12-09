@@ -67,4 +67,5 @@
 	* Added a 'make pkg' target.
 2015-12-08 Fred Gleason <fredg@paravelsystems.com>
 	* Adjust layout of 'Clear' button on OS X in 'src/lwmon.cpp'.
-
+2015-12-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'make dmg' target.

@@ -1,0 +1,31 @@
+#!/bin/sh
+
+# make_dmg.sh
+#
+#   (C) Copyright 2014 Fred Gleason <fredg@paravelsystems.com>
+#       All Rights Reserved.
+#
+#   Create DMG packages for OS-X
+#
+
+ROOT_DIR=dmgtemp
+
+#
+# Create Environment
+#
+rm -rf $ROOT_DIR
+mkdir $ROOT_DIR
+
+#
+# Build Bundle
+#
+mkdir -p $ROOT_DIR/lwmon
+cp lwmon.pkg $ROOT_DIR/lwmon/
+cp README.osx $ROOT_DIR/lwmon/README.txt
+hdiutil create -ov -srcfolder $ROOT_DIR/lwmon lwmon-@VERSION@-@RPM_RELEASE@.dmg
+
+#
+# Clean up
+#
+rm -rf $ROOT_DIR
+
