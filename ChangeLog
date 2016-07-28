@@ -72,3 +72,9 @@
 2016-07-28 Fred Gleason <fredg@paravelsystems.com>
 	* Changed 'configure.ac' and 'src/Makefile.am' to get library
 	link list from pkgconfig(1).
+2016-07-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added check for cross-compilation for i686 in 'configure.ac'.
+	* Commented out code in 'src/lwmon.cpp' that broke when built
+	for Windows.
+	* Fixed a bug in 'acinclude.m4' that caused the AR_GCC_TARGET
+	macro to break in cross-compilation environments.

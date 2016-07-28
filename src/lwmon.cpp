@@ -353,6 +353,7 @@ QString MainWidget::FormatLwcp(const QString &str,bool local)
 
 bool MainWidget::CheckSettingsDirectory()
 {
+#ifndef WIN32
   QString path=QString("/")+LWMON_SETTINGS_DIR;
 
   if(getenv("HOME")!=NULL) {
@@ -361,11 +362,12 @@ bool MainWidget::CheckSettingsDirectory()
   lw_settings_dir=new QDir(path);
   if(!lw_settings_dir->exists()) {
     mkdir(path.toUtf8(),
-	  S_IRUSR|S_IWUSR|S_IXUSR|S_IRGRP|S_IXGRP|S_IROTH|S_IXOTH);
+    	  S_IRUSR|S_IWUSR|S_IXUSR|S_IRGRP|S_IXGRP|S_IROTH|S_IXOTH);
     if(!lw_settings_dir->exists()) {
       return false;
     }
   }
+#endif  // WIN32
   return true;
 }
 
