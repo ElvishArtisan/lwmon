@@ -70,5 +70,5 @@
 2015-12-08 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'make dmg' target.
 2016-07-28 Fred Gleason <fredg@paravelsystems.com>
-	* Changed 'configure.ac' and 'src/MAkefile.am' to get library
+	* Changed 'configure.ac' and 'src/Makefile.am' to get library
 	link list from pkgconfig(1).
