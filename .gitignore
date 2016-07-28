@@ -1,5 +1,6 @@
 *~
 *.dmg
+*.exe
 *.o
 *.pkg
 *.rpm
@@ -17,6 +18,7 @@ docs/lwaddr.1
 docs/lwcp.1
 docs/lwrp.1
 install-sh
+make_dmg.sh
 Makefile
 Makefile.in
 missing
