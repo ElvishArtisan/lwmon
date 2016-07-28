@@ -79,7 +79,7 @@ AM_CONDITIONAL([DOCBOOK_AM], [test "$USING_DOCBOOK" = yes])
 AR_GCC_TARGET()
 AC_SUBST(VENDOR,$ar_gcc_distro)
 AC_SUBST(ARCH,$ar_gcc_arch)
-if test $ar_gcc_distro=i686 ; then
+if test $ar_gcc_distro = "i686" ; then
    AC_DEFINE(WIN32)
 fi
 

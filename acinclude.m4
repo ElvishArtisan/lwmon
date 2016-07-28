@@ -31,9 +31,9 @@ dnl
 AC_DEFUN([AR_GCC_TARGET],[AC_REQUIRE([AC_PROG_CC])]
   [
   AC_MSG_CHECKING(target architecture)
-  ar_gcc_arch=$(./get_target.sh $CXX $AWK arch)
-  ar_gcc_distro=$(./get_target.sh $CXX $AWK distro)
-  ar_gcc_os=$(./get_target.sh $CXX $AWK os)
+  ar_gcc_arch=$(./get_target.sh $CC $AWK arch)
+  ar_gcc_distro=$(./get_target.sh $CC $AWK distro)
+  ar_gcc_os=$(./get_target.sh $CC $AWK os)
   AC_MSG_RESULT([$ar_gcc_arch-$ar_gcc_distro-$ar_gcc_os])
   ]
 )

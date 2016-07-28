@@ -78,3 +78,5 @@
 	for Windows.
 	* Fixed a bug in 'acinclude.m4' that caused the AR_GCC_TARGET
 	macro to break in cross-compilation environments.
+2016-07-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed regression in 'configure.ac' that broke the build on Linux.
