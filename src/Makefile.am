@@ -56,8 +56,7 @@ nodist_lwmon_SOURCES = moc_lineedit.cpp\
                        moc_lwmon.cpp\
                        moc_statuswidget.cpp
 
-lwmon_LDADD = @GUILIBS@
-lwmon_LDFLAGS = @GUIFLAGS@
+lwmon_LDADD = @QT4_LIBS@
 
 CLEANFILES = *~\
              moc_*\

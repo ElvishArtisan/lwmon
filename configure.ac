@@ -89,15 +89,15 @@ AC_SUBST(DISTRO,$ar_gcc_distro)
 #
 # Linux vs. OS X Setup
 #
-if test $ar_gcc_distro = "apple" ; then
-  AC_SUBST(GUILIBS,"")
-  AC_SUBST(GUIFLAGS,"-framework QtCore -framework QtNetwork -framework QtGui")
-  AC_DEFINE(OSX)
-else
-  AC_SUBST(GUILIBS,"-lQtCore -lQtNetwork -lQtGui")
-  AC_SUBST(GUIFLAGS,"")
-  AC_DEFINE(LINUX)
-fi
+#if test $ar_gcc_distro = "apple" ; then
+#  AC_SUBST(GUILIBS,"")
+#  AC_SUBST(GUIFLAGS,"-framework QtCore -framework QtNetwork -framework QtGui")
+#  AC_DEFINE(OSX)
+#else
+#  AC_SUBST(GUILIBS,"-lQtCore -lQtNetwork -lQtGui")
+#  AC_SUBST(GUIFLAGS,"")
+#  AC_DEFINE(LINUX)
+#fi
 
 #
 # Configure RPM Build
