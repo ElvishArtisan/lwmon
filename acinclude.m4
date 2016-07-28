@@ -4,8 +4,6 @@ dnl Local Autoconf macro definitions
 dnl
 dnl   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
 dnl
-dnl      $Id: acinclude.m4,v 1.1.1.1 2014/02/17 13:26:17 cvs Exp $
-dnl
 dnl   This program is free software; you can redistribute it and/or modify
 dnl   it under the terms of the GNU General Public License version 2 as
 dnl   published by the Free Software Foundation.
@@ -31,9 +29,9 @@ dnl
 AC_DEFUN([AR_GCC_TARGET],[AC_REQUIRE([AC_PROG_CC])]
   [
   AC_MSG_CHECKING(target architecture)
-  ar_gcc_arch=$(./get_target.sh $CC $AWK arch)
-  ar_gcc_distro=$(./get_target.sh $CC $AWK distro)
-  ar_gcc_os=$(./get_target.sh $CC $AWK os)
+  ar_gcc_arch=$(./get_target.sh $CXX $AWK arch)
+  ar_gcc_distro=$(./get_target.sh $CXX $AWK distro)
+  ar_gcc_os=$(./get_target.sh $CXX $AWK os)
   AC_MSG_RESULT([$ar_gcc_arch-$ar_gcc_distro-$ar_gcc_os])
   ]
 )
