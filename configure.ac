@@ -121,6 +121,7 @@ fi
 
 AC_CONFIG_FILES([ \
     docs/Makefile \
+    src/lwmon/Makefile \
     src/Makefile \
     lwmon.spec \
     make_dmg.sh \

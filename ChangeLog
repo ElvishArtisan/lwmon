@@ -82,3 +82,5 @@
 	* Fixed regression in 'configure.ac' that broke the build on Linux.
 2016-07-28 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed typo in 'acinclude.m4'.
+2017-02-09 Fred Gleason <fredg@paravelsystems.com>
+	* Moved sources for lwmon(1) from 'src/' to 'src/lwmon/'.
