@@ -38,6 +38,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root,-)
 %{_bindir}/lwaddr
+%{_bindir}/lwcast
 %{_bindir}/lwcp
 %{_bindir}/lwmon
 %{_bindir}/lwrp
@@ -50,5 +51,7 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Feb  9 2017 Fred Gleason <fredg@paravelsystems.com>
+-- Added lwcast(1).
 * Fri Sep 25 2015 Fred Gleason <fredg@paravelsystems.com>
 -- Initial packaging.

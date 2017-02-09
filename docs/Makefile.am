@@ -35,14 +35,17 @@
 	xsltproc $(DOCBOOK_STYLESHEETS)/manpages/docbook.xsl $<
 
 all-local:	lwaddr.1\
+                lwcast.1\
                 lwcp.1\
 		lwrp.1
 
 man_MANS = lwaddr.1\
+           lwcast.1\
            lwcp.1\
            lwrp.1
 
 EXTRA_DIST = lwaddr.1\
+             lwcast.1\
              lwcp.1\
              lwrp.1
 

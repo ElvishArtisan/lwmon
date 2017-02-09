@@ -84,3 +84,5 @@
 	* Fixed typo in 'acinclude.m4'.
 2017-02-09 Fred Gleason <fredg@paravelsystems.com>
 	* Moved sources for lwmon(1) from 'src/' to 'src/lwmon/'.
+2017-02-09 Fred Gleason <fredg@paravelsystems.com>
+	* Added lwcast(1) in 'src/lwcast/'.

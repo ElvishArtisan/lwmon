@@ -6,7 +6,7 @@
   <refmeta>
     <refentrytitle>lwaddr</refentrytitle>
     <manvolnum>1</manvolnum>
-    <refmiscinfo class='source'>December 2015</refmiscinfo>
+    <refmiscinfo class='source'>February 2017</refmiscinfo>
     <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
   </refmeta>
   <refnamediv>
@@ -107,6 +107,9 @@ LiveWire Source # 4165
 
   <refsect1 id='see_also'><title>See Also</title>
   <para>
+  <citerefentry>
+    <refentrytitle>lwcast</refentrytitle><manvolnum>1</manvolnum>
+  </citerefentry>,
   <citerefentry>
     <refentrytitle>lwcp</refentrytitle><manvolnum>1</manvolnum>
   </citerefentry>,

@@ -121,6 +121,7 @@ fi
 
 AC_CONFIG_FILES([ \
     docs/Makefile \
+    src/lwcast/Makefile \
     src/lwmon/Makefile \
     src/Makefile \
     lwmon.spec \

@@ -15,6 +15,7 @@ config.status
 configure
 depcomp
 docs/lwaddr.1
+docs/lwcast.1
 docs/lwcp.1
 docs/lwrp.1
 install-sh
@@ -23,6 +24,7 @@ Makefile
 Makefile.in
 missing
 moc_*
-src/lwmon
+src/lwcast/lwcast
+src/lwmon/lwmon
 tmp
 
