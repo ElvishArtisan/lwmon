@@ -1,6 +1,14 @@
 This is the NEWS file for lwmon.
 
 ------------------------------------------------------------------------------
+v1.0.0 - 02/10/2017
+
+Changes:
+    Multicast Subscription Manager.  Added an lwcast(1) applet to allow
+    for manual subscription to IPv4 multicast streams. Mostly useful
+    in conjunction with a packet monitor such as WireShark.
+
+------------------------------------------------------------------------------
 v0.9.1
 
 First beta release.

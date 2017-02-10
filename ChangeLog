@@ -88,3 +88,7 @@
 	* Added lwcast(1) in 'src/lwcast/'.
 2017-02-10 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'lwmon.spec.in' that broke the 'make rpm' target.
+2017-02-10 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Updated 'README'.
+	* Incremented the package version to 1.0.0.

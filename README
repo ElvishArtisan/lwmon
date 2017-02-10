@@ -1,11 +1,15 @@
 This is the README file for the lwmon package.
 
-LWMon is a set of monitoring and information tools for LiveWire protocols.
-It includes the following tools:
+LWMon is a small set of monitoring and information tools for LiveWire
+protocols. It includes the following utilities:
 
 lwaddr(1) - A command-line lookup tool for translating LiveWire audio
-            stream address values between various formats, includeingIPv4,
-            MAC, LiveWire stream numbers.
+            stream address values between various formats, including IPv4,
+            MAC and LiveWire stream numbers.
+
+lwcast(1) - A GUI utility for manually adding and removing subscriptions
+            to IPv4 multicast groups. Mostly useful in conjunction with
+            a packet monitor such as WireShark.
 
 lwcp(1) - A GUI utility for monitoring and controlling LiveWire devices
           via LiveWire Control Protocol (LWCP)
