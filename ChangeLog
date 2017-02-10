@@ -86,3 +86,5 @@
 	* Moved sources for lwmon(1) from 'src/' to 'src/lwmon/'.
 2017-02-09 Fred Gleason <fredg@paravelsystems.com>
 	* Added lwcast(1) in 'src/lwcast/'.
+2017-02-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lwmon.spec.in' that broke the 'make rpm' target.
