@@ -38,11 +38,13 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root,-)
 %{_bindir}/lwaddr
+%{_bindir}/lwcap
 %{_bindir}/lwcast
 %{_bindir}/lwcp
 %{_bindir}/lwmon
 %{_bindir}/lwrp
 %{_mandir}/man1/lwaddr.1.gz
+%{_mandir}/man1/lwcap.1.gz
 %{_mandir}/man1/lwcast.1.gz
 %{_mandir}/man1/lwcp.1.gz
 %{_mandir}/man1/lwrp.1.gz
@@ -52,6 +54,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Feb 13 2017 Fred Gleason <fredg@paravelsystems.com>
+-- Added lwcap(1).
 * Thu Feb  9 2017 Fred Gleason <fredg@paravelsystems.com>
 -- Added lwcast(1).
 * Fri Sep 25 2015 Fred Gleason <fredg@paravelsystems.com>

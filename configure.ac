@@ -66,6 +66,11 @@ AC_CHECK_PROG(MOC_NAME,moc-qt4,[moc-qt4],[moc])
 AC_SUBST(MOC,$MOC_NAME)
 
 #
+# Check for libsndfile (mandatory>
+#
+PKG_CHECK_MODULES(SNDFILE,sndfile,[],[AC_MSG_ERROR([*** libsndfile not found ***])])
+
+#
 # Configure documentation build
 #
 if test -z $DOCBOOK_DISABLED ; then
@@ -121,6 +126,7 @@ fi
 
 AC_CONFIG_FILES([ \
     docs/Makefile \
+    src/lwcap/Makefile \
     src/lwcast/Makefile \
     src/lwmon/Makefile \
     src/Makefile \
