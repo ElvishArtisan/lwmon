@@ -94,3 +94,5 @@
 	* Incremented the package version to 1.0.0.
 2017-02-13 Fred Gleason <fredg@paravelsystems.com>
 	* Added an lwcap(1) command.
+2017-02-13 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 1.1.0.
