@@ -1,4 +1,5 @@
 *~
+*.1
 *.dmg
 *.exe
 *.o
@@ -14,17 +15,15 @@ config.log
 config.status
 configure
 depcomp
-docs/lwaddr.1
-docs/lwcast.1
-docs/lwcp.1
-docs/lwrp.1
 install-sh
 make_dmg.sh
 Makefile
 Makefile.in
 missing
 moc_*
+src/lwcap/lwcap
 src/lwcast/lwcast
+src/lwmastermon/lwmastermon
 src/lwmon/lwmon
 tmp
 
