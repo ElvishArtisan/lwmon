@@ -54,6 +54,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/lwcap.1.gz
 %{_mandir}/man1/lwcast.1.gz
 %{_mandir}/man1/lwcp.1.gz
+%{_mandir}/man1/lwmastermon.1.gz
 %{_mandir}/man1/lwrp.1.gz
 %{_datadir}/icons/hicolor/48x48/apps/lwmon.png
 %{_datadir}/icons/hicolor/16x16/apps/lwmon.png

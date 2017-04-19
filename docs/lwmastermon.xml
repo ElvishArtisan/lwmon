@@ -4,14 +4,14 @@
       Header
   -->
   <refmeta>
-    <refentrytitle>lwcast</refentrytitle>
+    <refentrytitle>lwmastermon</refentrytitle>
     <manvolnum>1</manvolnum>
-    <refmiscinfo class='source'>February 2017</refmiscinfo>
+    <refmiscinfo class='source'>April 2017</refmiscinfo>
     <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
   </refmeta>
   <refnamediv>
-    <refname>lwcast</refname>
-    <refpurpose>Utility for managing IPv4 multicast subscriptions</refpurpose>
+    <refname>lwmastermon</refname>
+    <refpurpose>Utility for monitoring the LiveWire master node</refpurpose>
   </refnamediv>
   <info>
     <author>
@@ -29,16 +29,19 @@
   -->
   <refsynopsisdiv id='synopsis'>
     <cmdsynopsis>
-      <command>lwcast</command>
+      <command>lwmastermon</command>
       <sbr/>
     </cmdsynopsis>
   </refsynopsisdiv>
 
   <refsect1 id='description'><title>Description</title>
   <para>
-    <command>lwcast</command><manvolnum>1</manvolnum>
-    is a GUI applet that can be used to manage IPv4 multicast subscriptions
-    for purposes of testing or wire capture.
+    <command>lwmastermon</command><manvolnum>1</manvolnum>
+    is a GUI applet that displays the IP address of the current master node
+    on a LiveWire network. It does so by subscribing to the multicast address
+    239.192.255.2 (the address for LiveWire clock packets) and listening
+    for traffic on UDP port 7000.  If no clock traffic is heard for more
+    than two seconds, a warning message is displayed.
   </para>
   </refsect1>
 
@@ -54,10 +57,10 @@
     <refentrytitle>lwaddr</refentrytitle><manvolnum>1</manvolnum>
   </citerefentry>,
   <citerefentry>
-    <refentrytitle>lwcp</refentrytitle><manvolnum>1</manvolnum>
+    <refentrytitle>lwcast</refentrytitle><manvolnum>1</manvolnum>
   </citerefentry>,
   <citerefentry>
-    <refentrytitle>lwmastermon</refentrytitle><manvolnum>1</manvolnum>
+    <refentrytitle>lwcp</refentrytitle><manvolnum>1</manvolnum>
   </citerefentry>,
   <citerefentry>
     <refentrytitle>lwrp</refentrytitle><manvolnum>1</manvolnum>

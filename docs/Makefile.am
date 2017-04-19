@@ -38,18 +38,21 @@ all-local:	lwaddr.1\
                 lwcap.1\
                 lwcast.1\
                 lwcp.1\
+                lwmastermon.1\
 		lwrp.1
 
 man_MANS = lwaddr.1\
            lwcap.1\
            lwcast.1\
            lwcp.1\
+           lwmastermon.1\
            lwrp.1
 
 EXTRA_DIST = lwaddr.1\
              lwcap.1\
              lwcast.1\
              lwcp.1\
+             lwmastermon.1\
              lwrp.1
 
 CLEANFILES = *~

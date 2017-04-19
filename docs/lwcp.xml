@@ -87,6 +87,9 @@
     <refentrytitle>lwaddr</refentrytitle><manvolnum>1</manvolnum>
   </citerefentry>,
   <citerefentry>
+    <refentrytitle>lwmastermon</refentrytitle><manvolnum>1</manvolnum>
+  </citerefentry>,
+  <citerefentry>
     <refentrytitle>lwrp</refentrytitle><manvolnum>1</manvolnum>
   </citerefentry>
   </para>

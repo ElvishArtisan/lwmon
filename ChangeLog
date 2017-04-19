@@ -98,3 +98,5 @@
 	* Incremented the package version to 1.1.0.
 2017-04-19 Fred Gleason <fredg@paravelsystems.com>
 	* Added lwmastermon(1).
+2017-04-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added a man page for lwmastermon(1).
