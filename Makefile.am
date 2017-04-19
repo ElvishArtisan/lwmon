@@ -23,7 +23,9 @@
 if DOCBOOK_AM
   DOCBOOK_AM_OPT = docs
 endif
-SUBDIRS = $(DOCBOOK_AM_OPT) src
+SUBDIRS = $(DOCBOOK_AM_OPT) icons\
+          src\
+          xdg
 
 rpm:	dist
 	cp lwmon-$(VERSION).tar.gz $(HOME)/rpmbuild/SOURCES/

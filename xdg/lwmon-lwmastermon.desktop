@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Terminal=false
+Categories=AudioVideo;Player;
+Name=LiveWire Master Node Monitor
+GenericName=Master Node Monitor
+Exec=lwmastermon
+Icon=lwmon
+Type=Application

@@ -126,9 +126,12 @@ fi
 
 AC_CONFIG_FILES([ \
     docs/Makefile \
+    icons/Makefile \
     src/lwcap/Makefile \
     src/lwcast/Makefile \
     src/lwmon/Makefile \
+    src/lwmastermon/Makefile \
+    xdg/Makefile \
     src/Makefile \
     lwmon.spec \
     make_dmg.sh \

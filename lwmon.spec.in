@@ -31,6 +31,12 @@ rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 
 
+%post
+if [ -x %{_bindir}/gtk-update-icon-cache ] ; then
+  %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
+fi
+
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -41,6 +47,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/lwcap
 %{_bindir}/lwcast
 %{_bindir}/lwcp
+%{_bindir}/lwmastermon
 %{_bindir}/lwmon
 %{_bindir}/lwrp
 %{_mandir}/man1/lwaddr.1.gz
@@ -48,12 +55,17 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/lwcast.1.gz
 %{_mandir}/man1/lwcp.1.gz
 %{_mandir}/man1/lwrp.1.gz
+%{_datadir}/icons/hicolor/48x48/apps/lwmon.png
+%{_datadir}/icons/hicolor/16x16/apps/lwmon.png
+%{_datadir}/applications/lwmon-lwmastermon.desktop
 %doc COPYING
 %doc NEWS
 %doc README
 
 
 %changelog
+* Wed Apr 19 2017 Fred Gleason <fredg@paravelsystems.com>
+-- Added lwmastermon(1).
 * Mon Feb 13 2017 Fred Gleason <fredg@paravelsystems.com>
 -- Added lwcap(1).
 * Thu Feb  9 2017 Fred Gleason <fredg@paravelsystems.com>
