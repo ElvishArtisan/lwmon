@@ -105,3 +105,5 @@
 2017-06-12 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in lwmon(1)'s lwaddr mode that caused it to truncate
 	the last digit of the fourth octet.
+2017-06-12 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 1.2.1.
