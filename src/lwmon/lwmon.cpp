@@ -510,11 +510,11 @@ void MainWidget::PrintAddr(unsigned src_num,MainWidget::SignalType type) const
 {
   int o3=src_num/256;
   int o4=src_num%256;
-  char ipstr[8];
-  char backipstr[8];
+  char ipstr[9];
+  char backipstr[9];
 
-  snprintf(ipstr,7,"%d.%d",o3,o4);
-  snprintf(backipstr,7,"%d.%d",128+o3,o4);
+  snprintf(ipstr,8,"%d.%d",o3,o4);
+  snprintf(backipstr,8,"%d.%d",128+o3,o4);
   printf("LiveWire Source # %u\n",src_num);
   if(type==MainWidget::Stereo) {
     printf("   *");
