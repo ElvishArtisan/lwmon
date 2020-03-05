@@ -2,7 +2,7 @@
 //
 // Monitor and display the location of the LiveWire master node
 //
-//   (C) Copyright 2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,12 +19,17 @@
 //
 
 #include <errno.h>
+#include <unistd.h>
 
+#include <linux/if_ether.h>
+#include <net/ethernet.h>
 #include <net/if.h>
 #include <netinet/in.h>
 #include <netinet/ip.h>
+#include <netpacket/packet.h>
 #include <sys/ioctl.h>
 #include <sys/socket.h>
+#include <sys/types.h>
 
 #include <QApplication>
 #include <QMessageBox>
@@ -34,6 +39,9 @@
 MainWidget::MainWidget(QWidget *parent)
   : QMainWindow(parent,Qt::WindowStaysOnTopHint)
 {
+  int sock=-1;
+  mon_notifier=NULL;
+
   setWindowTitle("Master");
   setMaximumSize(sizeHint());
   setMinimumSize(sizeHint());
@@ -47,15 +55,22 @@ MainWidget::MainWidget(QWidget *parent)
   mon_value_label=new QLabel(this);
   mon_value_label->setAlignment(Qt::AlignCenter|Qt::AlignVCenter);
 
-  mon_socket=new QUdpSocket(this);
-  if(!mon_socket->bind(LWMASTERMON_MASTER_PORT)) {
+  //
+  // Open the NetLink Interface
+  //
+  if((sock=socket(AF_PACKET,SOCK_RAW,htons(ETH_P_IP)))<0) {
     QMessageBox::warning(this,tr("Master"),
-			 tr("Unable to bind UDP port 7000."));
+			 tr("Unable to open the NetLink interface")+"\n"+
+			 "["+strerror(errno)+"]");
     exit(256);
   }
+  mon_notifier=new QSocketNotifier(sock,QSocketNotifier::Read,this);
   Subscribe();
-  connect(mon_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));
+  connect(mon_notifier,SIGNAL(activated(int)),this,SLOT(activatedData(int)));
 
+  //
+  // Watchdog
+  //
   mon_watchdog_timer=new QTimer(this);
   mon_watchdog_timer->setSingleShot(true);
   connect(mon_watchdog_timer,SIGNAL(timeout()),this,SLOT(watchdogData()));
@@ -69,23 +84,52 @@ QSize MainWidget::sizeHint() const
 }
 
 
-void MainWidget::readyReadData()
+void MainWidget::activatedData(int sock)
 {
   char data[1501];
-  int n;
-  QHostAddress addr;
+   QHostAddress addr;
 
-  while((n=mon_socket->readDatagram(data,1500,&addr))>0) {
-    mon_value_label->setText(addr.toString());
-    if(mon_watchdog_timer->isActive()) {
-      mon_watchdog_timer->stop();
+  if(recv(sock,data,1500,0)>=0) {
+    addr=IpAddress(data,30);
+    if(addr.toString()==LWMASTERMON_MASTER_ADDR) {
+      UpdateWatchdog(IpAddress(data,26));
     }
-    else {
-      mon_value_label->setFont(font());
-      mon_value_label->setStyleSheet("");
-    }
-    mon_watchdog_timer->start(LWMASTERMON_WATCHDOG_INTERVAL);
   }
+}
+
+
+void MainWidget::UpdateWatchdog(const QHostAddress &addr)
+{
+  mon_value_label->setText(addr.toString());
+  if(mon_watchdog_timer->isActive()) {
+    mon_watchdog_timer->stop();
+  }
+  else {
+    mon_value_label->setFont(font());
+    mon_value_label->setStyleSheet("");
+  }
+  mon_watchdog_timer->start(LWMASTERMON_WATCHDOG_INTERVAL);
+}
+
+
+QHostAddress MainWidget::IpAddress(const char *data,int offset) const
+{
+  QHostAddress addr;
+  uint32_t raw=((0xff&data[offset])<<24)+((0xff&data[offset+1])<<16)+
+    ((0xff&data[offset+2])<<8)+(0xff&data[offset+3]);
+
+  addr.setAddress(raw);
+
+  return addr;
+}
+
+
+void MainWidget::DumpIpAddress(const char *data,int offset) const
+{
+  printf("IPv4 Address: %s [%02X %02X %02X %02X]\n",
+	 IpAddress(data,offset).toString().toUtf8().constData(),
+	 0xff&data[offset],0xff&data[offset+1],
+	 0xff&data[offset+2],0xff&data[offset+3]);
 }
 
 
@@ -106,31 +150,56 @@ void MainWidget::resizeEvent(QResizeEvent *e)
 
 void MainWidget::Subscribe()
 {
+  int sock;
   struct ifreq ifr;
+
+  if((sock=socket(AF_INET,SOCK_DGRAM,0))<0) {
+    QMessageBox::warning(this,tr("Master"),
+			 tr("Unable to create subscription socket")+"\n"+
+			 "["+strerror(errno)+"]");
+    exit(255);
+  }
 
   memset(&ifr,0,sizeof(ifr));
   ifr.ifr_ifindex=1;
-  while(ioctl(mon_socket->socketDescriptor(),SIOCGIFNAME,&ifr)==0) {
-    Subscribe(ifr.ifr_ifindex);
+  while(ioctl(sock,SIOCGIFNAME,&ifr)==0) {
+    Subscribe(sock,ifr.ifr_ifindex);
     ifr.ifr_ifindex++;
   }
 }
 
 
-void MainWidget::Subscribe(int index)
+void MainWidget::Subscribe(int sock,int index)
 {
   struct ip_mreqn mreq;
+  struct packet_mreq preq;
 
+  //
+  // IP Subscribe
+  //
   memset(&mreq,0,sizeof(mreq));
   mreq.imr_multiaddr.s_addr=
     htonl(QHostAddress(LWMASTERMON_MASTER_ADDR).toIPv4Address());
   mreq.imr_ifindex=index;
-  if(setsockopt(mon_socket->socketDescriptor(),IPPROTO_IP,IP_ADD_MEMBERSHIP,
-		&mreq,sizeof(mreq))<0) {
+  if(setsockopt(sock,IPPROTO_IP,IP_ADD_MEMBERSHIP,&mreq,sizeof(mreq))<0) {
     QMessageBox::warning(this,tr("Master"),
 			 tr("Unable to subscribe to multicast address")+
 			 " \""+LWMASTERMON_MASTER_ADDR+"\" ["+
 			 strerror(errno)+"]");
+    exit(255);
+  }
+
+  //
+  // Set Promiscuous Mode
+  //
+  memset(&preq,0,sizeof(preq));
+  preq.mr_ifindex=index;
+  preq.mr_type=PACKET_MR_PROMISC;
+  if(setsockopt(mon_notifier->socket(),SOL_PACKET,PACKET_ADD_MEMBERSHIP,
+		&preq,sizeof(preq))<0) {
+    QMessageBox::warning(this,tr("Master"),
+			 tr("Unable to set promiscuous mode")+"\n"+
+			 "["+strerror(errno)+"]");
     exit(255);
   }
 }

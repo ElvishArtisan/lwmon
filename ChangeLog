@@ -107,3 +107,5 @@
 	the last digit of the fourth octet.
 2017-06-12 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 1.2.1.
+2020-03-05 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored lwmastermon(1) to use the NetLink interface.
