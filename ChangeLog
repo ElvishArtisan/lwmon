@@ -119,3 +119,5 @@
 2020-03-06 Fred Gleason <fredg@paravelsystems.com>
 	* Added an lwmaster(8) man page.
 	* Updated the lwmastermon(1) man page.
+2020-03-06 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 1.2.2.

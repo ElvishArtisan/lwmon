@@ -1,7 +1,14 @@
 This is the NEWS file for lwmon.
 
 ------------------------------------------------------------------------------
-v1.0.0 - 02/10/2017
+v1.2.2 - 6 March 2020
+
+Changes:
+   Refactored lwmastermon(1) into lwmastermon(1) and lwmaster(8), the latter
+   running SETUID root.
+
+------------------------------------------------------------------------------
+v1.0.0 - 10 February 2017
 
 Changes:
     Multicast Subscription Manager.  Added an lwcast(1) applet to allow
