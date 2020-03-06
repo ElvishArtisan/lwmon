@@ -4,14 +4,14 @@
       Header
   -->
   <refmeta>
-    <refentrytitle>lwmastermon</refentrytitle>
-    <manvolnum>1</manvolnum>
+    <refentrytitle>lwmaster</refentrytitle>
+    <manvolnum>8</manvolnum>
     <refmiscinfo class='source'>March 2020</refmiscinfo>
     <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
   </refmeta>
   <refnamediv>
-    <refname>lwmastermon</refname>
-    <refpurpose>Utility for monitoring the LiveWire master node</refpurpose>
+    <refname>lwmaster</refname>
+    <refpurpose>Command for determining the LiveWire master node</refpurpose>
   </refnamediv>
   <info>
     <author>
@@ -29,22 +29,26 @@
   -->
   <refsynopsisdiv id='synopsis'>
     <cmdsynopsis>
-      <command>lwmastermon</command>
+      <command>lwmaster</command>
       <sbr/>
     </cmdsynopsis>
   </refsynopsisdiv>
 
   <refsect1 id='description'><title>Description</title>
   <para>
-    <command>lwmastermon</command><manvolnum>1</manvolnum>
-    is a GUI applet that displays the host name and IP address of the current
-    master node on a Livewire network. It works by periodically running
-    <command>lwmaster</command><manvolnum>8</manvolnum> to determine
-    the IP address of the current master node and then connecting to that
-    node via LWRP to determine its host name. If
-    <command>lwmaster</command><manvolnum>8</manvolnum> returns an address
-    of <computeroutput>0.0.0.0</computeroutput> (thus indicating that no
-    master node was detected), a warning message is displayed.
+    <command>lwmaster</command><manvolnum>8</manvolnum>
+    is a command-line utility that simply prints the IPv4 address of the
+    current Livewire master node to standard output and then exits.
+    It works by subscribing to the multicast address 239.192.255.2 (the
+    address for LiveWire clock packets) and listening for traffic received
+    to that address. If no clock traffic is heard for more than 100 mS,
+    an IPv4 address of <computeroutput>0.0.0.0</computeroutput> is printed.
+  </para>
+  <para>
+    The utility requires root permissions to operate, and thus is normally
+    installed SETUID root. Its usual role is to be periodically run by
+    <command>lwmastermon</command><manvolnum>1</manvolnum> to determine
+    the current Livewire master node.
   </para>
   </refsect1>
 
@@ -57,7 +61,7 @@
   <refsect1 id='see_also'><title>See Also</title>
   <para>
   <citerefentry>
-    <refentrytitle>lwmaster</refentrytitle><manvolnum>8</manvolnum>
+    <refentrytitle>lwmastermon</refentrytitle><manvolnum>1</manvolnum>
   </citerefentry>,
   <citerefentry>
     <refentrytitle>lwaddr</refentrytitle><manvolnum>1</manvolnum>

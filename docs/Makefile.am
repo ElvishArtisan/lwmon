@@ -34,10 +34,14 @@
 %.1:	%.xml
 	xsltproc $(DOCBOOK_STYLESHEETS)/manpages/docbook.xsl $<
 
+%.8:	%.xml
+	xsltproc $(DOCBOOK_STYLESHEETS)/manpages/docbook.xsl $<
+
 all-local:	lwaddr.1\
                 lwcap.1\
                 lwcast.1\
                 lwcp.1\
+                lwmaster.8\
                 lwmastermon.1\
 		lwrp.1
 
@@ -45,6 +49,7 @@ man_MANS = lwaddr.1\
            lwcap.1\
            lwcast.1\
            lwcp.1\
+           lwmaster.8\
            lwmastermon.1\
            lwrp.1
 
@@ -52,12 +57,14 @@ EXTRA_DIST = lwaddr.1\
              lwcap.1\
              lwcast.1\
              lwcp.1\
+             lwmaster.8\
              lwmastermon.1\
              lwrp.1
 
 CLEANFILES = *~
 MAINTAINERCLEANFILES = *~\
                        *.1\
+                       *.8\
                        *.html\
                        *.pdf\
                        aclocal.m4\

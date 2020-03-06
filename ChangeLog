@@ -116,3 +116,6 @@
 2020-03-06 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored lwmastermon(1) to use lwmaster(8) to get current
 	master node address.
+2020-03-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added an lwmaster(8) man page.
+	* Updated the lwmastermon(1) man page.
