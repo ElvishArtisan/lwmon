@@ -111,3 +111,5 @@
 	* Refactored lwmastermon(1) to use the NetLink interface.
 2020-03-05 Fred Gleason <fredg@paravelsystems.com>
 	* Optimized lwmastermon(1).
+2020-03-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added lwmaster(8).

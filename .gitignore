@@ -23,6 +23,7 @@ missing
 moc_*
 src/lwcap/lwcap
 src/lwcast/lwcast
+src/lwmaster/lwmaster
 src/lwmastermon/lwmastermon
 src/lwmon/lwmon
 tmp

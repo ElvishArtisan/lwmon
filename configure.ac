@@ -38,6 +38,7 @@ fi
 #
 # Basic Compiler Checks
 #
+AC_PROG_CC
 AC_PROG_CXX
 AC_LANG(C++)
 
@@ -130,9 +131,10 @@ AC_CONFIG_FILES([ \
     src/lwcap/Makefile \
     src/lwcast/Makefile \
     src/lwmon/Makefile \
+    src/lwmaster/Makefile \
     src/lwmastermon/Makefile \
-    xdg/Makefile \
     src/Makefile \
+    xdg/Makefile \
     lwmon.spec \
     make_dmg.sh \
     Makefile ])

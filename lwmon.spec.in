@@ -47,6 +47,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/lwcap
 %{_bindir}/lwcast
 %{_bindir}/lwcp
+%attr(4755,root,root) %{_sbindir}/lwmaster
 %{_bindir}/lwmastermon
 %{_bindir}/lwmon
 %{_bindir}/lwrp
