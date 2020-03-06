@@ -29,7 +29,7 @@
 #include <QSocketNotifier>
 #include <QTimer>
 
-#define LWMASTERMON_MASTER_ADDR "239.192.255.1"
+#define LWMASTERMON_MASTER_ADDR "239.192.255.2"
 #define LWMASTERMON_MASTER_PORT 7000
 #define LWMASTERMON_WATCHDOG_INTERVAL 2000
 
@@ -53,6 +53,7 @@ class MainWidget : public QMainWindow
   void UpdateWatchdog(const QHostAddress &addr);
   void Subscribe();
   void Subscribe(int sock,int index);
+  bool IsAddress(const QHostAddress &addr,const char *data,int offset) const;
   QHostAddress IpAddress(const char *data,int offset) const;
   void DumpIpAddress(const char *data,int offset) const;
   QLabel *mon_label;

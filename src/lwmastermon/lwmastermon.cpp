@@ -36,10 +36,14 @@
 
 #include "lwmastermon.h"
 
+QHostAddress master_address(LWMASTERMON_MASTER_ADDR);
+
 MainWidget::MainWidget(QWidget *parent)
   : QMainWindow(parent,Qt::WindowStaysOnTopHint)
 {
   int sock=-1;
+  struct sockaddr_ll sl;
+
   mon_notifier=NULL;
 
   setWindowTitle("Master");
@@ -48,7 +52,7 @@ MainWidget::MainWidget(QWidget *parent)
 
   QFont bold_font(font().family(),font().pointSize(),QFont::Bold);
 
-  mon_label=new QLabel(tr("LiveWire Master Node"),this);
+  mon_label=new QLabel(tr("Livewire Master Node"),this);
   mon_label->setFont(bold_font);
   mon_label->setAlignment(Qt::AlignCenter|Qt::AlignVCenter);
 
@@ -64,6 +68,15 @@ MainWidget::MainWidget(QWidget *parent)
 			 "["+strerror(errno)+"]");
     exit(256);
   }
+
+  memset(&sl,0,sizeof(sl));
+  sl.sll_family=AF_PACKET;
+  sl.sll_protocol=htons(ETH_P_IP);
+  sl.sll_ifindex=3;
+  if(bind(sock,(struct sockaddr *)(&sl),sizeof(sl))<0) {
+    fprintf(stderr,"lwmastermon: bind failed [%s]\n",strerror(errno));
+  }
+
   mon_notifier=new QSocketNotifier(sock,QSocketNotifier::Read,this);
   Subscribe();
   connect(mon_notifier,SIGNAL(activated(int)),this,SLOT(activatedData(int)));
@@ -87,11 +100,10 @@ QSize MainWidget::sizeHint() const
 void MainWidget::activatedData(int sock)
 {
   char data[1501];
-   QHostAddress addr;
+  QHostAddress addr;
 
   if(recv(sock,data,1500,0)>=0) {
-    addr=IpAddress(data,30);
-    if(addr.toString()==LWMASTERMON_MASTER_ADDR) {
+    if(IsAddress(master_address,data,30)) {
       UpdateWatchdog(IpAddress(data,26));
     }
   }
@@ -109,6 +121,15 @@ void MainWidget::UpdateWatchdog(const QHostAddress &addr)
     mon_value_label->setStyleSheet("");
   }
   mon_watchdog_timer->start(LWMASTERMON_WATCHDOG_INTERVAL);
+}
+
+
+bool MainWidget::IsAddress(const QHostAddress &addr,const char *data,int offset)
+  const
+{
+  uint32_t raw=((0xff&data[offset])<<24)+((0xff&data[offset+1])<<16)+
+    ((0xff&data[offset+2])<<8)+(0xff&data[offset+3]);
+  return addr.toIPv4Address()==raw;
 }
 
 
