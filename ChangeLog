@@ -113,3 +113,6 @@
 	* Optimized lwmastermon(1).
 2020-03-06 Fred Gleason <fredg@paravelsystems.com>
 	* Added lwmaster(8).
+2020-03-06 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored lwmastermon(1) to use lwmaster(8) to get current
+	master node address.

@@ -1,6 +1,6 @@
 // lwmastermon.cpp
 //
-// Monitor and display the location of the LiveWire master node
+// Monitor and display the location of the Livewire master node
 //
 //   (C) Copyright 2017-2020 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -21,32 +21,21 @@
 #include <errno.h>
 #include <unistd.h>
 
-#include <linux/if_ether.h>
-#include <net/ethernet.h>
-#include <net/if.h>
-#include <netinet/in.h>
-#include <netinet/ip.h>
-#include <netpacket/packet.h>
-#include <sys/ioctl.h>
-#include <sys/socket.h>
-#include <sys/types.h>
-
 #include <QApplication>
+#include <QFontMetrics>
 #include <QMessageBox>
+#include <QProcess>
+#include <QStringList>
 
 #include "lwmastermon.h"
 
-QHostAddress master_address(LWMASTERMON_MASTER_ADDR);
-
 MainWidget::MainWidget(QWidget *parent)
-  : QMainWindow(parent,Qt::WindowStaysOnTopHint)
+  : QWidget(parent,(Qt::WindowFlags)(Qt::WindowStaysOnTopHint|Qt::CustomizeWindowHint|Qt::WindowTitleHint|Qt::WindowCloseButtonHint))
 {
-  int sock=-1;
-  struct sockaddr_ll sl;
+  mon_lwrp_socket=NULL;
+  mon_width=LWMASTERMON_MIN_WIDTH;
 
-  mon_notifier=NULL;
-
-  setWindowTitle("Master");
+  setWindowTitle(" ");
   setMaximumSize(sizeHint());
   setMinimumSize(sizeHint());
 
@@ -55,110 +44,137 @@ MainWidget::MainWidget(QWidget *parent)
   mon_label=new QLabel(tr("Livewire Master Node"),this);
   mon_label->setFont(bold_font);
   mon_label->setAlignment(Qt::AlignCenter|Qt::AlignVCenter);
+  QFontMetrics fm(mon_label->font());
+  mon_min_width=fm.width(mon_label->text())+20;
 
   mon_value_label=new QLabel(this);
   mon_value_label->setAlignment(Qt::AlignCenter|Qt::AlignVCenter);
 
   //
-  // Open the NetLink Interface
-  //
-  if((sock=socket(AF_PACKET,SOCK_RAW,htons(ETH_P_IP)))<0) {
-    QMessageBox::warning(this,tr("Master"),
-			 tr("Unable to open the NetLink interface")+"\n"+
-			 "["+strerror(errno)+"]");
-    exit(256);
-  }
-
-  memset(&sl,0,sizeof(sl));
-  sl.sll_family=AF_PACKET;
-  sl.sll_protocol=htons(ETH_P_IP);
-  sl.sll_ifindex=3;
-  if(bind(sock,(struct sockaddr *)(&sl),sizeof(sl))<0) {
-    fprintf(stderr,"lwmastermon: bind failed [%s]\n",strerror(errno));
-  }
-
-  mon_notifier=new QSocketNotifier(sock,QSocketNotifier::Read,this);
-  Subscribe();
-  connect(mon_notifier,SIGNAL(activated(int)),this,SLOT(activatedData(int)));
-
-  //
   // Watchdog
   //
-  mon_watchdog_timer=new QTimer(this);
-  mon_watchdog_timer->setSingleShot(true);
-  connect(mon_watchdog_timer,SIGNAL(timeout()),this,SLOT(watchdogData()));
-  mon_watchdog_timer->start(LWMASTERMON_WATCHDOG_INTERVAL);
+  mon_update_timer=new QTimer(this);
+  mon_update_timer->setSingleShot(true);
+  connect(mon_update_timer,SIGNAL(timeout()),this,SLOT(updateData()));
+  mon_update_timer->start(1);
 }
 
 
 QSize MainWidget::sizeHint() const
 {
-  return QSize(200,60);
+  return QSize(mon_width,60);
 }
 
 
-void MainWidget::activatedData(int sock)
+void MainWidget::updateData()
 {
-  char data[1501];
-  QHostAddress addr;
+  QProcess *proc=new QProcess(this);
+  proc->start("lwmaster",QIODevice::ReadOnly);
+  proc->waitForFinished();
+  if(proc->exitStatus()!=QProcess::NormalExit) {
+    SetLabel(tr("*** ERROR ***"),true);
+    fprintf(stderr,"lwmastermon: lwmaster(8) crashed\n");
+    mon_current_result=QString();
+  }
+  else {
+    if(proc->exitCode()!=0) {
+      SetLabel(tr("*** ERROR ***"),true);
+      QString err_msg=proc->readAllStandardError().constData();
+      fprintf(stderr,"lwmastermon: lwmaster(8) returned error: \"%s\"\n",
+	      err_msg.trimmed().toUtf8().constData());
+      mon_current_result=QString();
+    }
+    else {
+      QString result=proc->readAllStandardOutput().constData();
+      result=result.trimmed();
+      if(result!=mon_current_result) {
+	if(result=="0.0.0.0") {
+	  SetLabel(tr("No Master Found!"),true);
+	}
+	else {
+	  SetLabel(result,false);
 
-  if(recv(sock,data,1500,0)>=0) {
-    if(IsAddress(master_address,data,30)) {
-      UpdateWatchdog(IpAddress(data,26));
+	  //
+	  // Lookup Node Name
+	  //
+	  if(mon_lwrp_socket!=NULL) {
+	    mon_lwrp_socket->disconnect();
+	    mon_lwrp_socket->deleteLater();
+	  }
+	  mon_lwrp_socket=new QTcpSocket(this);
+	  connect(mon_lwrp_socket,SIGNAL(connected()),
+		  this,SLOT(lwrpConnectedData()));
+	  connect(mon_lwrp_socket,SIGNAL(readyRead()),
+		  this,SLOT(lwrpReadyReadData()));
+	  connect(mon_lwrp_socket,SIGNAL(disconnected()),
+		  this,SLOT(lwrpDisconnectedData()));
+	  connect(mon_lwrp_socket,SIGNAL(error(QAbstractSocket::SocketError)),
+		  this,SLOT(lwrpErrorData(QAbstractSocket::SocketError)));
+	  mon_lwrp_socket->connectToHost(result,93);
+	}
+
+	mon_current_result=result;
+      }
+    }
+  }
+  delete proc;
+
+  mon_update_timer->start(LWMASTERMON_UPDATE_INTERVAL);
+}
+
+
+void MainWidget::lwrpConnectedData()
+{
+  mon_lwrp_socket->write("IP\r\n");
+}
+
+
+void MainWidget::lwrpReadyReadData()
+{
+  QByteArray data=mon_lwrp_socket->readAll();
+  QStringList f0;
+
+  for(int i=0;i<data.length();i++) {
+    switch(data.at(i)) {
+    case 10:  // Linefeed
+      break;
+
+    case 13:  // Carriage return
+      //
+      // Process response
+      //
+      f0=QString::fromUtf8(mon_lwrp_accum).split(" ",QString::SkipEmptyParts);
+      for(int j=0;j<(f0.size()-1);j++) {
+	if((f0.at(j).toLower()=="hostname")&&
+	   (!f0.at(j+1).trimmed().isEmpty())) {
+	  SetLabel(f0.at(j+1).trimmed()+" ["+mon_current_result+"]",false);
+	}
+      }
+      mon_lwrp_accum.clear();
+      mon_lwrp_socket->disconnectFromHost();
+      break;
+
+    default:
+      mon_lwrp_accum+=data.at(i);
+      break;
     }
   }
 }
 
 
-void MainWidget::UpdateWatchdog(const QHostAddress &addr)
+void MainWidget::lwrpDisconnectedData()
 {
-  mon_value_label->setText(addr.toString());
-  if(mon_watchdog_timer->isActive()) {
-    mon_watchdog_timer->stop();
+  if(mon_lwrp_socket!=NULL) {
+    mon_lwrp_socket->disconnect();
+    mon_lwrp_socket->deleteLater();
+    mon_lwrp_socket=NULL;
   }
-  else {
-    mon_value_label->setFont(font());
-    mon_value_label->setStyleSheet("");
-  }
-  mon_watchdog_timer->start(LWMASTERMON_WATCHDOG_INTERVAL);
 }
 
 
-bool MainWidget::IsAddress(const QHostAddress &addr,const char *data,int offset)
-  const
+void MainWidget::lwrpErrorData(QAbstractSocket::SocketError err)
 {
-  uint32_t raw=((0xff&data[offset])<<24)+((0xff&data[offset+1])<<16)+
-    ((0xff&data[offset+2])<<8)+(0xff&data[offset+3]);
-  return addr.toIPv4Address()==raw;
-}
-
-
-QHostAddress MainWidget::IpAddress(const char *data,int offset) const
-{
-  QHostAddress addr;
-  uint32_t raw=((0xff&data[offset])<<24)+((0xff&data[offset+1])<<16)+
-    ((0xff&data[offset+2])<<8)+(0xff&data[offset+3]);
-
-  addr.setAddress(raw);
-
-  return addr;
-}
-
-
-void MainWidget::DumpIpAddress(const char *data,int offset) const
-{
-  printf("IPv4 Address: %s [%02X %02X %02X %02X]\n",
-	 IpAddress(data,offset).toString().toUtf8().constData(),
-	 0xff&data[offset],0xff&data[offset+1],
-	 0xff&data[offset+2],0xff&data[offset+3]);
-}
-
-
-void MainWidget::watchdogData()
-{
-  QFont failed_font(font().family(),font().pointSize(),QFont::Bold);
-  mon_value_label->setText(tr("No Master Found!"));
-  mon_value_label->setStyleSheet("color: red;");
+  lwrpDisconnectedData();
 }
 
 
@@ -169,60 +185,26 @@ void MainWidget::resizeEvent(QResizeEvent *e)
 }
 
 
-void MainWidget::Subscribe()
+void MainWidget::SetLabel(const QString &str,bool error)
 {
-  int sock;
-  struct ifreq ifr;
-
-  if((sock=socket(AF_INET,SOCK_DGRAM,0))<0) {
-    QMessageBox::warning(this,tr("Master"),
-			 tr("Unable to create subscription socket")+"\n"+
-			 "["+strerror(errno)+"]");
-    exit(255);
+  mon_value_label->setText(str);
+  if(error) {
+    QFont failed_font(font().family(),font().pointSize(),QFont::Bold);
+    mon_value_label->setFont(failed_font);
+    mon_value_label->setStyleSheet("color: red;");
+  }
+  else {
+    mon_value_label->setFont(font());
+    mon_value_label->setStyleSheet("");
   }
 
-  memset(&ifr,0,sizeof(ifr));
-  ifr.ifr_ifindex=1;
-  while(ioctl(sock,SIOCGIFNAME,&ifr)==0) {
-    Subscribe(sock,ifr.ifr_ifindex);
-    ifr.ifr_ifindex++;
+  QFontMetrics fm(mon_value_label->font());
+  mon_width=fm.width(mon_value_label->text())+20;
+  if(mon_width<mon_min_width) {
+    mon_width=mon_min_width;
   }
-}
-
-
-void MainWidget::Subscribe(int sock,int index)
-{
-  struct ip_mreqn mreq;
-  struct packet_mreq preq;
-
-  //
-  // IP Subscribe
-  //
-  memset(&mreq,0,sizeof(mreq));
-  mreq.imr_multiaddr.s_addr=
-    htonl(QHostAddress(LWMASTERMON_MASTER_ADDR).toIPv4Address());
-  mreq.imr_ifindex=index;
-  if(setsockopt(sock,IPPROTO_IP,IP_ADD_MEMBERSHIP,&mreq,sizeof(mreq))<0) {
-    QMessageBox::warning(this,tr("Master"),
-			 tr("Unable to subscribe to multicast address")+
-			 " \""+LWMASTERMON_MASTER_ADDR+"\" ["+
-			 strerror(errno)+"]");
-    exit(255);
-  }
-
-  //
-  // Set Promiscuous Mode
-  //
-  memset(&preq,0,sizeof(preq));
-  preq.mr_ifindex=index;
-  preq.mr_type=PACKET_MR_PROMISC;
-  if(setsockopt(mon_notifier->socket(),SOL_PACKET,PACKET_ADD_MEMBERSHIP,
-		&preq,sizeof(preq))<0) {
-    QMessageBox::warning(this,tr("Master"),
-			 tr("Unable to set promiscuous mode")+"\n"+
-			 "["+strerror(errno)+"]");
-    exit(255);
-  }
+  setMaximumSize(sizeHint());
+  setMinimumSize(sizeHint());
 }
 
 
