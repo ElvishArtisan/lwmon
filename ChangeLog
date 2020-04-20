@@ -121,3 +121,6 @@
 	* Updated the lwmastermon(1) man page.
 2020-03-06 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 1.2.2.
+2020-04-20 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in lwmaster(8) that could cause false detection of
+	the Livewire master node.

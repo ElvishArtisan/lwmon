@@ -91,7 +91,7 @@ int GetAddress(int dl_sock)
     //
     if((pfd[0].revents&POLLIN)!=0) {
       if((n=recv(dl_sock,data,1500,0))>=0) {
-	if(n>=33) {
+	if(n==MASTER_MCAST_PACKET_LENGTH) {
 	  dst_addr=((0xff&data[30])<<24)+((0xff&data[31])<<16)+
 	    ((0xff&data[32])<<8)+(0xff&data[33]);
 	  if(dst_addr==global_master_mcast_address) {
