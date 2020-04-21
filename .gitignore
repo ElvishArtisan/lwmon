@@ -27,5 +27,6 @@ src/lwcast/lwcast
 src/lwmaster/lwmaster
 src/lwmastermon/lwmastermon
 src/lwmon/lwmon
+src/lwmultcap/lwmultcap
 tmp
 

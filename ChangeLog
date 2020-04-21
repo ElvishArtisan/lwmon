@@ -124,3 +124,5 @@
 2020-04-20 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in lwmaster(8) that could cause false detection of
 	the Livewire master node.
+2020-04-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added lwmultcap(1).
