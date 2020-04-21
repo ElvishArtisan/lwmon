@@ -25,6 +25,7 @@
 
 #include <QByteArray>
 #include <QHostAddress>
+#include <QList>
 #include <QMap>
 #include <QObject>
 #include <QUdpSocket>
@@ -43,7 +44,8 @@ class MainObject : public QObject
  protected:
   void packetReceived(const QHostAddress &src_addr,uint16_t src_port,
 		      const QByteArray &data);
-  void dumpToHex(const QByteArray &data);
+  void dumpToHex(const QHostAddress &src_addr,uint16_t src_port,
+		 const QByteArray &data);
   
  private:
   bool Subscribe(const QHostAddress &addr,const QHostAddress &if_addr,
@@ -56,6 +58,7 @@ class MainObject : public QObject
   bool c_show_ruler;
   int c_first_offset;
   int c_last_offset;
+  QList<QHostAddress> c_filter_source_addresses;
   QMap<unsigned,char> c_filter_bytes;
   QMap<unsigned,QString> c_filter_strings;
 };

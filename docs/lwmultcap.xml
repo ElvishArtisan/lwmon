@@ -116,6 +116,19 @@
 
     <varlistentry>
       <term>
+	<option>--filter-source-address=</option><replaceable>addr</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Display a packet only if it originated from an IPv4 address of
+	  <replaceable>addr</replaceable>.
+	  This option may be given multiple times.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
 	<option>--filter-string=</option><replaceable>offset</replaceable>:<replaceable>str</replaceable>
       </term>
       <listitem>

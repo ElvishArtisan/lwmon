@@ -53,6 +53,17 @@ MainObject::MainObject(QObject *parent)
   CmdSwitch *cmd=
     new CmdSwitch(qApp->argc(),qApp->argv(),"lwmultcap",LWMULTCAP_USAGE);
   for(unsigned i=0;i<cmd->keys();i++) {
+    if(cmd->key(i)=="--filter-source-address") {
+      QHostAddress addr;
+      if(!addr.setAddress(cmd->value(i))) {
+	fprintf(stderr,
+		"lwmultcap: invalid \"--filter-source-address\" value\n");
+	exit(1);
+      }
+      c_filter_source_addresses.push_back(addr);
+      cmd->setProcessed(i,true);
+    }
+
     if(cmd->key(i)=="--filter-byte") {
       QStringList f0=cmd->value(i).split(":",QString::KeepEmptyParts);
       if(f0.size()!=2) {
@@ -73,15 +84,6 @@ MainObject::MainObject(QObject *parent)
       cmd->setProcessed(i,true);
     }
 
-    if(cmd->key(i)=="--first-offset") {
-      c_first_offset=ReadIntegerArg(cmd->value(i),&ok);
-      if(!ok) {
-	fprintf(stderr,"lwmultcap: invalid \"--first-offset\" value\n");
-	exit(1);
-      }
-      cmd->setProcessed(i,true);
-    }
-
     if(cmd->key(i)=="--filter-string") {
       QStringList f0=cmd->value(i).split(":",QString::KeepEmptyParts);
       if(f0.size()<2) {
@@ -95,6 +97,15 @@ MainObject::MainObject(QObject *parent)
       }
       f0.removeFirst();
       c_filter_strings[offset]=f0.join(":");
+      cmd->setProcessed(i,true);
+    }
+
+    if(cmd->key(i)=="--first-offset") {
+      c_first_offset=ReadIntegerArg(cmd->value(i),&ok);
+      if(!ok) {
+	fprintf(stderr,"lwmultcap: invalid \"--first-offset\" value\n");
+	exit(1);
+      }
       cmd->setProcessed(i,true);
     }
 
@@ -241,16 +252,32 @@ void MainObject::packetReceived(const QHostAddress &src_addr,uint16_t src_port,
     return;
   }
 
+  //
+  // Process Filter Addresses
+  //
+  match=false;
+  for(int i=0;i<c_filter_source_addresses.size();i++) {
+    if(c_filter_source_addresses.at(i)==src_addr) {
+      match=true;
+      break;
+    }
+  }
+  if((c_filter_source_addresses.size()>0)&&(!match)) {
+    return;
+  }
 
-  dumpToHex(data);
+
+  dumpToHex(src_addr,src_port,data);
 }
 
 
-void MainObject::dumpToHex(const QByteArray &data)
+void MainObject::dumpToHex(const QHostAddress &src_addr,uint16_t src_port,
+			   const QByteArray &data)
 {
   if(c_show_ruler) {
     printf("------------------------------------------------------------------------------\n");
-    printf("| Offset  0- 1- 2- 3- 4- 5- 6- 7- 8- 9- A- B- C- D- E- F- | Octets: 0x%04X   |\n",data.size());
+    printf("| Received from: %s:%d             Packet size: %5d [0x%04X] |\n",src_addr.toString().toUtf8().constData(),0xFFFF&src_port,data.size(),data.size());
+    printf("| Offset  0- 1- 2- 3- 4- 5- 6- 7- 8- 9- A- B- C- D- E- F- | 0123456789ABCDEF |\n");
     printf("----------------------------------------------------------|------------------|\n");
   }
   for(int i=0;i<data.size();i+=16) {
