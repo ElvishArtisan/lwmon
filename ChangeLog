@@ -126,3 +126,6 @@
 	the Livewire master node.
 2020-04-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added lwmultcap(1).
+2020-04-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added '--filter-byte=' and '--filter-string=' switches to
+	lwmultcap(1).

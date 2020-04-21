@@ -30,6 +30,7 @@
 #include <stdint.h>
 
 #include <QCoreApplication>
+#include <QStringList>
 
 #include "cmdswitch.h"
 #include "lwmultcap.h"
@@ -52,16 +53,55 @@ MainObject::MainObject(QObject *parent)
   CmdSwitch *cmd=
     new CmdSwitch(qApp->argc(),qApp->argv(),"lwmultcap",LWMULTCAP_USAGE);
   for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--first-offset") {
-      if(cmd->value(i).left(2).toLower()=="0x") {
-	c_first_offset=
-	  cmd->value(i).right(cmd->value(i).length()-2).toInt(&ok,16);
+    if(cmd->key(i)=="--filter-byte") {
+      QStringList f0=cmd->value(i).split(":",QString::KeepEmptyParts);
+      if(f0.size()!=2) {
+	fprintf(stderr,"lwmultcap: invalid \"--filter-byte\" argument\n");
+	exit(1);
       }
-      else {
-	c_first_offset=cmd->value(i).toInt(&ok);
-      }
+      unsigned offset=ReadIntegerArg(f0.at(0),&ok);
       if(!ok) {
-	fprintf(stderr,"lwmultcap: invalid offset\n");
+	fprintf(stderr,"lwmultcap: invalid \"--filter-byte\" offset\n");
+	exit(1);
+      }
+      unsigned val=ReadIntegerArg(f0.at(1),&ok);
+      if((!ok)||(val>0xFF)) {
+	fprintf(stderr,"lwmultcap: invalid \"--filter-byte\" value\n");
+	exit(1);
+      }
+      c_filter_bytes[offset]=(char)val;
+      cmd->setProcessed(i,true);
+    }
+
+    if(cmd->key(i)=="--first-offset") {
+      c_first_offset=ReadIntegerArg(cmd->value(i),&ok);
+      if(!ok) {
+	fprintf(stderr,"lwmultcap: invalid \"--first-offset\" value\n");
+	exit(1);
+      }
+      cmd->setProcessed(i,true);
+    }
+
+    if(cmd->key(i)=="--filter-string") {
+      QStringList f0=cmd->value(i).split(":",QString::KeepEmptyParts);
+      if(f0.size()<2) {
+	fprintf(stderr,"lwmultcap: invalid \"--filter-string\" argument\n");
+	exit(1);
+      }
+      unsigned offset=ReadIntegerArg(f0.at(0),&ok);
+      if(!ok) {
+	fprintf(stderr,"lwmultcap: invalid \"--filter-string\" offset\n");
+	exit(1);
+      }
+      f0.removeFirst();
+      c_filter_strings[offset]=f0.join(":");
+      cmd->setProcessed(i,true);
+    }
+
+    if(cmd->key(i)=="--first-offset") {
+      c_first_offset=ReadIntegerArg(cmd->value(i),&ok);
+      if(!ok) {
+	fprintf(stderr,"lwmultcap: invalid \"--first-offset\" value\n");
 	exit(1);
       }
       cmd->setProcessed(i,true);
@@ -76,24 +116,18 @@ MainObject::MainObject(QObject *parent)
     }
 
     if(cmd->key(i)=="--last-offset") {
-      if(cmd->value(i).left(2).toLower()=="0x") {
-	c_last_offset=
-	  cmd->value(i).right(cmd->value(i).length()-2).toInt(&ok,16);
-      }
-      else {
-	c_last_offset=cmd->value(i).toInt(&ok);
-      }
+      c_last_offset=ReadIntegerArg(cmd->value(i),&ok);
       if(!ok) {
-	fprintf(stderr,"lwmultcap: invalid offset\n");
+	fprintf(stderr,"lwmultcap: invalid \"--last-offset\" value\n");
 	exit(1);
       }
       cmd->setProcessed(i,true);
     }
 
     if(cmd->key(i)=="--port") {
-      port=cmd->value(i).toUInt(&ok);
+      port=ReadIntegerArg(cmd->value(i),&ok);
       if((!ok)||(port>0xFFFF)) {
-	fprintf(stderr,"lwmultcap: invalid port\n");
+	fprintf(stderr,"lwmultcap: invalid port value\n");
 	exit(1);
       }
       c_port=port;
@@ -173,55 +207,62 @@ void MainObject::readyReadData()
 void MainObject::packetReceived(const QHostAddress &src_addr,uint16_t src_port,
 				const QByteArray &data)
 {
-  //  printf("received %d bytes from %s:%u\n",data.size(),
-  //	 src_addr.toString().toUtf8().constData(),0xFFFF&src_port);
+  bool match=false;
+
+  //
+  // Process Filter Bytes
+  //
+  match=false;
+  for(QMap<unsigned,char>::const_iterator it=c_filter_bytes.begin();
+      it!=c_filter_bytes.end();it++) {
+    if((it.key()<(unsigned)data.size())&&(it.value()==data.at(it.key()))) {
+      match=true;
+      break;
+    }
+  }
+  if((c_filter_bytes.size()>0)&&(!match)) {
+    return;
+  }
+
+  //
+  // Process Filter Strings
+  //
+  match=false;
+  for(QMap<unsigned,QString>::const_iterator it=c_filter_strings.begin();
+      it!=c_filter_strings.end();it++) {
+
+    if((it.key()<(unsigned)data.size())&&
+       (it.value().toUtf8()==data.mid(it.key(),it.value().size()))) {
+      match=true;
+      break;
+    }
+  }
+  if((c_filter_strings.size()>0)&&(!match)) {
+    return;
+  }
+
 
   dumpToHex(data);
-  /*
-  //
-  // Display Input Meters
-  //
-  for(int i=0;i<16;i++) {
-    unsigned lvl=((0xFF&data[2*i+72])<<8)+(0xFF&data[2*i+73]);
-    double dbfs=-100.0;
-    if(lvl>3598) {
-      dbfs=0.000981*(double)lvl-64.45;
-    }
-    printf("Input Channel %2d: %4.1lf\n",i+1,dbfs);
-  }
-  printf("------------------------\n");
-
-  //
-  // Display Output Meters
-  //
-  for(int i=0;i<16;i++) {
-    unsigned lvl=((0xFF&data[2*i+112])<<8)+(0xFF&data[2*i+113]);
-    double dbfs=-100.0;
-    if(lvl>3598) {
-      dbfs=0.000981*(double)lvl-64.45;
-    }
-    printf("Output Channel %2d: %4.1lf\n",i+1,dbfs);
-  }
-  printf("------------------------\n");
-  */
 }
 
 
 void MainObject::dumpToHex(const QByteArray &data)
 {
   if(c_show_ruler) {
-    printf("        0- 1- 2- 3- 4- 5- 6- 7- 8- 9- A- B- C- D- E- F-\n");
+    printf("------------------------------------------------------------------------------\n");
+    printf("| Offset  0- 1- 2- 3- 4- 5- 6- 7- 8- 9- A- B- C- D- E- F- | Octets: 0x%04X   |\n",data.size());
+    printf("----------------------------------------------------------|------------------|\n");
   }
   for(int i=0;i<data.size();i+=16) {
     QString str="";
     if(((c_first_offset<0)||(c_first_offset<=i))&&
        ((c_last_offset<0)||(c_last_offset>=i))) {
-      printf("0x%04X: ",i);
+      printf("| 0x%04X: ",i);
       for(int j=0;j<16;j++) {
 	if((i+j)<data.size()) {
 	  char c=0xFF&data[i+j];
 	  printf("%02X ",0xFF&c);
-	  if((c>='!')&&(c<='~')) {
+	  if((c>=' ')&&(c<='~')) {
 	    str+=c;
 	  }
 	  else {
@@ -233,11 +274,11 @@ void MainObject::dumpToHex(const QByteArray &data)
 	  str+=' ';
 	}
       }
-      printf(" | %s |\n",str.toUtf8().constData());
+      printf("| %s |\n",str.toUtf8().constData());
     }
   }
   if(c_show_ruler) {
-    printf("\n");
+    printf("------------------------------------------------------------------------------\n");
   }
 }
 
@@ -258,6 +299,21 @@ bool MainObject::Subscribe(const QHostAddress &addr,const QHostAddress &if_addr,
     return false;
   }
   return true;
+}
+
+
+unsigned MainObject::ReadIntegerArg(const QString &arg,bool *ok) const
+{
+  unsigned val=0;
+
+  if(arg.left(2).toLower()=="0x") {
+    val=arg.right(arg.length()-2).toUInt(ok,16);
+  }
+  else {
+    val=arg.toUInt(ok,10);
+  }
+
+  return val;
 }
 
 

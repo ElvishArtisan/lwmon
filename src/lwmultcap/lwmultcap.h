@@ -25,10 +25,11 @@
 
 #include <QByteArray>
 #include <QHostAddress>
+#include <QMap>
 #include <QObject>
 #include <QUdpSocket>
 
-#define LWMULTCAP_USAGE "--iface-address=<iface-addr> --mcast-address=<mcast-addr> --port=<port-num> [--show-ruler] [--first-offset=<offset>] [--last-offset=<offset>]\n\n"
+#define LWMULTCAP_USAGE "--iface-address=<iface-addr> --mcast-address=<mcast-addr> --port=<port-num> [--show-ruler] [--first-offset=<offset>] [--last-offset=<offset>] [--filter-byte=<offset>:<value>] [--filter-string=<offset>:<string>\n\n"
 
 class MainObject : public QObject
 {
@@ -47,6 +48,7 @@ class MainObject : public QObject
  private:
   bool Subscribe(const QHostAddress &addr,const QHostAddress &if_addr,
 		 QString *err_msg);
+  unsigned ReadIntegerArg(const QString &arg,bool *ok) const;
   QUdpSocket *c_socket;
   QHostAddress c_mcast_address;
   QHostAddress c_iface_address;
@@ -54,6 +56,8 @@ class MainObject : public QObject
   bool c_show_ruler;
   int c_first_offset;
   int c_last_offset;
+  QMap<unsigned,char> c_filter_bytes;
+  QMap<unsigned,QString> c_filter_strings;
 };
 
 
