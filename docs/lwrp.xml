@@ -88,6 +88,9 @@
   </citerefentry>,
   <citerefentry>
     <refentrytitle>lwcp</refentrytitle><manvolnum>1</manvolnum>
+  </citerefentry>,
+  <citerefentry>
+    <refentrytitle>lwmultcap</refentrytitle><manvolnum>1</manvolnum>
   </citerefentry>
   </para>
   </refsect1>

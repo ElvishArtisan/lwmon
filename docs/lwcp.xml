@@ -90,6 +90,9 @@
     <refentrytitle>lwmastermon</refentrytitle><manvolnum>1</manvolnum>
   </citerefentry>,
   <citerefentry>
+    <refentrytitle>lwmultcap</refentrytitle><manvolnum>1</manvolnum>
+  </citerefentry>,
+  <citerefentry>
     <refentrytitle>lwrp</refentrytitle><manvolnum>1</manvolnum>
   </citerefentry>
   </para>

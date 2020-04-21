@@ -117,6 +117,9 @@ LiveWire Source # 4165
     <refentrytitle>lwmastermon</refentrytitle><manvolnum>1</manvolnum>
   </citerefentry>,
   <citerefentry>
+    <refentrytitle>lwmultcap</refentrytitle><manvolnum>1</manvolnum>
+  </citerefentry>,
+  <citerefentry>
     <refentrytitle>lwrp</refentrytitle><manvolnum>1</manvolnum>
   </citerefentry>,
   Intro to LiveWire v2.1.1, pp 113-114
