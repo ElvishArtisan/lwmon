@@ -155,6 +155,17 @@
 
     <varlistentry>
       <term>
+	<option>--packet-limit=</option><replaceable>count</replaceable>:<replaceable>value</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Exit after displaying <replaceable>count</replaceable> packets.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
 	<option>--show-ruler=</option><replaceable>offset</replaceable>
       </term>
       <listitem>
@@ -177,6 +188,9 @@
 
   <refsect1 id='see_also'><title>See Also</title>
   <para>
+  <citerefentry>
+    <refentrytitle>lwcap</refentrytitle><manvolnum>1</manvolnum>
+  </citerefentry>,
   <citerefentry>
     <refentrytitle>lwcast</refentrytitle><manvolnum>1</manvolnum>
   </citerefentry>,

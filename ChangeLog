@@ -133,3 +133,5 @@
 	* Added a man page for lwmultcap(1).
 2020-04-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added a '--filter-source-address=' switch to lwmultcap(1).
+2020-04-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a '--packet-limit=' switch to lwmultcap(1).

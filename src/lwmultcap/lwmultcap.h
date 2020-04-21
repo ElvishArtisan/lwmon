@@ -61,6 +61,7 @@ class MainObject : public QObject
   QList<QHostAddress> c_filter_source_addresses;
   QMap<unsigned,char> c_filter_bytes;
   QMap<unsigned,QString> c_filter_strings;
+  unsigned c_packet_limit;
 };
 
 

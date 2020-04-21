@@ -46,6 +46,7 @@ MainObject::MainObject(QObject *parent)
   c_show_ruler=false;
   c_first_offset=-1;
   c_last_offset=-1;
+  c_packet_limit=0;
 
   //
   // Process command-line switches
@@ -148,6 +149,15 @@ MainObject::MainObject(QObject *parent)
     if(cmd->key(i)=="--mcast-address") {
       if(!c_mcast_address.setAddress(cmd->value(i))) {
 	fprintf(stderr,"lwmultcap: invalid multicast address\n");
+	exit(1);
+      }
+      cmd->setProcessed(i,true);
+    }
+
+    if(cmd->key(i)=="--packet-limit") {
+      c_packet_limit=ReadIntegerArg(cmd->value(i),&ok);
+      if(!ok) {
+	fprintf(stderr,"lwmultcap: invalid \"--packet_limit\" value\n");
 	exit(1);
       }
       cmd->setProcessed(i,true);
@@ -266,8 +276,12 @@ void MainObject::packetReceived(const QHostAddress &src_addr,uint16_t src_port,
     return;
   }
 
-
   dumpToHex(src_addr,src_port,data);
+  if(c_packet_limit>0) {
+    if(--c_packet_limit==0) {
+      exit(0);
+    }
+  }
 }
 
 
