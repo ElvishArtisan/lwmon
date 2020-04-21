@@ -43,6 +43,7 @@ all-local:	lwaddr.1\
                 lwcp.1\
                 lwmaster.8\
                 lwmastermon.1\
+                lwmultcap.1\
 		lwrp.1
 
 man_MANS = lwaddr.1\
@@ -51,15 +52,25 @@ man_MANS = lwaddr.1\
            lwcp.1\
            lwmaster.8\
            lwmastermon.1\
+           lwmultcap.1\
            lwrp.1
 
 EXTRA_DIST = lwaddr.1\
+             lwaddr.xml\
              lwcap.1\
+             lwcap.xml\
              lwcast.1\
+             lwcast.xml\
              lwcp.1\
+             lwcp.xml\
              lwmaster.8\
+             lwmaster.xml\
              lwmastermon.1\
-             lwrp.1
+             lwmastermon.xml\
+             lwmultcap.1\
+             lwmultcap.xml\
+             lwrp.1\
+             lwrp.xml
 
 CLEANFILES = *~
 MAINTAINERCLEANFILES = *~\

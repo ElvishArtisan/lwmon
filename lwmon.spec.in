@@ -50,6 +50,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(4755,root,root) %{_sbindir}/lwmaster
 %{_bindir}/lwmastermon
 %{_bindir}/lwmon
+%{_bindir}/lwmultcap
 %{_bindir}/lwrp
 %{_mandir}/man1/lwaddr.1.gz
 %{_mandir}/man1/lwcap.1.gz
@@ -57,6 +58,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/lwcp.1.gz
 %{_mandir}/man8/lwmaster.8.gz
 %{_mandir}/man1/lwmastermon.1.gz
+%{_mandir}/man1/lwmultcap.1.gz
 %{_mandir}/man1/lwrp.1.gz
 %{_datadir}/icons/hicolor/48x48/apps/lwmon.png
 %{_datadir}/icons/hicolor/16x16/apps/lwmon.png

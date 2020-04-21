@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+      Header
+  -->
+  <refmeta>
+    <refentrytitle>lwmultcap</refentrytitle>
+    <manvolnum>1</manvolnum>
+    <refmiscinfo class='source'>April 2020</refmiscinfo>
+    <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>lwmultcap</refname>
+    <refpurpose>Analysis utility for multicast messages</refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+	<firstname>Fred</firstname>
+	<surname>Gleason</surname>
+	<email>fredg@paravelsystems.com</email>
+      </personname>
+      <contrib>Application Author</contrib>
+    </author>
+  </info>
+
+  <!--
+      Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <cmdsynopsis>
+      <command>lwmultcap</command> <arg choice="req"><replaceable>options</replaceable></arg>
+      <sbr/>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    <command>lwmultcap</command><manvolnum>1</manvolnum>
+    is a command-line tool for analysing packets sent via multicast UDP.
+    Several options for filtering the captured data filtering are
+    available.
+  </para>
+  </refsect1>
+
+  <refsect1 id='required_arguments'><title>Required Arguments</title>
+  <variablelist>
+    <varlistentry>
+      <term>
+	<option>--iface-address=</option><replaceable>addr</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  The IPv4 address, in dotted-quad notation, of the network
+	  interface upon which to listen for multicast traffic.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--mcast-address=</option><replaceable>addr</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  The IPv4 address, in dotted-quad notation, of the multicast
+	  group from which to listen for traffic.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--port=</option><replaceable>port-num</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  The UDP port number at which to listen for traffic.
+	</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  </refsect1>
+
+  <refsect1 id='optional_arguments'><title>Optional Arguments</title>
+  <para>
+    The following arguments affect how captured data is displayed.
+  </para>
+  <variablelist>
+    <varlistentry>
+      <term>
+	<option>--first-offset=</option><replaceable>offset</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Display data only after the first <replaceable>offset</replaceable>
+	  octets received. Default is to display data starting from the start
+	  of the packet.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--filter-byte=</option><replaceable>offset</replaceable>:<replaceable>value</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Display a packet only if the byte located at
+	  <replaceable>offset</replaceable> has a value of
+	  <replaceable>value</replaceable>. This option may be given
+	  multiple times.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--filter-string=</option><replaceable>offset</replaceable>:<replaceable>str</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Display a packet only if the string <replaceable>str</replaceable>,
+	  starting at <replaceable>offset</replaceable> is found.
+	  This option may be given multiple times.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--last-offset=</option><replaceable>offset</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Display data only up to the <replaceable>offset</replaceable>
+	  number of octets received. Default is to display data to the
+	  end of the packet.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--show-ruler=</option><replaceable>offset</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Display a header and footer around the data for each packet
+	  displayed. Default is to display no headers/footers.
+	</para>
+      </listitem>
+    </varlistentry>
+
+  </variablelist>
+  </refsect1>
+
+
+  <refsect1 id='author'><title>Author</title>
+  <para>
+    Fred Gleason &lt;fredg@paravelsystems.com&gt;
+  </para>
+  </refsect1>
+
+  <refsect1 id='see_also'><title>See Also</title>
+  <para>
+  <citerefentry>
+    <refentrytitle>lwcast</refentrytitle><manvolnum>1</manvolnum>
+  </citerefentry>,
+  <citerefentry>
+    <refentrytitle>lwcp</refentrytitle><manvolnum>1</manvolnum>
+  </citerefentry>,
+  <citerefentry>
+    <refentrytitle>lwmastermon</refentrytitle><manvolnum>1</manvolnum>
+  </citerefentry>,
+  <citerefentry>
+    <refentrytitle>lwrp</refentrytitle><manvolnum>1</manvolnum>
+  </citerefentry>,
+  Intro to LiveWire v2.1.1, pp 113-114
+  </para>
+  </refsect1>
+</refentry>
+

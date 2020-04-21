@@ -27,7 +27,7 @@ MOC = @QT4_MOC@
 moc_%.cpp:	%.h
 	@MOC@ $< -o $@
 
-noinst_PROGRAMS = lwmultcap
+bin_PROGRAMS = lwmultcap
 
 dist_lwmultcap_SOURCES = cmdswitch.cpp cmdswitch.h\
                          lwmultcap.cpp lwmultcap.h
