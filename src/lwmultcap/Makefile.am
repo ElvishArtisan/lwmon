@@ -2,7 +2,7 @@
 ##
 ## Makefile for lwmultcap(1)
 ##
-## (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2020-2021 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -20,12 +20,14 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing @QT4_CFLAGS@
-MOC = @QT4_MOC@
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -std=c++11 -fPIC -Wno-strict-aliasing @QT5_CFLAGS@
+MOC = @QT_MOC@
+LUPDATE = @QT_LUPDATE@
+LRELEASE = @QT_LRELEASE@
 
 # The dependency for qt's Meta Object Compiler (moc)
 moc_%.cpp:	%.h
-	@MOC@ $< -o $@
+	$(MOC) $< -o $@
 
 bin_PROGRAMS = lwmultcap
 
@@ -34,7 +36,7 @@ dist_lwmultcap_SOURCES = cmdswitch.cpp cmdswitch.h\
 
 nodist_lwmultcap_SOURCES = moc_lwmultcap.cpp
 
-lwmultcap_LDADD = @QT4_LIBS@
+lwmultcap_LDADD = @QT5_LIBS@
 
 CLEANFILES = *~\
              moc_*\

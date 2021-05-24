@@ -30,7 +30,7 @@
 MainWidget::MainWidget(QWidget *parent)
   : QMainWindow(parent)
 {
-  CmdSwitch *cmd=new CmdSwitch(qApp->argc(),qApp->argv(),"lwcast",LWCAST_USAGE);
+  CmdSwitch *cmd=new CmdSwitch("lwcast",LWCAST_USAGE);
   for(unsigned i=0;i<cmd->keys();i++) {
     if(!cmd->processed(i)) {
       fprintf(stderr,"lwcast: unknown option\n");

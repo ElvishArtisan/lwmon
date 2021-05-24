@@ -40,7 +40,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   lw_colorize=true;
   lw_mode=SetMode();
-  CmdSwitch *cmd=new CmdSwitch(qApp->argc(),qApp->argv(),"lwmon",LWMON_USAGE);
+  CmdSwitch *cmd=new CmdSwitch("lwmon",LWMON_USAGE);
   if(cmd->keys()==0) {
     fprintf(stderr,"%s\n",LWMON_USAGE);
     exit(256);
@@ -376,7 +376,7 @@ MainWidget::Mode MainWidget::SetMode() const
 {
   MainWidget::Mode mode=LWMON_DEFAULT_MODE;
 
-  QStringList f0=QString(qApp->argv()[0]).split("/");
+  QStringList f0=qApp->arguments().at(0).split("/");
   if(f0.back()=="lwcp") {
     mode=MainWidget::Lwcp;
   }

@@ -139,3 +139,5 @@
 	* Updated man page cross-references.
 2021-05-24 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'LOCAL_PREFIX' variable from 'configure.ac'.
+2021-05-24 Fred Gleason <fredg@paravelsystems.com>
+	* Ported the package to Qt5.

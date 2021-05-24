@@ -50,11 +50,17 @@ esac
 AC_ARG_ENABLE(docbook,[  --disable-docbook       disable building of documentation],[DOCBOOK_DISABLED=yes],[])
 
 #
-# Check for Qt (Mandatory)
+# Check for Qt5 (Mandatory)
 #
-PKG_CHECK_MODULES(QT4,QtGui QtCore QtNetwork,[],[AC_MSG_ERROR([*** Qt4 not found ***])])
-AC_CHECK_PROG(MOC_NAME,moc-qt4,[moc-qt4],[moc])
-AC_SUBST(MOC,$MOC_NAME)
+PKG_CHECK_MODULES(QT5,Qt5Core Qt5Widgets Qt5Gui Qt5Network,,[AC_MSG_ERROR([*** Qt5 not found ***])])
+AC_CHECK_PROG(MOC_NAME,moc-qt5,[moc-qt5],[moc])
+AC_SUBST(QT_MOC,$MOC_NAME)
+
+AC_CHECK_PROG(LUPDATE_NAME,lupdate-qt5,[lupdate-qt5],[lupdate])
+AC_SUBST(QT_LUPDATE,$LUPDATE_NAME)
+
+AC_CHECK_PROG(LRELEASE_NAME,lrelease-qt5,[lrelease-qt5],[lrelease])
+AC_SUBST(QT_LRELEASE,$LRELEASE_NAME)
 
 #
 # Check for libsndfile (mandatory>
@@ -84,19 +90,6 @@ fi
 #
 AR_GET_DISTRO()
 AC_SUBST(DISTRO,$ar_gcc_distro)
-
-#
-# Linux vs. OS X Setup
-#
-#if test $ar_gcc_distro = "apple" ; then
-#  AC_SUBST(GUILIBS,"")
-#  AC_SUBST(GUIFLAGS,"-framework QtCore -framework QtNetwork -framework QtGui")
-#  AC_DEFINE(OSX)
-#else
-#  AC_SUBST(GUILIBS,"-lQtCore -lQtNetwork -lQtGui")
-#  AC_SUBST(GUIFLAGS,"")
-#  AC_DEFINE(LINUX)
-#fi
 
 #
 # Configure RPM Build

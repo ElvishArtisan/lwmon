@@ -51,8 +51,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Process command-line switches
   //
-  CmdSwitch *cmd=
-    new CmdSwitch(qApp->argc(),qApp->argv(),"lwmultcap",LWMULTCAP_USAGE);
+  CmdSwitch *cmd=new CmdSwitch("lwmultcap",LWMULTCAP_USAGE);
   for(unsigned i=0;i<cmd->keys();i++) {
     if(cmd->key(i)=="--filter-source-address") {
       QHostAddress addr;

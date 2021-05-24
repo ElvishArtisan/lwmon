@@ -2,7 +2,7 @@
 ##
 ## Makefile for lwmon(1)
 ##
-## (C) Copyright 2015 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2015-2021 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -20,12 +20,14 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing @QT4_CFLAGS@
-MOC = @QT4_MOC@
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -std=c++11 -fPIC -Wno-strict-aliasing @QT5_CFLAGS@
+MOC = @QT_MOC@
+LUPDATE = @QT_LUPDATE@
+LRELEASE = @QT_LRELEASE@
 
 # The dependency for qt's Meta Object Compiler (moc)
 moc_%.cpp:	%.h
-	@MOC@ $< -o $@
+	$(MOC) $< -o $@
 
 install-exec-am:	
 	mkdir -p $(DESTDIR)@prefix@/bin
@@ -56,7 +58,7 @@ nodist_lwmon_SOURCES = moc_lineedit.cpp\
                        moc_lwmon.cpp\
                        moc_statuswidget.cpp
 
-lwmon_LDADD = @QT4_LIBS@
+lwmon_LDADD = @QT5_LIBS@
 
 CLEANFILES = *~\
              moc_*\

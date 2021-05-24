@@ -58,7 +58,7 @@ MainObject::MainObject(QObject *parent)
 
   main_sndfile=NULL;
 
-  CmdSwitch *cmd=new CmdSwitch(qApp->argc(),qApp->argv(),"lwcap",LWCAP_USAGE);
+  CmdSwitch *cmd=new CmdSwitch("lwcap",LWCAP_USAGE);
   for(unsigned i=0;i<cmd->keys();i++) {
     if(cmd->key(i)=="--channels") {
       channels=cmd->value(i).toUInt(&ok);
