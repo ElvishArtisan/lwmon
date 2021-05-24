@@ -23,6 +23,7 @@
 #include <sys/types.h>
 
 #include <QApplication>
+#include <QHostAddress>
 #include <QMessageBox>
 #include <QStringList>
 
@@ -510,11 +511,13 @@ void MainWidget::PrintAddr(unsigned src_num,MainWidget::SignalType type) const
 {
   int o3=src_num/256;
   int o4=src_num%256;
-  char ipstr[9];
-  char backipstr[9];
-
-  snprintf(ipstr,8,"%d.%d",o3,o4);
-  snprintf(backipstr,8,"%d.%d",128+o3,o4);
+  QHostAddress stereo_addr("239.192.0.0");
+  stereo_addr=QHostAddress(stereo_addr.toIPv4Address()+src_num);
+  QHostAddress surround_addr("239.196.0.0");
+  surround_addr=QHostAddress(surround_addr.toIPv4Address()+32768+src_num);
+  QHostAddress backfeed_addr("239.193.0.0");
+  backfeed_addr=QHostAddress(backfeed_addr.toIPv4Address()+src_num);
+  
   printf("LiveWire Source # %u\n",src_num);
   if(type==MainWidget::Stereo) {
     printf("   *");
@@ -522,24 +525,25 @@ void MainWidget::PrintAddr(unsigned src_num,MainWidget::SignalType type) const
   else {
     printf("    ");
   }
-  printf("Stereo Address: 239.192.%-7s  01:00:5e:00:%02x:%02x\n",
-	 ipstr,o3,o4);
+  printf("Stereo Address: %-15s  01:00:5e:00:%02x:%02x\n",
+	 stereo_addr.toString().toUtf8().constData(),o3,o4);
   if(type==MainWidget::Surround) {
     printf(" *");
   }
   else {
     printf("  ");
   }
-  printf("Surround Address: 239.196.%-7s  01:00:5e:04:%02x:%02x\n",
-	 backipstr,128+o3,o4);
+  printf("Surround Address: %-15s  01:00:5e:04:%02x:%02x\n",
+	 surround_addr.toString().toUtf8().constData(),128+o3,o4);
   if(type==MainWidget::Backfeed) {
     printf(" *");
   }
   else {
     printf("  ");
   }
-  printf("Backfeed Address: 239.193.%-7s  01:00:5e:01:%02x:%02x\n",
-	 ipstr,o3,o4);
+  printf("Backfeed Address: %-15s  01:00:5e:01:%02x:%02x\n",
+	 backfeed_addr.toString().toUtf8().constData(),o3,o4);
+
   exit(0);
 }
 
