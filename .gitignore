@@ -17,6 +17,7 @@
 .deps
 aclocal.m4
 autom4te.cache
+build_debs.sh
 compile
 config.log
 config.status
