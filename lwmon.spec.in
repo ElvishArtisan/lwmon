@@ -1,7 +1,7 @@
 Name:		lwmon
 Version:	@VERSION@
 Release:	1%{?dist}
-Summary:	Monitor for LiveWire lwcp and lwrp protocols
+Summary:	Monitoring tools for Livewire
 Group:		Development/Tools
 License:	GPLv2
 URL:		http://github.com/ElvishArtisan/lwmon
@@ -11,10 +11,12 @@ BuildRoot: 	/var/tmp/%{name}-@VERSION@
 
 
 %description
-Lwmon is a monitor for inspecting and originating LiveWire Control Protocol
-(LWCP) and LiveWire Routing Protocol (LWRP) commands on a LiveWire network.
+This package contains a set of utilities for monitoring and troubleshooting
+the health of an Axia Livewire installation. It include
+lwrp(1) and lwcp(1), utilities for inspecting and originating Livewire
+Routing protocol ('lwrp') and Livewire Control Protocol ('lwcp') messages.
 
-More information about LiveWire can be found at http://www.axiaaudio.com/
+More information about Livewire can be found at http://www.axiaaudio.com/
 
 
 %prep
@@ -69,6 +71,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon May 24 2021 Fred Gleason <fredg@paravelsystems.com>
+-- Updated the package 'summary' and 'description' fields. 
 * Wed Apr 19 2017 Fred Gleason <fredg@paravelsystems.com>
 -- Added lwmastermon(1).
 * Mon Feb 13 2017 Fred Gleason <fredg@paravelsystems.com>

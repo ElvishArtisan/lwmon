@@ -1,0 +1,17 @@
+Source: lwmon
+Section: unknown
+Priority: optional
+Maintainer: Fred Gleason <fredg@paravelsystems.com>
+Build-Depends: debhelper-compat (= 12), autotools-dev
+Standards-Version: 4.4.1
+
+Package: lwmon
+Architecture: any
+Depends:  ${misc:Depends}
+Description: Monitoring tools for Livewire
+ This package contains a set of utilities for monitoring and troubleshooting
+ the health of an Axia Livewire installation. It include
+ lwrp(1) and lwcp(1), utilities for inspecting and originating Livewire
+ Routing protocol ('lwrp') and Livewire Control Protocol ('lwcp') messages.
+ .
+ More information about Livewire can be found at http://www.axiaaudio.com.

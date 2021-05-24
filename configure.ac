@@ -109,6 +109,8 @@ else
 fi 
 
 AC_CONFIG_FILES([ \
+    debian/Makefile \
+    debian/source/Makefile \
     docs/Makefile \
     icons/Makefile \
     src/lwcap/Makefile \
@@ -120,9 +122,11 @@ AC_CONFIG_FILES([ \
     src/Makefile \
     xdg/Makefile \
     lwmon.spec \
+    build_debs.sh \
     make_dmg.sh \
     Makefile ])
 AC_OUTPUT()
+chmod 755 build_debs.sh
 chmod 755 make_dmg.sh
 
 AC_MSG_NOTICE()

@@ -36,11 +36,18 @@ sbin_PROGRAMS = lwmaster
 dist_lwmaster_SOURCES = lwmaster.c lwmaster.h
 
 CLEANFILES = *~\
-             moc_*\
+             *.buildinfo\
+             *.changes\
+             *.ddeb\
+             *.deb\
+             *.dsc\
+             *ilk\
              *.obj\
              *.idb\
              *.pdb\
-             *ilk
+             *.tar.gz\
+             *.tar.xz\
+             moc_*
 
 MAINTAINERCLEANFILES = *~\
                        Makefile.in

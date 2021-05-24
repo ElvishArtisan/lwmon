@@ -145,3 +145,5 @@
 	* Removed an unnecessary Switchyard dependency.
 2021-05-24 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'compile' to the `MAINTAINERCLEAN` rule.
+2021-05-24 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'make deb' target.

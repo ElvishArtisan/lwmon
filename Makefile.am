@@ -23,9 +23,12 @@
 if DOCBOOK_AM
   DOCBOOK_AM_OPT = docs
 endif
-SUBDIRS = $(DOCBOOK_AM_OPT) icons\
+SUBDIRS = debian $(DOCBOOK_AM_OPT) icons\
           src\
           xdg
+
+deb:	dist
+	./build_debs.sh
 
 rpm:	dist
 	cp lwmon-$(VERSION).tar.gz $(HOME)/rpmbuild/SOURCES/
@@ -42,6 +45,7 @@ pkg:	all
 	./make_pkg.sh
 
 EXTRA_DIST = autogen.sh\
+             build_debs.sh.in\
              get_distro.pl\
              get_target.sh\
              lwmon.spec.in\
@@ -59,7 +63,8 @@ CLEANFILES = *~\
              *.tgz\
              *.zip
 
-DISTCLEANFILES = lwmon.spec\
+DISTCLEANFILES = build_debs.sh\
+                 lwmon.spec\
                  config.guess\
                  config.sub\
                  ltmain.sh
