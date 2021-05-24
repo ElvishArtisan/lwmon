@@ -4,7 +4,7 @@ dnl Autoconf configuration
 dnl
 dnl Use autoconf to process this into a configure script
 dnl
-dnl   (C) Copyright 2015-2020 Fred Gleason <fredg@paravelsystems.com>
+dnl   (C) Copyright 2015-2021 Fred Gleason <fredg@paravelsystems.com>
 dnl
 dnl   This program is free software; you can redistribute it and/or modify
 dnl   it under the terms of the GNU General Public License version 2 as
@@ -24,16 +24,6 @@ AC_INIT(lwmon,m4_esyscmd(cat PACKAGE_VERSION))
 AM_INIT_AUTOMAKE
 AC_SUBST(RPM_RELEASE,1)
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
-
-#
-# Some Fully Resolved Install Paths
-# (for the packaging system and friends)
-#
-if test ${prefix} = "NONE" ; then
-  AC_SUBST(LOCAL_PREFIX,/usr/local)
-else
-  AC_SUBST(LOCAL_PREFIX,${prefix})
-fi
 
 #
 # Basic Compiler Checks

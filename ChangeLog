@@ -137,3 +137,5 @@
 	* Added a '--packet-limit=' switch to lwmultcap(1).
 2020-04-21 Fred Gleason <fredg@paravelsystems.com>
 	* Updated man page cross-references.
+2021-05-24 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'LOCAL_PREFIX' variable from 'configure.ac'.
