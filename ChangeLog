@@ -143,3 +143,5 @@
 	* Ported the package to Qt5.
 2021-05-24 Fred Gleason <fredg@paravelsystems.com>
 	* Removed an unnecessary Switchyard dependency.
+2021-05-24 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'compile' to the `MAINTAINERCLEAN` rule.
