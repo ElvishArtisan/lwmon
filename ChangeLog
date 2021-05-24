@@ -141,3 +141,5 @@
 	* Removed the 'LOCAL_PREFIX' variable from 'configure.ac'.
 2021-05-24 Fred Gleason <fredg@paravelsystems.com>
 	* Ported the package to Qt5.
+2021-05-24 Fred Gleason <fredg@paravelsystems.com>
+	* Removed an unnecessary Switchyard dependency.
