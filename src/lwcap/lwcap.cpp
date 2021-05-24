@@ -212,7 +212,9 @@ void MainObject::WritePcm24(const char *data,int bytes)
   int8_t pcm[1440*4];
 
   if(main_sndfile==NULL) {
-    write(1,data,bytes);
+    if(write(1,data,bytes)!=1) {
+      fprintf(stderr,"lwcap: write to stdout failed\n");
+    }
   }
   else {
     for(int i=0;i<(bytes/3);i++) {

@@ -147,3 +147,5 @@
 	* Added 'compile' to the `MAINTAINERCLEAN` rule.
 2021-05-24 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'make deb' target.
+2021-05-24 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up a build warning in lwcap(1).
