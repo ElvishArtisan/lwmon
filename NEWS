@@ -1,6 +1,16 @@
 This is the NEWS file for lwmon.
 
 ------------------------------------------------------------------------------
+v1.3.0 - 20 September 2021
+
+Changes:
+   Multicast Port Monitor. Added lwmultcap(1), a utility for monitoring
+   and printing multicast data. See the lwmultcap(1) man page for
+   details.
+
+   Various bugfixes. See the ChangeLog for details.
+
+------------------------------------------------------------------------------
 v1.2.2 - 6 March 2020
 
 Changes:

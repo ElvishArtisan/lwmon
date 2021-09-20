@@ -151,3 +151,5 @@
 	* Cleaned up a build warning in lwcap(1).
 2021-05-24 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up a build warning in lwaddr(1).
+2021-09-20 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 1.3.0.
