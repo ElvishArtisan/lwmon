@@ -287,9 +287,16 @@ void MainObject::packetReceived(const QHostAddress &src_addr,uint16_t src_port,
 void MainObject::dumpToHex(const QHostAddress &src_addr,uint16_t src_port,
 			   const QByteArray &data)
 {
+  QHostAddress addr(src_addr.toIPv4Address());  // Strip out IPv6 attributes
+  QString recv_from_str=
+    addr.toString()+QString::asprintf(":%d",0xFFFF&src_port);
+  QString size_str=QString::asprintf("%d [0x%04X]",data.size(),data.size());
+
   if(c_show_ruler) {
     printf("------------------------------------------------------------------------------\n");
-    printf("| Received from: %s:%d             Packet size: %5d [0x%04X] |\n",src_addr.toString().toUtf8().constData(),0xFFFF&src_port,data.size(),data.size());
+    printf("| Received from: %-22s          Packet size: %-14s |\n",
+	   recv_from_str.toUtf8().constData(),
+	   size_str.toUtf8().constData());
     printf("| Offset  0- 1- 2- 3- 4- 5- 6- 7- 8- 9- A- B- C- D- E- F- | 0123456789ABCDEF |\n");
     printf("----------------------------------------------------------|------------------|\n");
   }

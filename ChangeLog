@@ -153,3 +153,6 @@
 	* Cleaned up a build warning in lwaddr(1).
 2021-09-20 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 1.3.0.
+2021-09-22 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed formatting errors in the 'ruler' portion of the output
+	from lwmultcap(1).
