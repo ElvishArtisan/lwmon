@@ -1,6 +1,12 @@
 This is the NEWS file for lwmon.
 
 ------------------------------------------------------------------------------
+v1.3.1 - 23 September 2021
+
+Changes:
+   Fixed package generation on Debian-ish distributions.
+
+------------------------------------------------------------------------------
 v1.3.0 - 20 September 2021
 
 Changes:
