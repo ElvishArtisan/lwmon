@@ -156,3 +156,6 @@
 2021-09-22 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed formatting errors in the 'ruler' portion of the output
 	from lwmultcap(1).
+2021-09-23 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'make deb' target to work properly when updating
+	the package version.

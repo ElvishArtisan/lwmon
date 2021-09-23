@@ -23,7 +23,12 @@
 SUBDIRS = source
 
 EXTRA_DIST = changelog\
+             changelog.src\
              control\
+             control.src\
              copyright\
              postinst\
              rules
+
+MAINTAINERCLEANFILES = changelog\
+                       control

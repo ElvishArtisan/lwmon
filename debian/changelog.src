@@ -1,0 +1,5 @@
+lwmon (@VERSION@-1) stable; urgency=medium
+
+  * Production release (see ChangeLog for details)
+
+ -- Fred Gleason <fredg@paravelsystems.com>  @DATESTAMP@

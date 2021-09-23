@@ -23,7 +23,8 @@
 if DOCBOOK_AM
   DOCBOOK_AM_OPT = docs
 endif
-SUBDIRS = debian $(DOCBOOK_AM_OPT) icons\
+SUBDIRS = helpers \
+          debian $(DOCBOOK_AM_OPT) icons\
           src\
           xdg
 
