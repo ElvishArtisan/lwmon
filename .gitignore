@@ -29,6 +29,8 @@ Makefile
 Makefile.in
 missing
 moc_*
+debian/changelog
+debian/control
 src/lwcap/lwcap
 src/lwcast/lwcast
 src/lwmaster/lwmaster
