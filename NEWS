@@ -1,6 +1,12 @@
 This is the NEWS file for lwmon.
 
 ------------------------------------------------------------------------------
+v1.3.2 - 26 September 2021
+
+Changes:
+   Fixed build problems in the 'make rpm' target.
+
+------------------------------------------------------------------------------
 v1.3.1 - 23 September 2021
 
 Changes:

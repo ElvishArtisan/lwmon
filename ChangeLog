@@ -163,3 +163,5 @@
 	* Incremented the package version to 1.3.1.
 2021-09-26 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed the build dependencies for Qt5 on the 'make rpm' target.
+2021-09-23 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 1.3.2.
