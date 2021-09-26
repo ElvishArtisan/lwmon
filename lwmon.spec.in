@@ -6,7 +6,7 @@ Group:		Development/Tools
 License:	GPLv2
 URL:		http://github.com/ElvishArtisan/lwmon
 Source0:	%{name}-%{version}.tar.gz
-BuildRequires:	qt-devel
+BuildRequires:	qt5-qtbase-devel qt5-linguist
 BuildRoot: 	/var/tmp/%{name}-@VERSION@
 
 
