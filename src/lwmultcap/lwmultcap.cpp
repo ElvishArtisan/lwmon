@@ -2,7 +2,7 @@
 //
 // Print multicast messages from a specified address and port
 //
-//   (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -65,7 +65,7 @@ MainObject::MainObject(QObject *parent)
     }
 
     if(cmd->key(i)=="--filter-byte") {
-      QStringList f0=cmd->value(i).split(":",QString::KeepEmptyParts);
+      QStringList f0=cmd->value(i).split(":",Qt::KeepEmptyParts);
       if(f0.size()!=2) {
 	fprintf(stderr,"lwmultcap: invalid \"--filter-byte\" argument\n");
 	exit(1);
@@ -85,7 +85,7 @@ MainObject::MainObject(QObject *parent)
     }
 
     if(cmd->key(i)=="--filter-string") {
-      QStringList f0=cmd->value(i).split(":",QString::KeepEmptyParts);
+      QStringList f0=cmd->value(i).split(":",Qt::KeepEmptyParts);
       if(f0.size()<2) {
 	fprintf(stderr,"lwmultcap: invalid \"--filter-string\" argument\n");
 	exit(1);

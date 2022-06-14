@@ -2,7 +2,7 @@
 //
 // Monitor and display the location of the Livewire master node
 //
-//   (C) Copyright 2017-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -45,7 +45,7 @@ MainWidget::MainWidget(QWidget *parent)
   mon_label->setFont(bold_font);
   mon_label->setAlignment(Qt::AlignCenter|Qt::AlignVCenter);
   QFontMetrics fm(mon_label->font());
-  mon_min_width=fm.width(mon_label->text())+20;
+  mon_min_width=fm.horizontalAdvance(mon_label->text())+20;
 
   mon_value_label=new QLabel(this);
   mon_value_label->setAlignment(Qt::AlignCenter|Qt::AlignVCenter);
@@ -69,7 +69,7 @@ QSize MainWidget::sizeHint() const
 void MainWidget::updateData()
 {
   QProcess *proc=new QProcess(this);
-  proc->start("lwmaster",QIODevice::ReadOnly);
+  proc->start("lwmaster",QStringList(),QIODevice::ReadOnly);
   proc->waitForFinished();
   if(proc->exitStatus()!=QProcess::NormalExit) {
     SetLabel(tr("*** ERROR ***"),true);
@@ -143,7 +143,7 @@ void MainWidget::lwrpReadyReadData()
       //
       // Process response
       //
-      f0=QString::fromUtf8(mon_lwrp_accum).split(" ",QString::SkipEmptyParts);
+      f0=QString::fromUtf8(mon_lwrp_accum).split(" ",Qt::SkipEmptyParts);
       for(int j=0;j<(f0.size()-1);j++) {
 	if((f0.at(j).toLower()=="hostname")&&
 	   (!f0.at(j+1).trimmed().isEmpty())) {
@@ -199,7 +199,7 @@ void MainWidget::SetLabel(const QString &str,bool error)
   }
 
   QFontMetrics fm(mon_value_label->font());
-  mon_width=fm.width(mon_value_label->text())+20;
+  mon_width=fm.horizontalAdvance(mon_value_label->text())+20;
   if(mon_width<mon_min_width) {
     mon_width=mon_min_width;
   }

@@ -2,7 +2,7 @@
 //
 // LiveWire Protocol monitor
 //
-//   (C) Copyright 2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2015-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -240,7 +240,7 @@ void MainWidget::tcpConnectedData()
     }
     else {
       setWindowTitle(tr("LWCP Monitor")+" - "+lw_hostname+
-		     QString().sprintf(":%u",lw_port));
+		     QString::asprintf(":%u",lw_port));
     }
     break;
 
@@ -250,7 +250,7 @@ void MainWidget::tcpConnectedData()
     }
     else {
       setWindowTitle(tr("LWRP Monitor")+" - "+lw_hostname+
-		     QString().sprintf(":%u",lw_port));
+		     QString::asprintf(":%u",lw_port));
     }
     break;
 
@@ -311,7 +311,7 @@ void MainWidget::tcpErrorData(QAbstractSocket::SocketError err)
     break;
 
   default:
-    err_text=tr("Network error")+QString().sprintf(" %u ",err)+tr("received");
+    err_text=tr("Network error")+QString::asprintf(" %u ",err)+tr("received");
     break;
   }
   switch(lw_mode) {

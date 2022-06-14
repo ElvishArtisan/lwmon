@@ -2,7 +2,7 @@
 //
 // Process Rivendell Command-Line Switches
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -47,7 +47,7 @@ CmdSwitch::CmdSwitch(const QString &modname,const QString &usage)
     if(value=="-d") {
       switch_debug=true;
     }
-    QStringList f0=value.split("=",QString::KeepEmptyParts);
+    QStringList f0=value.split("=",Qt::KeepEmptyParts);
     if(f0.size()>=2) {
       if(f0.at(0).left(1)=="-") {
 	switch_keys.push_back(f0.at(0));
@@ -95,7 +95,7 @@ CmdSwitch::CmdSwitch(int argc,char *argv[],const QString &modname,
     if(value=="-d") {
       switch_debug=true;
     }
-    QStringList f0=value.split("=",QString::KeepEmptyParts);
+    QStringList f0=value.split("=",Qt::KeepEmptyParts);
     if(f0.size()>=2) {
       if(f0.at(0).left(1)=="-") {
 	switch_keys.push_back(f0.at(0));
