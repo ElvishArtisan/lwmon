@@ -172,3 +172,5 @@
 	be generated without library dependencies.
 2022-06-30 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed regressions that caused the build to break under Qt 5.9.
+2022-06-30 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 1.3.3.
