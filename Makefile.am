@@ -57,10 +57,15 @@ EXTRA_DIST = autogen.sh\
              uninstall_osx.sh
 
 CLEANFILES = *~\
+             *.buildinfo\
+             *.changes\
+             *.ddeb\
              *.deb\
+             *.dsc\
              *.mo\
              *.rpm\
              *.tar.gz\
+             *.tar.xz\
              *.tgz\
              *.zip
 

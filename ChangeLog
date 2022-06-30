@@ -167,3 +167,6 @@
 	* Incremented the package version to 1.3.2.
 2022-06-14 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up various build warnings.
+2022-06-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the build system that caused the DEB package to
+	be generated without library dependencies.

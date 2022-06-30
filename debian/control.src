@@ -1,13 +1,14 @@
 Source: lwmon
-Section: unknown
+Section: sound
 Priority: optional
 Maintainer: Fred Gleason <fredg@paravelsystems.com>
 Build-Depends: debhelper-compat (= 12), autotools-dev
 Standards-Version: 4.4.1
+Homepage: https://github.com/ElvishArtisan/lwmon
 
 Package: lwmon
 Architecture: any
-Depends:  ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Monitoring tools for Livewire
  This package contains a set of utilities for monitoring and troubleshooting
  the health of an Axia Livewire installation. It includes
