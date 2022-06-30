@@ -65,7 +65,7 @@ MainObject::MainObject(QObject *parent)
     }
 
     if(cmd->key(i)=="--filter-byte") {
-      QStringList f0=cmd->value(i).split(":",Qt::KeepEmptyParts);
+      QStringList f0=cmd->value(i).split(":",QString::KeepEmptyParts);
       if(f0.size()!=2) {
 	fprintf(stderr,"lwmultcap: invalid \"--filter-byte\" argument\n");
 	exit(1);
@@ -85,7 +85,7 @@ MainObject::MainObject(QObject *parent)
     }
 
     if(cmd->key(i)=="--filter-string") {
-      QStringList f0=cmd->value(i).split(":",Qt::KeepEmptyParts);
+      QStringList f0=cmd->value(i).split(":",QString::KeepEmptyParts);
       if(f0.size()<2) {
 	fprintf(stderr,"lwmultcap: invalid \"--filter-string\" argument\n");
 	exit(1);

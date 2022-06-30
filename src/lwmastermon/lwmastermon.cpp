@@ -45,7 +45,7 @@ MainWidget::MainWidget(QWidget *parent)
   mon_label->setFont(bold_font);
   mon_label->setAlignment(Qt::AlignCenter|Qt::AlignVCenter);
   QFontMetrics fm(mon_label->font());
-  mon_min_width=fm.horizontalAdvance(mon_label->text())+20;
+  mon_min_width=fm.width(mon_label->text())+20;
 
   mon_value_label=new QLabel(this);
   mon_value_label->setAlignment(Qt::AlignCenter|Qt::AlignVCenter);
@@ -143,7 +143,7 @@ void MainWidget::lwrpReadyReadData()
       //
       // Process response
       //
-      f0=QString::fromUtf8(mon_lwrp_accum).split(" ",Qt::SkipEmptyParts);
+      f0=QString::fromUtf8(mon_lwrp_accum).split(" ",QString::SkipEmptyParts);
       for(int j=0;j<(f0.size()-1);j++) {
 	if((f0.at(j).toLower()=="hostname")&&
 	   (!f0.at(j+1).trimmed().isEmpty())) {
@@ -199,7 +199,7 @@ void MainWidget::SetLabel(const QString &str,bool error)
   }
 
   QFontMetrics fm(mon_value_label->font());
-  mon_width=fm.horizontalAdvance(mon_value_label->text())+20;
+  mon_width=fm.width(mon_value_label->text())+20;
   if(mon_width<mon_min_width) {
     mon_width=mon_min_width;
   }

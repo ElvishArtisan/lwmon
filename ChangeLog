@@ -170,3 +170,5 @@
 2022-06-30 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the build system that caused the DEB package to
 	be generated without library dependencies.
+2022-06-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed regressions that caused the build to break under Qt 5.9.
