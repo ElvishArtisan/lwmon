@@ -1,6 +1,13 @@
 This is the NEWS file for lwmon.
 
 ------------------------------------------------------------------------------
+v1.3.4 - 14 November 2022
+
+Changes:
+   Fixed a bug in lwmaster(8) that could cause false positive detection
+   of a Livewire master clock.
+
+------------------------------------------------------------------------------
 v1.3.3 - 30 June 2022
 
 Changes:

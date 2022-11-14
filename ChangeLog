@@ -177,3 +177,5 @@
 2022-11-14 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in lwmaster(8) that could cause false positive
 	indications.
+2022-11-14 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 1.3.4.
