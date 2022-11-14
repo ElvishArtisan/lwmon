@@ -50,7 +50,9 @@ int GetAddress(int dl_sock)
   struct pollfd pfd[1];
   char data[1501];
   ssize_t n;
+  uint8_t proto=0;
   uint32_t dst_addr=0;
+  uint16_t udp_port=0;
   struct in_addr node_addr;
   char node_str[INET_ADDRSTRLEN];
 
@@ -92,9 +94,13 @@ int GetAddress(int dl_sock)
     if((pfd[0].revents&POLLIN)!=0) {
       if((n=recv(dl_sock,data,1500,0))>=0) {
 	if(n==MASTER_MCAST_PACKET_LENGTH) {
+	  proto=0xff&data[39];
 	  dst_addr=((0xff&data[30])<<24)+((0xff&data[31])<<16)+
 	    ((0xff&data[32])<<8)+(0xff&data[33]);
-	  if(dst_addr==global_master_mcast_address) {
+	  udp_port=((0xff&data[34])<<8)+(0xff&data[35]);
+	  if((proto=17)&&  // UDP
+	     (dst_addr==global_master_mcast_address)&&
+	     (udp_port==7000)) {
 	    memset(&node_addr,0,sizeof(node_addr));
 	    node_addr.s_addr=((0xff&data[29])<<24)+  // Network byte order!
 	      ((0xff&data[28])<<16)+
