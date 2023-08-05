@@ -151,7 +151,9 @@ void MainWidget::lwrpReadyReadData()
 	}
       }
       mon_lwrp_accum.clear();
-      mon_lwrp_socket->disconnectFromHost();
+      if(mon_lwrp_socket!=NULL) {
+	mon_lwrp_socket->disconnectFromHost();
+      }
       break;
 
     default:
