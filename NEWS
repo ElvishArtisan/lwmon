@@ -1,6 +1,13 @@
 This is the NEWS file for lwmon.
 
 ------------------------------------------------------------------------------
+v1.3.5 - 5 August 2023
+
+Changes:
+   Fixed a bug in lwmastermon(1) that could cause segfaults when interacting
+   with an xNode.
+
+------------------------------------------------------------------------------
 v1.3.4 - 14 November 2022
 
 Changes:

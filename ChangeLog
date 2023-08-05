@@ -182,3 +182,5 @@
 2023-08-05 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in lwmastermon(1) that could cause a segfault when
 	interacting with an xnode.
+2023-08-05 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 1.3.5.
