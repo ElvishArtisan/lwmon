@@ -184,3 +184,5 @@
 	interacting with an xnode.
 2023-08-05 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 1.3.5.
+2023-08-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added a udpmon(1) utility.

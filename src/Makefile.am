@@ -2,7 +2,7 @@
 ##
 ## Automake.am for lwmon src/
 ##
-##   (C) Copyright 2017-2020 Fred Gleason <fredg@paravelsystems.com>
+##   (C) Copyright 2017-2023 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License as
@@ -25,7 +25,8 @@ SUBDIRS = lwcap\
           lwmaster\
           lwmastermon\
           lwmon\
-          lwmultcap
+          lwmultcap\
+          udpmon
 
 CLEANFILES = *~\
              *.idb\
