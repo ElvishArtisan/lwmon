@@ -37,5 +37,6 @@ src/lwmaster/lwmaster
 src/lwmastermon/lwmastermon
 src/lwmon/lwmon
 src/lwmultcap/lwmultcap
+src/udpmon/udpmon
 tmp
 
