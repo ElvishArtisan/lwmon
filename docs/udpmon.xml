@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+      Header
+  -->
+  <refmeta>
+    <refentrytitle>udpmon</refentrytitle>
+    <manvolnum>1</manvolnum>
+    <refmiscinfo class='source'>September 2023</refmiscinfo>
+    <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>udpmon</refname>
+    <refpurpose>GUI applet for interacting with UDP-based services.</refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+	<firstname>Fred</firstname>
+	<surname>Gleason</surname>
+	<email>fredg@paravelsystems.com</email>
+      </personname>
+      <contrib>Application Author</contrib>
+    </author>
+  </info>
+
+  <!--
+      Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <cmdsynopsis>
+      <command>udpmon</command>
+      <arg choice='opt'><option>--receive-port=<replaceable>port-num</replaceable></option></arg>
+      <arg choice='opt'><option>--send-port=<replaceable>port-num</replaceable></option></arg>
+      <arg choice='opt'><option>--send-to-address=<replaceable>ip-addr</replaceable></option></arg>
+      <arg choice='opt'><option>--send-to-port=<replaceable>port-num</replaceable></option></arg>
+      <sbr/>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    <command>udpmon</command><manvolnum>1</manvolnum>
+    is a GUI applet that can be used to interact with UDP-based system
+    services. When invoked without any arguments, it will create a window
+    containing <computeroutput>Receive Port</computeroutput>,
+    <computeroutput>Send Port</computeroutput> and
+    <computeroutput>To</computeroutput> fields. Text entered on the line
+    directly above these fields will be sent as a single UDP packet to the
+    IP address/port destination specified in the 
+    <computeroutput>To</computeroutput> field, originated from a port randomly
+    selected by the host system's TCP/IP stack in the range
+    <computeroutput>49152</computeroutput> through
+    <computeroutput>65535</computeroutput> inclusive.
+  </para>
+  <para>
+    To specify the port whence messages are sent on the host system, enter the
+    port number in the <computeroutput>Send Port</computeroutput> field, then
+    touch the <computeroutput>Bind</computeroutput> button.
+  </para>
+  <para>
+    To specify a port for listening for incoming UDP traffic, enter the
+    port number in the <computeroutput>Receive Port</computeroutput> field,
+    then touch the <computeroutput>Bind</computeroutput> button. Incoming
+    traffic will be displayed in the large viewer area.
+  </para>
+  </refsect1>
+
+  <refsect1 id='options'><title>Options</title>
+  <variablelist remap='TP'>
+    <varlistentry>
+      <term>
+	<option>--receive-port=</option><replaceable>port-num</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Pre-populate the <computeroutput>Receive Port</computeroutput>
+	  field with <replaceable>port-num</replaceable>.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<option>--send-port=</option><replaceable>port-num</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Pre-populate the <computeroutput>Send Port</computeroutput>
+	  field with <replaceable>port-num</replaceable>.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<option>--send-to-address=</option><replaceable>ip-addr</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Pre-populate the <computeroutput>To</computeroutput> address
+	  field with <replaceable>ip-addr</replaceable>.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<option>--send-to-port=</option><replaceable>port-num</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Pre-populate the <computeroutput>To</computeroutput> port
+	  field with <replaceable>port-num</replaceable>.
+	</para>
+      </listitem>
+    </varlistentry>
+
+  </variablelist>
+  </refsect1>
+
+  <refsect1 id='author'><title>Author</title>
+  <para>
+    Fred Gleason &lt;fredg@paravelsystems.com&gt;
+  </para>
+  </refsect1>
+
+  <refsect1 id='see_also'><title>See Also</title>
+  <para>
+  <citerefentry>
+    <refentrytitle>ncat</refentrytitle><manvolnum>1</manvolnum>
+  </citerefentry>
+  </para>
+  </refsect1>
+</refentry>
+

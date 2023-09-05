@@ -2,7 +2,7 @@
 ##
 ## docs/Automake.am for lwmon
 ##
-##   (C) Copyright 2015 Fred Gleason <fredg@paravelsystems.com>
+##   (C) Copyright 2015-2023 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -44,7 +44,8 @@ all-local:	lwaddr.1\
                 lwmaster.8\
                 lwmastermon.1\
                 lwmultcap.1\
-		lwrp.1
+		lwrp.1\
+                udpmon.1
 
 man_MANS = lwaddr.1\
            lwcap.1\
@@ -53,7 +54,8 @@ man_MANS = lwaddr.1\
            lwmaster.8\
            lwmastermon.1\
            lwmultcap.1\
-           lwrp.1
+           lwrp.1\
+           udpmon.1
 
 EXTRA_DIST = lwaddr.1\
              lwaddr.xml\
@@ -70,7 +72,9 @@ EXTRA_DIST = lwaddr.1\
              lwmultcap.1\
              lwmultcap.xml\
              lwrp.1\
-             lwrp.xml
+             lwrp.xml\
+             udpmon.1\
+             udpmon.xml
 
 CLEANFILES = *~
 MAINTAINERCLEANFILES = *~\
