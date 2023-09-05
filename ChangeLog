@@ -188,3 +188,5 @@
 	* Added a udpmon(1) utility.
 2023-09-05 Fred Gleason <fredg@paravelsystems.com>
 	* Added a udpmon(1) man page.
+2023-09-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added udpmon(1) to the RPM package.
