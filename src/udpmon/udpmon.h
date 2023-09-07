@@ -55,6 +55,7 @@ class MainWidget : public QMainWindow
   void readyReadData();
   void sendPortChangedData(int port);
   void sendPortBindData();
+  void sendToAddressChangedData(const QString &str);
   void errorData(QAbstractSocket::SocketError err);
 
  private:
@@ -83,6 +84,9 @@ class MainWidget : public QMainWindow
   QLabel *d_sendtoport_label;
   QSpinBox *d_sendtoport_spin;
   QUdpSocket *d_send_socket;
+
+  QLabel *d_pid_label;
+  QLineEdit *d_pid_edit;
 };
 
 

@@ -19,6 +19,7 @@
 //
 
 #include <stdlib.h>
+#include <unistd.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 
@@ -90,7 +91,7 @@ MainWidget::MainWidget(QWidget *parent)
     }
   }
 
-  setWindowTitle(tr("UDP Monitor"));
+  setWindowTitle(tr("UDP Monitor")+" v"+VERSION);
   if(CheckSettingsDirectory()) {
     d_history_path=d_settings_dir->path()+"/"+UDPMON_HISTORY_FILE;
   }
@@ -142,10 +143,17 @@ MainWidget::MainWidget(QWidget *parent)
   d_sendtoaddr_label=new QLabel(tr("To")+":",this);
   d_sendtoaddr_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   d_sendtoaddr_edit=new QLineEdit(this);
+  connect(d_sendtoaddr_edit,SIGNAL(textChanged(const QString &)),
+	  this,SLOT(sendToAddressChangedData(const QString &)));
   d_sendtoport_label=new QLabel(":",this);
   d_sendtoport_label->setAlignment(Qt::AlignCenter|Qt::AlignVCenter);
   d_sendtoport_spin=new QSpinBox(this);
   d_sendtoport_spin->setRange(1,65536);
+
+  d_pid_label=new QLabel(tr("PID")+":",this);
+  d_pid_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  d_pid_edit=new QLineEdit(QString::asprintf("%u",getpid()),this);
+  d_pid_edit->setReadOnly(true);
 
   //
   // Initialize
@@ -158,6 +166,7 @@ MainWidget::MainWidget(QWidget *parent)
 
   d_sendtoport_spin->setValue(send_to_port);
   d_sendtoaddr_edit->setText(send_to_address.toString());
+  sendToAddressChangedData(d_sendtoaddr_edit->text());
 
   setMinimumSize(sizeHint());
 }
@@ -165,7 +174,7 @@ MainWidget::MainWidget(QWidget *parent)
 
 QSize MainWidget::sizeHint() const
 {
-  return QSize(720+105,480);
+  return QSize(825,250);
 }
 
 
@@ -183,18 +192,21 @@ void MainWidget::resizeEvent(QResizeEvent *e)
   d_edit->setGeometry(0,size().height()-48,size().width()-65,24);
   d_button->setGeometry(size().width()-60,size().height()-48,60,24);
 
-  d_recvport_label->setGeometry(0,size().height()-24,100,24);
-  d_recvport_spin->setGeometry(105,size().height()-23,80,22);
-  d_recvport_bind_button->setGeometry(190,size().height()-24,50,24);
+  d_recvport_label->setGeometry(0,size().height()-24,100-5,24);
+  d_recvport_spin->setGeometry(105-5,size().height()-23,80-5,22);
+  d_recvport_bind_button->setGeometry(190-10,size().height()-24,50,24);
 
-  d_sendport_label->setGeometry(240,size().height()-24,100,24);
-  d_sendport_spin->setGeometry(350,size().height()-23,80,22);
-  d_sendport_bind_button->setGeometry(430+5,size().height()-24,50,24);
+  d_sendport_label->setGeometry(240-20,size().height()-24,100,24);
+  d_sendport_spin->setGeometry(350-25,size().height()-23,80-5,22);
+  d_sendport_bind_button->setGeometry(435-30,size().height()-24,50,24);
 
-  d_sendtoaddr_label->setGeometry(480+20,size().height()-24,30,24);
-  d_sendtoaddr_edit->setGeometry(515+20,size().height()-22,140,20);
-  d_sendtoport_label->setGeometry(655+20,size().height()-24,5,24);
-  d_sendtoport_spin->setGeometry(660+20,size().height()-23,80,22);
+  d_sendtoaddr_label->setGeometry(500-35,size().height()-24,30,24);
+  d_sendtoaddr_edit->setGeometry(535-35,size().height()-22,140-10,20);
+  d_sendtoport_label->setGeometry(675-45,size().height()-24,5,24);
+  d_sendtoport_spin->setGeometry(680-45,size().height()-23,80,22);
+
+  d_pid_label->setGeometry(size().width()-105,size().height()-23,30,22);
+  d_pid_edit->setGeometry(size().width()-70,size().height()-23,70,22);
 }
 
 
@@ -279,6 +291,14 @@ void MainWidget::sendPortBindData()
     }
   }
   d_sendport_bind_button->setDisabled(true);
+}
+
+
+void MainWidget::sendToAddressChangedData(const QString &str)
+{
+  QHostAddress addr;
+
+  d_edit->setEnabled((str.trimmed().length()!=0)&&addr.setAddress(str));
 }
 
 

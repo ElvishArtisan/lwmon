@@ -190,3 +190,7 @@
 	* Added a udpmon(1) man page.
 2023-09-05 Fred Gleason <fredg@paravelsystems.com>
 	* Added udpmon(1) to the RPM package.
+2023-09-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'PID' readout to udpmon(1).
+	* Interlocked the send text widget to require a valid 'Send' address
+	in udpmon(1).
