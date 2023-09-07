@@ -194,3 +194,7 @@
 	* Added a 'PID' readout to udpmon(1).
 	* Interlocked the send text widget to require a valid 'Send' address
 	in udpmon(1).
+2023-09-07 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bugs in udpmon(1) that could cause segfaults when rebinding
+	send and receive UDP ports.
+	* Tweaked error messages so as to use a more consistent format.

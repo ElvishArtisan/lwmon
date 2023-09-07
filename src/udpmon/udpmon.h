@@ -25,6 +25,7 @@
 
 #include <QDir>
 #include <QMainWindow>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QSpinBox>
 #include <QTextEdit>
@@ -59,8 +60,12 @@ class MainWidget : public QMainWindow
   void errorData(QAbstractSocket::SocketError err);
 
  private:
-  void ProcessCommand(const QString &cmd);
   bool CheckSettingsDirectory();
+  QMessageBox::StandardButton
+    DisplayMessageBox(QMessageBox::Icon icon,const QString &caption,
+		      const QString &text,const QString &info_text="",
+		      QMessageBox::StandardButtons buttons=QMessageBox::Ok,
+		      QMessageBox::StandardButton def_button=QMessageBox::Ok);
   QTextEdit *d_text;
   LineEdit *d_edit;
   QPushButton *d_button;

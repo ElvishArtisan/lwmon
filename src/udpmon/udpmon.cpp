@@ -25,7 +25,6 @@
 
 #include <QApplication>
 #include <QHostAddress>
-#include <QMessageBox>
 #include <QNetworkDatagram>
 #include <QStringList>
 
@@ -52,16 +51,18 @@ MainWidget::MainWidget(QWidget *parent)
     if(cmd->key(i)=="--send-port") {
       send_port=cmd->value(i).toInt(&ok);
       if((!ok)||(send_port<0)||(send_port>65536)) {
-	QMessageBox::critical(this,"UDPMon - "+tr("Argument Error"),
-			      tr("Invalid --send-port value."));
+	DisplayMessageBox(QMessageBox::Critical,tr("Error"),
+		     tr("The value of the \"--send-port\" option is invalid."),
+		     tr("The value must be between 0 and 65536 inclusive."));
 	exit(1);
       }
       cmd->setProcessed(i,true);
     }
     if(cmd->key(i)=="--send-to-address") {
       if(!send_to_address.setAddress(cmd->value(i))) {
-	QMessageBox::critical(this,"UDPMon - "+tr("Argument Error"),
-			      tr("Invalid --send-to-address value."));
+	DisplayMessageBox(QMessageBox::Critical,tr("Error"),
+		tr("The value of the \"--send-to-address\" option is invalid."),
+		tr("The value must be a valid IPv4 or IPv6 address."));
 	exit(1);
       }
       cmd->setProcessed(i,true);
@@ -69,8 +70,9 @@ MainWidget::MainWidget(QWidget *parent)
     if(cmd->key(i)=="--send-to-port") {
       send_to_port=cmd->value(i).toInt(&ok);
       if((!ok)||(send_to_port<0)||(send_to_port>65536)) {
-	QMessageBox::critical(this,"UDPMon - "+tr("Argument Error"),
-			      tr("Invalid --send-to-port value."));
+	DisplayMessageBox(QMessageBox::Critical,tr("Error"),
+		  tr("The value of the \"--send-to-port\" option is invalid."),
+		  tr("The value must be between 0 and 65536 inclusive."));
 	exit(1);
       }
       cmd->setProcessed(i,true);
@@ -78,16 +80,17 @@ MainWidget::MainWidget(QWidget *parent)
     if(cmd->key(i)=="--receive-port") {
       receive_port=cmd->value(i).toInt(&ok);
       if((!ok)||(receive_port<0)||(receive_port>65536)) {
-	QMessageBox::critical(this,"UDPMon - "+tr("Argument Error"),
-			      tr("Invalid --receive-port value."));
+	DisplayMessageBox(QMessageBox::Critical,tr("Error"),
+		  tr("The value of the \"--receive-port\" option is invalid."),
+		  tr("The value must be between 0 and 65536 inclusive."));
 	exit(1);
       }
       cmd->setProcessed(i,true);
     }
     if(!cmd->processed(i)) {
-      fprintf(stderr,"udpmon: invalid argument \"%s\"\n",
-	      (const char *)cmd->key(i).toUtf8());
-      exit(256);
+      DisplayMessageBox(QMessageBox::Critical,tr("Error"),
+			tr("Unrecognized option \"")+cmd->key(i)+"\".");
+      exit(1);
     }
   }
 
@@ -118,7 +121,7 @@ MainWidget::MainWidget(QWidget *parent)
   d_recvport_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   d_recvport_spin=new QSpinBox(this);
   d_recvport_spin->setRange(0,65536);
-  d_recvport_spin->setSpecialValueText(tr("None"));
+  d_recvport_spin->setSpecialValueText(tr("Auto"));
   connect(d_recvport_spin,SIGNAL(valueChanged(int)),
 	  this,SLOT(recvPortChangedData(int)));
   d_recvport_bind_button=new QPushButton(tr("Bind"),this);
@@ -215,8 +218,9 @@ void MainWidget::editReturnPressedData()
   QHostAddress addr;
 
   if(!addr.setAddress(d_sendtoaddr_edit->text())) {
-    QMessageBox::warning(this,"UDPMon - "+tr("Error"),
-			 tr("The send address is invalid."));
+    DisplayMessageBox(QMessageBox::Warning,tr("Error"),
+		      tr("The send to address is invalid."),
+		      tr("The value must be a valid IPv4 or IPv6 address."));
     return;
   }
   d_text->append(d_edit->text());
@@ -237,19 +241,27 @@ void MainWidget::recvPortChangedData(int port)
 void MainWidget::recvPortBindData()
 {
   if(d_recv_socket!=NULL) {
-    delete d_recv_socket;
+    if(d_recv_socket!=d_send_socket) {
+      delete d_recv_socket;
+    }
     d_recv_socket=NULL;
   }
   if(d_recvport_spin->value()>0) {
     d_recv_socket=new QUdpSocket(this);
+    if(!d_recv_socket->bind(d_recvport_spin->value())) {
+      DisplayMessageBox(QMessageBox::Warning,tr("Error"),
+			tr("Unable to bind receive port")+
+			QString::asprintf(" \"%u\".",d_recvport_spin->value()));
+      return;
+    }
+  }
+  else {
+    d_recv_socket=d_send_socket;
+  }
+  if(d_recv_socket!=NULL) {
     connect(d_recv_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));
     connect(d_recv_socket,SIGNAL(error(QAbstractSocket::SocketError)),
 	    this,SLOT(errorData(QAbstractSocket::SocketError)));
-    if(!d_recv_socket->bind(d_recvport_spin->value())) {
-      QMessageBox::warning(this,"UDPMon - "+tr("Error"),
-			   tr("Unable to bind receive port."));
-      return;
-    }
   }
   d_recvport_bind_button->setDisabled(true);
 }
@@ -272,22 +284,26 @@ void MainWidget::sendPortChangedData(int port)
 
 void MainWidget::sendPortBindData()
 {
-  if((d_send_socket!=NULL)&&(d_send_socket!=d_recv_socket)) {
+  if(d_send_socket!=NULL) {
     delete d_send_socket;
     d_send_socket=NULL;
   }
-  if((d_sendport_spin->value()>0)&&
+  d_send_socket=new QUdpSocket(this);
+  if((d_recvport_spin->value()==0)||
      (d_sendport_spin->value()==d_recvport_spin->value())) {
-    d_send_socket=d_recv_socket;
+    d_recv_socket=d_send_socket;
+    connect(d_recv_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));
+    connect(d_recv_socket,SIGNAL(error(QAbstractSocket::SocketError)),
+	    this,SLOT(errorData(QAbstractSocket::SocketError)));
   }
-  else {
-    d_send_socket=new QUdpSocket(this);
-    if(d_sendport_spin->value()>0) {
-      if(!d_send_socket->bind(d_sendport_spin->value())) {
-	QMessageBox::warning(this,"UDPMon - "+tr("Error"),
-			     tr("Unable to bind send port."));
-	return;
-      }
+  if((d_sendport_spin->value()>0)&&
+     (d_sendport_spin->value()!=d_send_socket->localPort())&&
+     (d_send_socket->localPort()==0)){
+    if(!d_send_socket->bind(d_sendport_spin->value())) {
+      DisplayMessageBox(QMessageBox::Warning,tr("Error"),
+			tr("Unable to bind send port")+
+			QString::asprintf(" \"%u\".",d_sendport_spin->value()));
+      return;
     }
   }
   d_sendport_bind_button->setDisabled(true);
@@ -319,6 +335,10 @@ void MainWidget::errorData(QAbstractSocket::SocketError err)
     err_text=tr("Host not found");
     break;
 
+  case QAbstractSocket::SocketAccessError:
+    err_text=tr("Permission denied");
+    break;
+
   case QAbstractSocket::SocketTimeoutError:
     err_text=tr("Connection timed out");
     break;
@@ -343,18 +363,17 @@ void MainWidget::errorData(QAbstractSocket::SocketError err)
     err_text=tr("Unsupported socket operation");
     break;
 
+  case QAbstractSocket::UnknownSocketError:
+    err_text=tr("Unidentified error");
+    break;
+
   default:
-    err_text=tr("Network error")+QString::asprintf(" %u ",err)+tr("received");
+    err_text=tr("Network error")+QString::asprintf(" %d ",err)+tr("received");
     break;
   }
-  QMessageBox::critical(this,"UDP Monitor - "+tr("Network Error"),err_text);
-  //  d_status_widget->setStatus(StatusWidget::Failed);
-}
-
-
-void MainWidget::ProcessCommand(const QString &cmd)
-{
-  //  d_text->append(FormatLwcp(Colorize(cmd),false));
+  DisplayMessageBox(QMessageBox::Warning,tr("Error"),
+		    tr("A network error occurred."),
+		    "\""+err_text+"\"");
 }
 
 
@@ -376,6 +395,28 @@ bool MainWidget::CheckSettingsDirectory()
   }
 #endif  // WIN32
   return true;
+}
+
+
+QMessageBox::StandardButton
+MainWidget::DisplayMessageBox(QMessageBox::Icon icon,const QString &caption,
+			      const QString &text,const QString &info_text,
+			      QMessageBox::StandardButtons buttons,
+			      QMessageBox::StandardButton def_button)
+{
+  QMessageBox::Button ret;
+
+  QMessageBox *box=new QMessageBox(this);
+  box->setWindowTitle("UDPMon - "+caption);
+  box->setIcon(icon);
+  box->setText(text);
+  box->setInformativeText(info_text);
+  box->setStandardButtons(buttons);
+  box->setDefaultButton(def_button);
+  ret=(QMessageBox::StandardButton)box->exec();
+  delete box;
+
+  return ret;
 }
 
 
