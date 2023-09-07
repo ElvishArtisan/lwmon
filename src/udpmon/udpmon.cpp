@@ -26,6 +26,8 @@
 #include <QApplication>
 #include <QHostAddress>
 #include <QNetworkDatagram>
+#include <QPainter>
+#include <QPalette>
 #include <QStringList>
 
 #include "cmdswitch.h"
@@ -177,7 +179,7 @@ MainWidget::MainWidget(QWidget *parent)
 
 QSize MainWidget::sizeHint() const
 {
-  return QSize(825,250);
+  return QSize(455,250);
 }
 
 
@@ -189,11 +191,30 @@ void MainWidget::closeEvent(QCloseEvent *e)
 }
 
 
+void MainWidget::paintEvent(QPaintEvent *q)
+{
+  QPainter *p=new QPainter(this);
+  p->setPen(palette().color(QPalette::WindowText));
+  p->setBrush(palette().color(QPalette::WindowText));
+  p->drawLine(0,size().height()-52,size().width(),size().height()-52);
+
+  delete p;
+}
+
+
 void MainWidget::resizeEvent(QResizeEvent *e)
 {
-  d_text->setGeometry(0,0,size().width(),size().height()-48);
-  d_edit->setGeometry(0,size().height()-48,size().width()-65,24);
-  d_button->setGeometry(size().width()-60,size().height()-48,60,24);
+  d_text->setGeometry(0,0,size().width(),size().height()-48-34);
+  d_edit->setGeometry(0,size().height()-48-34,size().width()-65,24);
+
+  d_sendtoaddr_label->setGeometry(10,size().height()-24-24,30,24);
+  d_sendtoaddr_edit->setGeometry(45,size().height()-22-24,140-10,20);
+  d_sendtoport_label->setGeometry(175,size().height()-24-24,5,24);
+  d_sendtoport_spin->setGeometry(180,size().height()-23-24,80,22);
+  d_button->setGeometry(size().width()-60,size().height()-48-34,60,24);
+
+  d_pid_label->setGeometry(350,size().height()-23-24,30,22);
+  d_pid_edit->setGeometry(385,size().height()-23-24,70,22);
 
   d_recvport_label->setGeometry(0,size().height()-24,100-5,24);
   d_recvport_spin->setGeometry(105-5,size().height()-23,80-5,22);
@@ -202,14 +223,6 @@ void MainWidget::resizeEvent(QResizeEvent *e)
   d_sendport_label->setGeometry(240-20,size().height()-24,100,24);
   d_sendport_spin->setGeometry(350-25,size().height()-23,80-5,22);
   d_sendport_bind_button->setGeometry(435-30,size().height()-24,50,24);
-
-  d_sendtoaddr_label->setGeometry(500-35,size().height()-24,30,24);
-  d_sendtoaddr_edit->setGeometry(535-35,size().height()-22,140-10,20);
-  d_sendtoport_label->setGeometry(675-45,size().height()-24,5,24);
-  d_sendtoport_spin->setGeometry(680-45,size().height()-23,80,22);
-
-  d_pid_label->setGeometry(size().width()-105,size().height()-23,30,22);
-  d_pid_edit->setGeometry(size().width()-70,size().height()-23,70,22);
 }
 
 

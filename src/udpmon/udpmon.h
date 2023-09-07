@@ -47,6 +47,7 @@ class MainWidget : public QMainWindow
 
  protected:
   void closeEvent(QCloseEvent *e);
+  void paintEvent(QPaintEvent *q);
   void resizeEvent(QResizeEvent *e);
 
  private slots:

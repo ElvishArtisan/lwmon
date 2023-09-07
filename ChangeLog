@@ -198,3 +198,6 @@
 	* Fixed bugs in udpmon(1) that could cause segfaults when rebinding
 	send and receive UDP ports.
 	* Tweaked error messages so as to use a more consistent format.
+2023-09-07 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the control layout in udpmon(1) so as to occupy two
+	lines instead of one.
