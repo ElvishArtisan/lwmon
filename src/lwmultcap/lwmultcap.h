@@ -27,7 +27,7 @@
 #include <QHostAddress>
 #include <QObject>
 
-#define LWMULTCAP_USAGE "--iface-address=<iface-addr> --mcast-address=<mcast-addr> --port=<port-num> [--show-ruler] [--first-offset=<offset>] [--last-offset=<offset>] [--filter-byte=<offset>:<value>] [--filter-string=<offset>:<string>\n\n"
+#define LWMULTCAP_USAGE "--iface-address=<iface-addr> --mcast-address=<mcast-addr> --port=<port-num> [--show-ruler] [--no-ruler] [--first-offset=<offset>] [--last-offset=<offset>] [--filter-byte=<offset>:<value>] [--filter-string=<offset>:<string>\n\n"
 
 class MainObject : public QObject
 {

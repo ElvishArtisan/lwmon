@@ -43,7 +43,7 @@ MainObject::MainObject(QObject *parent)
   bool ok=false;
 
   c_port=0;
-  c_show_ruler=false;
+  c_show_ruler=true;
   c_first_offset=-1;
   c_last_offset=-1;
   c_packet_limit=0;
@@ -150,6 +150,11 @@ MainObject::MainObject(QObject *parent)
 	fprintf(stderr,"lwmultcap: invalid multicast address\n");
 	exit(1);
       }
+      cmd->setProcessed(i,true);
+    }
+
+    if(cmd->key(i)=="--no-ruler") {
+      c_show_ruler=false;
       cmd->setProcessed(i,true);
     }
 

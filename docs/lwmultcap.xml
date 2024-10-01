@@ -6,7 +6,7 @@
   <refmeta>
     <refentrytitle>lwmultcap</refentrytitle>
     <manvolnum>1</manvolnum>
-    <refmiscinfo class='source'>April 2020</refmiscinfo>
+    <refmiscinfo class='source'>October 2024</refmiscinfo>
     <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
   </refmeta>
   <refnamediv>
@@ -37,7 +37,7 @@
   <refsect1 id='description'><title>Description</title>
   <para>
     <command>lwmultcap</command><manvolnum>1</manvolnum>
-    is a command-line tool for analysing packets sent via multicast UDP.
+    is a command-line tool for analysing IPv4 packets sent via multicast UDP.
     Several options for filtering the captured data filtering are
     available.
   </para>
@@ -155,7 +155,19 @@
 
     <varlistentry>
       <term>
-	<option>--packet-limit=</option><replaceable>count</replaceable>:<replaceable>value</replaceable>
+	<option>--no-ruler=</option><replaceable>offset</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Suppress the addition of a header and footer around the data for
+	  each packet displayed.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--packet-limit=</option><replaceable>count</replaceable>
       </term>
       <listitem>
 	<para>
@@ -171,7 +183,7 @@
       <listitem>
 	<para>
 	  Display a header and footer around the data for each packet
-	  displayed. Default is to display no headers/footers.
+	  displayed. This is the default.
 	</para>
       </listitem>
     </varlistentry>

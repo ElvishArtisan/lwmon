@@ -204,3 +204,6 @@
 2024-10-01 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'To:' field to the ruler section of the output of
 	lwmultcap(1).
+2024-10-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added a '--no-ruler' switch to lwmultcap(1).
+	* Made '--show-ruler' the default in lwmultcap(1).
