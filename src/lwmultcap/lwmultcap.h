@@ -2,7 +2,7 @@
 //
 // Print multicast messages from a specified address and port
 //
-//   (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,10 +25,7 @@
 
 #include <QByteArray>
 #include <QHostAddress>
-#include <QList>
-#include <QMap>
 #include <QObject>
-#include <QUdpSocket>
 
 #define LWMULTCAP_USAGE "--iface-address=<iface-addr> --mcast-address=<mcast-addr> --port=<port-num> [--show-ruler] [--first-offset=<offset>] [--last-offset=<offset>] [--filter-byte=<offset>:<value>] [--filter-string=<offset>:<string>\n\n"
 
@@ -38,20 +35,19 @@ class MainObject : public QObject
  public:
   MainObject(QObject *parent=0);
 
- private slots:
-  void readyReadData();
-
  protected:
-  void packetReceived(const QHostAddress &src_addr,uint16_t src_port,
-		      const QByteArray &data);
-  void dumpToHex(const QHostAddress &src_addr,uint16_t src_port,
-		 const QByteArray &data);
   
  private:
-  bool Subscribe(const QHostAddress &addr,const QHostAddress &if_addr,
-		 QString *err_msg);
+  void MainLoop(int sock);
+  void ProcessPacket(const QHostAddress &dst_addr,
+		     const QHostAddress &src_addr,uint16_t src_port,
+		     const QByteArray &data);
+  void PrintPacket(const QHostAddress &dst_addr,
+		   const QHostAddress &src_addr,uint16_t src_port,
+		   const QByteArray &data);
+  bool Subscribe(int sock,const QHostAddress &addr,const QHostAddress &if_addr,
+  		 QString *err_msg);
   unsigned ReadIntegerArg(const QString &arg,bool *ok) const;
-  QUdpSocket *c_socket;
   QHostAddress c_mcast_address;
   QHostAddress c_iface_address;
   uint16_t c_port;

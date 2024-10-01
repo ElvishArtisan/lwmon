@@ -2,7 +2,7 @@
 //
 // Print multicast messages from a specified address and port
 //
-//   (C) Copyright 2020-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -193,38 +193,97 @@ MainObject::MainObject(QObject *parent)
   //
   // Receive Socket
   //
-  c_socket=new QUdpSocket(this);
-  if(!c_socket->bind(c_port)) {
-    fprintf(stderr,"lwmultcap: unable to bind to port %d [%s]\n",
-	    c_port,strerror(errno));
+  int sock;
+  if((sock=socket(AF_INET,SOCK_DGRAM,0))<0) {
+    fprintf(stderr,"lwmultcap: unable to create socket [%s]\n",strerror(errno));
     exit(1);
   }
-  connect(c_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));
-  if(!Subscribe(c_mcast_address,c_iface_address,&err_msg)) {
+
+  //
+  // So we can get the actual delivery address
+  //
+  unsigned optval=1;
+  if(setsockopt(sock,IPPROTO_IP,IP_PKTINFO,&optval,sizeof(unsigned))!=0) {
+    fprintf(stderr,"lwmultcap: unable to set IP_PKTINFO [%s] on socket\n",
+	    strerror(errno));
+    exit(1);
+  }
+  sockaddr_in sa;
+  memset(&sa,0,sizeof(sa));
+  sa.sin_port=htons(c_port);
+  if(bind(sock,(struct sockaddr *)(&sa),sizeof(sa))<0) {
+    fprintf(stderr,"lwmultcap: unable to bind socket [%s]\n",strerror(errno));
+    exit(1);
+  }
+  if(!Subscribe(sock,c_mcast_address,c_iface_address,&err_msg)) {
     fprintf(stderr,"lwmultcap: unable to subscribe to %s [%s]\n",
 	    c_mcast_address.toString().toUtf8().constData(),strerror(errno));
     exit(1);
   }
+
+  MainLoop(sock);
 }
 
 
-void MainObject::readyReadData()
+void MainObject::MainLoop(int sock)
 {
-  QHostAddress addr;
-  uint16_t port=0;
-  char data[1501];
-  int64_t n;
+  QHostAddress dst_addr;
+  uint16_t dst_port=0;
+  QHostAddress src_addr;
+  uint16_t src_port=0;
+  ssize_t n;
+  struct msghdr msg;
+  memset(&msg,0,sizeof(msg));
 
-  if((n=c_socket->readDatagram(data,1500,&addr,&port))<0) {
-    fprintf(stderr,"lwmultcap: socket error [%s]\n",strerror(errno));
-    exit(1);
+  char name[sizeof(struct sockaddr_in)];
+  memset(&name,0,sizeof(struct sockaddr_in));
+  msg.msg_name=name;
+  msg.msg_namelen=sizeof(struct sockaddr_in);
+  
+  char data[1500];
+  struct iovec iov;
+  memset(&iov,0,sizeof(iov));
+  iov.iov_base=data;
+  iov.iov_len=1500;
+  msg.msg_iov=&iov;
+  msg.msg_iovlen=1;
+
+  char cmsgs[1024];
+  memset(cmsgs,0,1024);
+  msg.msg_control=cmsgs;
+  msg.msg_controllen=1024;
+  
+  while((n=recvmsg(sock,&msg,0))>0) {
+    if(msg.msg_flags!=0) {
+      fprintf(stderr,"lwmultcap: error flags received!\n");
+      exit(1);
+    }
+    struct sockaddr_in sa;
+    memcpy(&sa,msg.msg_name,sizeof(sa));
+    src_addr.setAddress(ntohl(sa.sin_addr.s_addr));
+    src_port=ntohs(sa.sin_port);
+    
+    struct cmsghdr *cmsg;
+    cmsg=CMSG_FIRSTHDR(&msg);
+    while(cmsg!=NULL) {
+      if(cmsg->cmsg_type==8) {
+	struct in_pktinfo pktinfo;
+	memcpy(&pktinfo,CMSG_DATA(cmsg),sizeof(pktinfo));
+	dst_addr.setAddress((ntohl(pktinfo.ipi_addr.s_addr)));
+      }
+      cmsg=CMSG_NXTHDR(&msg,cmsg);
+    }
+    
+    ProcessPacket(dst_addr,src_addr,src_port,QByteArray(data,n));
   }
 
-  packetReceived(addr,port,QByteArray(data,n));
+  fprintf(stderr,"lwmultcap: socket error [%s]\n",strerror(errno));
+  exit(1);
 }
 
 
-void MainObject::packetReceived(const QHostAddress &src_addr,uint16_t src_port,
+void MainObject::ProcessPacket(const QHostAddress &dst_addr,
+				const QHostAddress &src_addr,uint16_t src_port,
 				const QByteArray &data)
 {
   bool match=false;
@@ -275,7 +334,7 @@ void MainObject::packetReceived(const QHostAddress &src_addr,uint16_t src_port,
     return;
   }
 
-  dumpToHex(src_addr,src_port,data);
+  PrintPacket(dst_addr,src_addr,src_port,data);
   if(c_packet_limit>0) {
     if(--c_packet_limit==0) {
       exit(0);
@@ -284,19 +343,24 @@ void MainObject::packetReceived(const QHostAddress &src_addr,uint16_t src_port,
 }
 
 
-void MainObject::dumpToHex(const QHostAddress &src_addr,uint16_t src_port,
-			   const QByteArray &data)
+void MainObject::PrintPacket(const QHostAddress &dst_addr,
+			     const QHostAddress &src_addr,uint16_t src_port,
+			     const QByteArray &data)
 {
-  QHostAddress addr(src_addr.toIPv4Address());  // Strip out IPv6 attributes
   QString recv_from_str=
-    addr.toString()+QString::asprintf(":%d",0xFFFF&src_port);
-  QString size_str=QString::asprintf("%d [0x%04X]",data.size(),data.size());
+    src_addr.toString()+QString::asprintf(":%d",0xFFFF&src_port);
+
+  QString recv_dst_str=dst_addr.toString()+QString::asprintf(":%d",0xFFFF&c_port);
+
+  QString size_str=QString::asprintf("0x%04X",data.size());
 
   if(c_show_ruler) {
     printf("------------------------------------------------------------------------------\n");
-    printf("| Received from: %-22s          Packet size: %-14s |\n",
+    printf("| To: %-21s    From: %-21s     size: %-7s |\n",
+	   recv_dst_str.toUtf8().constData(),
 	   recv_from_str.toUtf8().constData(),
 	   size_str.toUtf8().constData());
+    printf("------------------------------------------------------------------------------\n");
     printf("| Offset  0- 1- 2- 3- 4- 5- 6- 7- 8- 9- A- B- C- D- E- F- | 0123456789ABCDEF |\n");
     printf("----------------------------------------------------------|------------------|\n");
   }
@@ -330,8 +394,8 @@ void MainObject::dumpToHex(const QHostAddress &src_addr,uint16_t src_port,
 }
 
 
-bool MainObject::Subscribe(const QHostAddress &addr,const QHostAddress &if_addr,
-			   QString *err_msg)
+bool MainObject::Subscribe(int sock,const QHostAddress &addr,
+			   const QHostAddress &if_addr,QString *err_msg)
 {
   struct ip_mreqn mreq;
 
@@ -339,12 +403,12 @@ bool MainObject::Subscribe(const QHostAddress &addr,const QHostAddress &if_addr,
   mreq.imr_multiaddr.s_addr=htonl(addr.toIPv4Address());
   mreq.imr_address.s_addr=htonl(if_addr.toIPv4Address());
   mreq.imr_ifindex=0;
-  if(setsockopt(c_socket->socketDescriptor(),IPPROTO_IP,IP_ADD_MEMBERSHIP,
-		&mreq,sizeof(mreq))<0) {
+  if(setsockopt(sock,IPPROTO_IP,IP_ADD_MEMBERSHIP,&mreq,sizeof(mreq))<0) {
     *err_msg=QString("Unable to subscribe to multicast address")+
       " \""+addr.toString()+"\" ["+strerror(errno)+"]";
     return false;
   }
+
   return true;
 }
 

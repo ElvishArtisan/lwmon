@@ -201,3 +201,6 @@
 2023-09-07 Fred Gleason <fredg@paravelsystems.com>
 	* Changed the control layout in udpmon(1) so as to occupy two
 	lines instead of one.
+2024-10-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'To:' field to the ruler section of the output of
+	lwmultcap(1).
