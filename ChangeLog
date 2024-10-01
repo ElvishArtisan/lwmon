@@ -209,3 +209,8 @@
 	* Made '--show-ruler' the default in lwmultcap(1).
 2024-10-01 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed typos in the lwmultcap(1) man page.
+2024-10-01 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed edge cases with the '--first-offset' and '--last-offset'
+	switches in lwmultcap(1).
+	* Improved the explanation of the '--first-offset' and
+	'--last-offset' switches in the lwmultcap(1) man page.

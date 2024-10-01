@@ -86,6 +86,13 @@
   <para>
     The following arguments affect how captured data is displayed.
   </para>
+  <para>
+    N.B. - The <option>--filter-*</option> options below are all applied
+    <emphasis>after</emphasis> the <option>--first-offset</option> and
+    <option>--last-offset</option> options. Thus,
+    <option>--filter-*</option> options will match only against portions
+    of the captured data that remain!
+  </para>
   <variablelist>
     <varlistentry>
       <term>
@@ -94,7 +101,7 @@
       <listitem>
 	<para>
 	  Display data only after the first <replaceable>offset</replaceable>
-	  octets received. Default is to display data starting from the start
+	  octets received. Default is to display data beginning from the start
 	  of the packet.
 	</para>
       </listitem>
@@ -147,8 +154,9 @@
       <listitem>
 	<para>
 	  Display data only up to the <replaceable>offset</replaceable>
-	  number of octets received. Default is to display data to the
-	  end of the packet.
+	  number of octets remaining after applying the
+	  <option>--first-offset</option> value. Default is to display data
+	  to the end of the packet.
 	</para>
       </listitem>
     </varlistentry>

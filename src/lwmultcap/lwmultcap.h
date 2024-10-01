@@ -41,7 +41,7 @@ class MainObject : public QObject
   void MainLoop(int sock);
   void ProcessPacket(const QHostAddress &dst_addr,
 		     const QHostAddress &src_addr,uint16_t src_port,
-		     const QByteArray &data);
+		     QByteArray data);
   void PrintPacket(const QHostAddress &dst_addr,
 		   const QHostAddress &src_addr,uint16_t src_port,
 		   const QByteArray &data);

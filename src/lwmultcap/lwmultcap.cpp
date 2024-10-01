@@ -109,15 +109,6 @@ MainObject::MainObject(QObject *parent)
       cmd->setProcessed(i,true);
     }
 
-    if(cmd->key(i)=="--first-offset") {
-      c_first_offset=ReadIntegerArg(cmd->value(i),&ok);
-      if(!ok) {
-	fprintf(stderr,"lwmultcap: invalid \"--first-offset\" value\n");
-	exit(1);
-      }
-      cmd->setProcessed(i,true);
-    }
-
     if(cmd->key(i)=="--iface-address") {
       if(!c_iface_address.setAddress(cmd->value(i))) {
 	fprintf(stderr,"lwmultcap: invalid interface address\n");
@@ -289,10 +280,20 @@ void MainObject::MainLoop(int sock)
 
 void MainObject::ProcessPacket(const QHostAddress &dst_addr,
 				const QHostAddress &src_addr,uint16_t src_port,
-				const QByteArray &data)
+				QByteArray data)
 {
   bool match=false;
 
+  //
+  // Process Offsets
+  //
+  if(c_first_offset>0) {
+    data=data.right(data.size()-c_first_offset);
+  }
+  if(c_last_offset>=0) {
+    data=data.left(c_last_offset);
+  }
+  
   //
   // Process Filter Bytes
   //
@@ -371,27 +372,24 @@ void MainObject::PrintPacket(const QHostAddress &dst_addr,
   }
   for(int i=0;i<data.size();i+=16) {
     QString str="";
-    if(((c_first_offset<0)||(c_first_offset<=i))&&
-       ((c_last_offset<0)||(c_last_offset>=i))) {
-      printf("| 0x%04X: ",i);
-      for(int j=0;j<16;j++) {
-	if((i+j)<data.size()) {
-	  char c=0xFF&data[i+j];
-	  printf("%02X ",0xFF&c);
-	  if((c>=' ')&&(c<='~')) {
-	    str+=c;
-	  }
-	  else {
-	    str+='.';
-	  }
+    printf("| 0x%04X: ",i);
+    for(int j=0;j<16;j++) {
+      if((i+j)<data.size()) {
+	char c=0xFF&data[i+j];
+	printf("%02X ",0xFF&c);
+	if((c>=' ')&&(c<='~')) {
+	  str+=c;
 	}
 	else {
-	  printf("   ");
-	  str+=' ';
+	  str+='.';
 	}
       }
-      printf("| %s |\n",str.toUtf8().constData());
+      else {
+	printf("   ");
+	str+=' ';
+      }
     }
+    printf("| %s |\n",str.toUtf8().constData());
   }
   if(c_show_ruler) {
     printf("------------------------------------------------------------------------------\n");
