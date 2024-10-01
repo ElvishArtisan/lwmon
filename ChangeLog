@@ -214,3 +214,5 @@
 	switches in lwmultcap(1).
 	* Improved the explanation of the '--first-offset' and
 	'--last-offset' switches in the lwmultcap(1) man page.
+2024-10-01 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 1.4.0.

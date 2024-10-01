@@ -1,6 +1,18 @@
 This is the NEWS file for lwmon.
 
 ------------------------------------------------------------------------------
+v1.4.0 - 1 October 2024
+
+Changes:
+   Udpmon. Added a udpmon(1) utility, useful for interacting with UDP-based
+   services.
+
+   Lwmultcap. Added the ability to display the original packet address when
+   using '--add-ruler'.
+
+   Various bugfixes. See the 'ChangeLog'.
+
+------------------------------------------------------------------------------
 v1.3.5 - 5 August 2023
 
 Changes:

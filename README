@@ -27,3 +27,5 @@ lwmultcap(1) - A CLI utility for monitoring and printing multicast
 
 lwrp(1) - A GUI utility for monitoring and controlling LiveWire devices
           via LiveWire Control Protocol (LWRP)
+
+udpmon(1) - A GUI utility for interacting with UDP-based services.
