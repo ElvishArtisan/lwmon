@@ -37,8 +37,8 @@
   <refsect1 id='description'><title>Description</title>
   <para>
     <command>lwmultcap</command><manvolnum>1</manvolnum>
-    is a command-line tool for analysing IPv4 packets sent via multicast UDP.
-    Several options for filtering the captured data filtering are
+    is a command-line tool for analyzing the payload of IPv4 packets sent
+    via multicast UDP. Several options for filtering the captured data are
     available.
   </para>
   </refsect1>
