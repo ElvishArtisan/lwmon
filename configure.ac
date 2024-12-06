@@ -4,7 +4,7 @@ dnl Autoconf configuration
 dnl
 dnl Use autoconf to process this into a configure script
 dnl
-dnl   (C) Copyright 2015-2023 Fred Gleason <fredg@paravelsystems.com>
+dnl   (C) Copyright 2015-2024 Fred Gleason <fredg@paravelsystems.com>
 dnl
 dnl   This program is free software; you can redistribute it and/or modify
 dnl   it under the terms of the GNU General Public License version 2 as
@@ -132,6 +132,7 @@ AC_CONFIG_FILES([ \
     src/lwmaster/Makefile \
     src/lwmastermon/Makefile \
     src/lwmultcap/Makefile \
+    src/lwrpdump/Makefile \
     src/udpmon/Makefile \
     src/Makefile \
     xdg/Makefile \

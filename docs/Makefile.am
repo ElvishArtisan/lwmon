@@ -45,6 +45,7 @@ all-local:	lwaddr.1\
                 lwmastermon.1\
                 lwmultcap.1\
 		lwrp.1\
+		lwrpdump.1\
                 udpmon.1
 
 man_MANS = lwaddr.1\
@@ -55,6 +56,7 @@ man_MANS = lwaddr.1\
            lwmastermon.1\
            lwmultcap.1\
            lwrp.1\
+           lwrpdump.1\
            udpmon.1
 
 EXTRA_DIST = lwaddr.1\
@@ -73,6 +75,8 @@ EXTRA_DIST = lwaddr.1\
              lwmultcap.xml\
              lwrp.1\
              lwrp.xml\
+             lwrpdump.1\
+             lwrpdump.xml\
              udpmon.1\
              udpmon.xml
 

@@ -216,3 +216,5 @@
 	'--last-offset' switches in the lwmultcap(1) man page.
 2024-10-01 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 1.4.0.
+2024-12-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added a lwrpdump(1) command.

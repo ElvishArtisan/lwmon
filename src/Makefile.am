@@ -26,6 +26,7 @@ SUBDIRS = lwcap\
           lwmastermon\
           lwmon\
           lwmultcap\
+          lwrpdump\
           udpmon
 
 CLEANFILES = *~\

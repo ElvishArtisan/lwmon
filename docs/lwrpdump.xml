@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+      Header
+  -->
+  <refmeta>
+    <refentrytitle>lwrpdump</refentrytitle>
+    <manvolnum>1</manvolnum>
+    <refmiscinfo class='source'>December 2024</refmiscinfo>
+    <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>lwrpdump</refname>
+    <refpurpose>Dump the configuration from a Livewire device via LWRP</refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+	<firstname>Fred</firstname>
+	<surname>Gleason</surname>
+	<email>fredg@paravelsystems.com</email>
+      </personname>
+      <contrib>Application Author</contrib>
+    </author>
+  </info>
+
+  <!--
+      Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <cmdsynopsis>
+      <command>lwrpdump</command>
+      <arg choice='req'>
+	<option>--hostname=<replaceable>hostname</replaceable></option>
+      </arg>
+      <arg choice='opt'>
+	<option>--port=</option><replaceable>port-num</replaceable>
+      </arg>
+      <arg choice="opt">
+	<option>--dump-dst</option>
+      </arg>
+	  
+      <sbr/>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    <command>lwrpdump</command><manvolnum>1</manvolnum>
+    is a command-line tools that can be used to dump the configuration
+    of a Livewire device via LWRP. It is useful for creating backups of device
+    configuration.
+  </para>
+  </refsect1>
+
+  <refsect1 id='options'><title>Options</title>
+  <variablelist remap='TP'>
+    <varlistentry>
+      <term>
+	<option>--dump-<replaceable>data-type</replaceable></option>
+      </term>
+      <listitem>
+	<para>
+	  Include a specific type of configuration data in the dump. The
+	  following values for <replaceable>data-type</replaceable>
+	  are recognized:
+	</para>
+	<variablelist>
+	  <varlistentry>
+	    <term>
+	      <userinput>all</userinput> (i.e. <userinput>--dump-all</userinput>)
+	    </term>
+	    <listitem>
+	      <para>
+		Dump all available LWRP configuration data (but see the
+		NOTES section, below). This is the default.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      <userinput>dst</userinput> (i.e. <userinput>--dump-dst</userinput>)
+	    </term>
+	    <listitem>
+	      <para>
+		Dump all available destination data (&quot;DST&quot; records).
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      <userinput>gpio</userinput> (i.e. <userinput>--dump-gpio</userinput>)
+	    </term>
+	    <listitem>
+	      <para>
+		Dump all available GPIO data (&quot;CFG GPO&quot; records).
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      <userinput>ip</userinput> (i.e. <userinput>--dump-ip</userinput>)
+	    </term>
+	    <listitem>
+	      <para>
+		Dump all available networking configuration data
+		(&quot;IP&quot; records).
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      <userinput>src</userinput> (i.e. <userinput>--dump-src</userinput>)
+	    </term>
+	    <listitem>
+	      <para>
+		Dump all available source data (&quot;SRC&quot; records).
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      <userinput>ver</userinput> (i.e. <userinput>--dump-ver</userinput>)
+	    </term>
+	    <listitem>
+	      <para>
+		Dump all available version data (&quot;VER&quot; records).
+	      </para>
+	      <para>
+		N.B. Version data is read-only; it cannot be restored back
+		to a device.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	</variablelist>
+	<para>
+	  Multiple <option>--dump-<replaceable>data-type</replaceable></option>
+	  options may be given, with the resulting dump including the set
+	  of types specified.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<option>--hostname=</option><replaceable>host-name</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Connect to the Livewire device at
+	  <replaceable>host-name</replaceable>. Either a hostname or IP address
+	  (in dotted-quad notation) may be supplied. Required argument.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<option>--port=</option><replaceable>port-num</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Attempt to connect to port <replaceable>port-num</replaceable>
+	  on the LiveWire device.  Default value is 93.
+	</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  </refsect1>
+
+  <refsect1 id='notes'>
+    <title>Notes</title>
+    <para>
+      Not all device configuration is available via LWRP,
+      e.g. Quality of Service (QoS) settings are not available via LWRP.
+    </para>
+  </refsect1>
+
+  <refsect1 id='author'><title>Author</title>
+  <para>
+    Fred Gleason &lt;fredg@paravelsystems.com&gt;
+  </para>
+  </refsect1>
+
+  <refsect1 id='see_also'><title>See Also</title>
+  <para>
+  <citerefentry>
+    <refentrytitle>lwrp</refentrytitle><manvolnum>1</manvolnum>
+  </citerefentry>
+  </para>
+  </refsect1>
+</refentry>
+
