@@ -6,7 +6,7 @@
   <refmeta>
     <refentrytitle>lwrp</refentrytitle>
     <manvolnum>1</manvolnum>
-    <refmiscinfo class='source'>December 2015</refmiscinfo>
+    <refmiscinfo class='source'>December 2024</refmiscinfo>
     <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
   </refmeta>
   <refnamediv>
@@ -30,11 +30,8 @@
   <refsynopsisdiv id='synopsis'>
     <cmdsynopsis>
       <command>lwrp</command>
-      <arg choice='opt'><option>--color=on|off</option></arg>
-      <arg choice='opt'>
-      <option>--port=</option><replaceable>port-num</replaceable></arg>
-      <arg choice="req"><replaceable>hostname</replaceable></arg>
-	  
+      <arg choice='opt'><option>OPTIONS</option></arg>
+      <arg choice='req'><option>host-spec</option></arg>
       <sbr/>
     </cmdsynopsis>
   </refsynopsisdiv>
@@ -43,7 +40,10 @@
   <para>
     <command>lwrp</command><manvolnum>1</manvolnum>
     is a command-line monitor that can be used to monitor and originate LiveWire
-    Routing Protocol (LWRP) messages.
+    Routing Protocol (LWRP) messages. If invoked with no options,
+    <command>lwrp</command><manvolnum>1</manvolnum> will open a GUI window
+    containing facilities for interacting with the Livewire device specified
+    by <replaceable>host-spec</replaceable>.
   </para>
   </refsect1>
 
@@ -63,12 +63,27 @@
     </varlistentry>
     <varlistentry>
       <term>
-	<option>--port=</option><replaceable>port-num</replaceable>
+	<option>--from[=</option><replaceable>filename</replaceable>]
       </term>
       <listitem>
 	<para>
-	  Attempt to connect to port <replaceable>port-num</replaceable>
-	  on the LiveWire device.  Default value is 93.
+	  Connect to the specified Livewire device, write the LWRP commands
+	  contained in <replaceable>filename</replaceable> to the device and
+	  then exit. If no <replaceable>filename</replaceable> is given, then
+	  take the LWRP commands to write from standard input.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<option>--password[=</option><replaceable>passwd</replaceable>]
+      </term>
+      <listitem>
+	<para>
+	  Use the string <replaceable>passwd</replaceable> as the password
+	  when connecting to the LWRP service. If this option is given with
+	  no value, then prompt the user for a password. Default is to use
+	  no password when connecting.
 	</para>
       </listitem>
     </varlistentry>
@@ -91,6 +106,9 @@
   </citerefentry>,
   <citerefentry>
     <refentrytitle>lwmultcap</refentrytitle><manvolnum>1</manvolnum>
+  </citerefentry>,
+  <citerefentry>
+    <refentrytitle>lwrpdump</refentrytitle><manvolnum>1</manvolnum>
   </citerefentry>
   </para>
   </refsect1>

@@ -218,3 +218,5 @@
 	* Incremented the package version to 1.4.0.
 2024-12-06 Fred Gleason <fredg@paravelsystems.com>
 	* Added a lwrpdump(1) command.
+2024-12-11 Fred Gleason <fredg@paravelsystems.com>
+	* Added '--from' and '--pasword' switches to lwrp(1).

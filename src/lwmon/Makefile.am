@@ -2,7 +2,7 @@
 ##
 ## Makefile for lwmon(1)
 ##
-## (C) Copyright 2015-2021 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2015-2024 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -20,7 +20,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -std=c++11 -fPIC -Wno-strict-aliasing @QT5_CFLAGS@
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -std=c++11 -fPIC -Wno-strict-aliasing @QT5_CFLAGS@ @READLINE_CFLAGS@
 MOC = @QT_MOC@
 LUPDATE = @QT_LUPDATE@
 LRELEASE = @QT_LRELEASE@
@@ -52,13 +52,15 @@ dist_lwmon_SOURCES = astring.cpp astring.h\
                      colors.cpp\
                      lineedit.cpp lineedit.h\
                      lwmon.cpp lwmon.h\
-                     statuswidget.cpp statuswidget.h
+                     lwmon_widget.cpp\
+                     statuswidget.cpp statuswidget.h\
+                     writefromfile.cpp
 
 nodist_lwmon_SOURCES = moc_lineedit.cpp\
                        moc_lwmon.cpp\
                        moc_statuswidget.cpp
 
-lwmon_LDADD = @QT5_LIBS@
+lwmon_LDADD = @QT5_LIBS@ @READLINE_LIBS@
 
 CLEANFILES = *~\
              moc_*\

@@ -24,12 +24,14 @@
 #include <stdint.h>
 
 #include <QDir>
+#include <QFile>
 #include <QPushButton>
 #include <QTcpSocket>
 #include <QTextEdit>
 #include <QMainWindow>
 
 #include "astring.h"
+#include "cmdswitch.h"
 #include "lineedit.h"
 #include "statuswidget.h"
 
@@ -39,7 +41,7 @@
 #define LWMON_SETTINGS_DIR ".lwcpmon"
 #define LWMON_LWCP_HISTORY_FILE "lwcp_history"
 #define LWMON_LWRP_HISTORY_FILE "lwrp_history"
-#define LWMON_USAGE "[--mode=lwcp|lwrp|lwaddr] [--color=on|off] <hostname>[:<port-num>]\n"
+#define LWMON_USAGE "[--mode=lwcp|lwrp|lwaddr] [--color=on|off] [--from[=filename]] <hostname>[:<port-num>]\n"
 
 class MainWidget : public QMainWindow
 {
@@ -47,7 +49,9 @@ class MainWidget : public QMainWindow
  public:
   enum Mode {Lwrp=1,Lwcp=2,Lwaddr=3};
   enum SignalType {None=0,Stereo=1,Surround=2,Backfeed=3};
-  MainWidget(QWidget *parent=0);
+  //  MainWidget(CmdSwitch *cmd,QWidget *parent=0);
+  MainWidget(Mode mode,const QString &hostname,uint16_t port,bool colorize,
+	     QWidget *parent=0);
   QSize sizeHint() const;
 
  protected:
@@ -90,5 +94,8 @@ class MainWidget : public QMainWindow
   bool lw_colorize;
 };
 
+
+void WriteFromFile(const QString &hostname,QString password,
+		   uint16_t port,const QString &filename);
 
 #endif  // LWMON_H

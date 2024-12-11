@@ -63,9 +63,14 @@ AC_CHECK_PROG(LRELEASE_NAME,lrelease-qt5,[lrelease-qt5],[lrelease])
 AC_SUBST(QT_LRELEASE,$LRELEASE_NAME)
 
 #
-# Check for libsndfile (mandatory>
+# Check for libsndfile (mandatory)
 #
 PKG_CHECK_MODULES(SNDFILE,sndfile,[],[AC_MSG_ERROR([*** libsndfile not found ***])])
+
+#
+# Check for libreadline (mandatory)
+#
+PKG_CHECK_MODULES(READLINE,readline,[],[AC_MSG_ERROR([*** libreadline not found ***])])
 
 #
 # Configure documentation build
