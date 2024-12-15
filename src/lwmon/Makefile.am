@@ -20,7 +20,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -std=c++11 -fPIC -Wno-strict-aliasing @QT5_CFLAGS@ @READLINE_CFLAGS@
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -std=c++11 -fPIC -Wno-strict-aliasing @QT5_CFLAGS@
 MOC = @QT_MOC@
 LUPDATE = @QT_LUPDATE@
 LRELEASE = @QT_LRELEASE@
@@ -60,7 +60,7 @@ nodist_lwmon_SOURCES = moc_lineedit.cpp\
                        moc_lwmon.cpp\
                        moc_statuswidget.cpp
 
-lwmon_LDADD = @QT5_LIBS@ @READLINE_LIBS@
+lwmon_LDADD = @QT5_LIBS@
 
 CLEANFILES = *~\
              moc_*\

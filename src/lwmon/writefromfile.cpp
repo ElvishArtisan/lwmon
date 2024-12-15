@@ -24,8 +24,6 @@
 #include <netinet/ip.h>
 #include <termios.h>
 #include <unistd.h>
-#include <readline/readline.h>
-#include <readline/history.h>
 #include <sys/socket.h>
 #include <sys/stat.h>
 #include <sys/types.h>

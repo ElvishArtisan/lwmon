@@ -227,3 +227,5 @@
 2024-12-15 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in lwmon(1) that broke automatic detection
 	of the program mode.
+2024-12-15 Fred Gleason <fredg@paravelsystems.com>
+	* Removed spurious dependency on GNU readline.
