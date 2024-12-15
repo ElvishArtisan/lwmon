@@ -224,3 +224,6 @@
 	* Added code to lwrpdump(1) to prompt for a password when invoked
 	with the '--password=' switch with no argument.
 	* Documented the '--password=' switch in the lwrpdump(1) man page.
+2024-12-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in lwmon(1) that broke automatic detection
+	of the program mode.

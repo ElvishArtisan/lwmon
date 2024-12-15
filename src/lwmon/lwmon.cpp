@@ -37,6 +37,20 @@ int main(int argc,char *argv[])
   QString password;
   bool ok=false;
 
+  //
+  // Get Mode
+  //
+  QStringList f1=QString::fromUtf8(argv[0]).split("/",Qt::SkipEmptyParts);
+  if(f1.last()=="lwaddr") {
+    mode=MainWidget::Lwaddr;
+  }
+  if(f1.last()=="lwcp") {
+    mode=MainWidget::Lwcp;
+  }
+  if(f1.last()=="lwrp") {
+    mode=MainWidget::Lwrp;
+  }
+  
   CmdSwitch *cmd=new CmdSwitch(argc,argv,"lwmon",LWMON_USAGE);
   if(cmd->keys()==0) {
     fprintf(stderr,"%s\n",LWMON_USAGE);
