@@ -21,6 +21,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <termios.h>
 
 #include <QCoreApplication>
 #include <QDateTime>
@@ -29,6 +30,45 @@
 #include "astring.h"
 #include "cmdswitch.h"
 #include "lwrpdump.h"
+
+#ifndef STDIN_FILENO
+#define STDIN_FILENO 0
+#endif  // STDIN_FILENO
+
+QString GetLine(const QString &prompt)
+{
+  char line[1024];
+  struct termios orig_to;
+  struct termios noecho_to;
+  char *ret=NULL;
+
+  //
+  // Turn off character echo
+  //
+  tcgetattr(STDIN_FILENO,&orig_to);
+  noecho_to=orig_to;
+  noecho_to.c_lflag=noecho_to.c_lflag^ECHO;
+  tcsetattr(STDIN_FILENO,TCSANOW,&noecho_to);
+
+  //
+  // Get string
+  //
+  printf("%s ",prompt.toUtf8().constData());
+  fflush(stdout);
+  ret=fgets(line,1024,stdin);
+
+  //
+  // Restore character echo
+  //
+  tcsetattr(STDIN_FILENO,TCSANOW,&orig_to);
+  printf("\n");
+
+  if(ret==NULL) {
+    return QString();
+  }
+  return QString::fromUtf8(line).trimmed();
+}
+
 
 MainObject::MainObject()
   : QObject(NULL)
@@ -99,6 +139,11 @@ MainObject::MainObject()
       exit(1);
     }
   }
+
+  if(password.isEmpty()&&(!password.isNull())) {  // Prompt for password
+    password=GetLine(QObject::tr("Password")+":");
+  }
+
   if((!d_dump_dst)&&(!d_dump_ip)&&(!d_dump_src)&&(!d_dump_gpio)&&
      (!d_dump_ver)) {
       d_dump_src=true;

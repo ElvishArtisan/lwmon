@@ -220,3 +220,7 @@
 	* Added a lwrpdump(1) command.
 2024-12-11 Fred Gleason <fredg@paravelsystems.com>
 	* Added '--from' and '--pasword' switches to lwrp(1).
+2024-12-15 Fred Gleason <fredg@paravelsystems.com>
+	* Added code to lwrpdump(1) to prompt for a password when invoked
+	with the '--password=' switch with no argument.
+	* Documented the '--password=' switch in the lwrpdump(1) man page.

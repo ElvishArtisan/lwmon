@@ -30,16 +30,8 @@
   <refsynopsisdiv id='synopsis'>
     <cmdsynopsis>
       <command>lwrpdump</command>
-      <arg choice='req'>
-	<option>--hostname=<replaceable>hostname</replaceable></option>
-      </arg>
-      <arg choice='opt'>
-	<option>--port=</option><replaceable>port-num</replaceable>
-      </arg>
-      <arg choice="opt">
-	<option>--dump-dst</option>
-      </arg>
-	  
+      <arg choice='opt'><option>OPTIONS</option></arg>
+      <arg choice='req'><option>host-spec</option></arg>
       <sbr/>
     </cmdsynopsis>
   </refsynopsisdiv>
@@ -47,7 +39,7 @@
   <refsect1 id='description'><title>Description</title>
   <para>
     <command>lwrpdump</command><manvolnum>1</manvolnum>
-    is a command-line tools that can be used to dump the configuration
+    is a command-line tool that can be used to dump the configuration
     of a Livewire device via LWRP. It is useful for creating backups of device
     configuration.
   </para>
@@ -149,6 +141,19 @@
 	  Connect to the Livewire device at
 	  <replaceable>host-name</replaceable>. Either a hostname or IP address
 	  (in dotted-quad notation) may be supplied. Required argument.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<option>--password[=</option><replaceable>passwd</replaceable>]
+      </term>
+      <listitem>
+	<para>
+	  Use the string <replaceable>passwd</replaceable> as the password
+	  when connecting to the Livewire device. If this option is given with
+	  no value, then the user will be prompted for a password.
+	  Default is to use no password when connecting.
 	</para>
       </listitem>
     </varlistentry>
