@@ -235,3 +235,5 @@
 	* Cleaned up build warnings in lwmon(1).
 	* Cleaned up build warnings in lwmultcap(1).
 	* Cleaned up build warnings in udpmon(1).
+2024-12-17 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to v1.5.0.

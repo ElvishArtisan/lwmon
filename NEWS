@@ -1,6 +1,15 @@
 This is the NEWS file for lwmon.
 
 ------------------------------------------------------------------------------
+v1.5.0 - 17 December 2024
+
+Changes:
+   Lwrpdump. Added a lwrpdump(1) utility, useful for creating LWRP
+   configuration backups.
+
+   Lwrp(1) Changes. Added '--from' and '--password' switches to lwrp(1),
+   useful for writing LWRP dumps to devices.
+------------------------------------------------------------------------------
 v1.4.0 - 1 October 2024
 
 Changes:
