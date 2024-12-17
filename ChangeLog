@@ -229,3 +229,9 @@
 	of the program mode.
 2024-12-15 Fred Gleason <fredg@paravelsystems.com>
 	* Removed spurious dependency on GNU readline.
+2024-12-17 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up build warnings in lwcap(1).
+	* Cleaned up build warnings in lwmastermon(1).
+	* Cleaned up build warnings in lwmon(1).
+	* Cleaned up build warnings in lwmultcap(1).
+	* Cleaned up build warnings in udpmon(1).
